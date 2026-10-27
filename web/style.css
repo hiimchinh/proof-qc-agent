@@ -80,3 +80,7 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .78rem; padding
 .tool-trace p { margin: 4px 0; }
 .try-title { margin-top: 32px; }
 @media (max-width: 760px) { .desk-layout { grid-template-columns: 1fr; gap: 0; } .desk-title { display: block; } }
+
+.queue-status { overflow-wrap: anywhere; padding: 12px 0; margin: 0; font-weight: 600; }
+.fleet-reason { font-weight: 600; margin: 8px 0; border-left: 4px solid var(--focus); padding-left: 12px; overflow-wrap: anywhere; }
+#fleet-events > li { overflow-wrap: anywhere; }
