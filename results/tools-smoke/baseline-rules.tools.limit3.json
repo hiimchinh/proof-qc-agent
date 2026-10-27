@@ -1,0 +1,105 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "overridden_by_rules": false,
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Brian. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "overridden_by_rules": false,
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Ana. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "overridden_by_rules": false,
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Kenji. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  }
+]

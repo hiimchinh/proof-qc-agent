@@ -1,0 +1,206 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "trace": [
+        {
+          "tool": "measure_artwork",
+          "args": {},
+          "result": "{\"width_px\":900,\"height_px\":900,\"effective_dpi\":300,\"findings\":null}",
+          "overridden": false
+        },
+        {
+          "tool": "route_order",
+          "args": {
+            "decision": "ready_for_proof",
+            "reasons": [
+              "Artwork measures 900x900 px at 300 effective DPI, above the 150 DPI minimum at the ordered 3x3 in size.",
+              "The customer comment is empty, so no conflicting size, shape, or material request exists.",
+              "The order is a die cut, which the designer can set up from the ordered product."
+            ],
+            "designer_note": "Make the proof at the ordered 3 x 3 in size as a die cut. Cut the die line around the red circle and the MULE text. Check that all art sits inside the safe margin before sending the proof.",
+            "customer_note": "Hi Brian, your artwork is high resolution and ready for proof. We will prepare a 3 x 3 in die-cut proof for your review shortly.",
+            "requested": {
+              "width_in": null,
+              "height_in": null,
+              "shape": "none",
+              "material": ""
+            }
+          },
+          "result": "ready_for_proof",
+          "overridden": false
+        }
+      ],
+      "overridden_by_rules": false,
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork measures 900x900 px at 300 effective DPI, above the 150 DPI minimum at the ordered 3x3 in size.",
+        "The customer comment is empty, so no conflicting size, shape, or material request exists.",
+        "The order is a die cut, which the designer can set up from the ordered product."
+      ],
+      "designer_note": "Make the proof at the ordered 3 x 3 in size as a die cut. Cut the die line around the red circle and the MULE text. Check that all art sits inside the safe margin before sending the proof.",
+      "customer_note": "Hi Brian, your artwork is high resolution and ready for proof. We will prepare a 3 x 3 in die-cut proof for your review shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 2,
+      "cost_usd": 0.0007206000000000001,
+      "latency_ns": 9697668332
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "trace": [
+        {
+          "tool": "measure_artwork",
+          "args": {},
+          "result": "{\"width_px\":900,\"height_px\":600,\"effective_dpi\":300,\"findings\":null}",
+          "overridden": false
+        },
+        {
+          "tool": "customer_history",
+          "args": {},
+          "result": "0 previous orders",
+          "overridden": false
+        },
+        {
+          "tool": "route_order",
+          "args": {
+            "decision": "ready_for_proof",
+            "reasons": [
+              "Artwork measures 900x600 px, 300 effective DPI at the ordered 3 x 2 in size, above the 150 DPI minimum.",
+              "Customer comment is empty, so there are no requested changes or conflicts with the order."
+            ],
+            "designer_note": "Artwork is 300 DPI at 3 x 2 in, so no resolution issue. Build the rectangle proof at the ordered 3 x 2 in size. Confirm the art sits inside the safe margin before sending the proof.",
+            "customer_note": "Hi Ana, your TACOS artwork is high resolution and sized for your 3 x 2 in rectangle sticker. We are preparing your proof now.",
+            "requested": {
+              "width_in": null,
+              "height_in": null,
+              "shape": "none",
+              "material": ""
+            }
+          },
+          "result": "ready_for_proof",
+          "overridden": false
+        }
+      ],
+      "overridden_by_rules": false,
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork measures 900x600 px, 300 effective DPI at the ordered 3 x 2 in size, above the 150 DPI minimum.",
+        "Customer comment is empty, so there are no requested changes or conflicts with the order."
+      ],
+      "designer_note": "Artwork is 300 DPI at 3 x 2 in, so no resolution issue. Build the rectangle proof at the ordered 3 x 2 in size. Confirm the art sits inside the safe margin before sending the proof.",
+      "customer_note": "Hi Ana, your TACOS artwork is high resolution and sized for your 3 x 2 in rectangle sticker. We are preparing your proof now.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 2,
+      "cost_usd": 0.0007055,
+      "latency_ns": 9677567644
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "trace": [
+        {
+          "tool": "measure_artwork",
+          "args": {},
+          "result": "{\"width_px\":900,\"height_px\":900,\"effective_dpi\":300,\"findings\":[{\"flag\":\"solid_background\",\"message\":\"border is solid rgb(255,255,255); a die cut would follow the rectangle\"}]}",
+          "overridden": false
+        },
+        {
+          "tool": "route_order",
+          "args": {
+            "decision": "ready_for_proof",
+            "reasons": [
+              "Artwork measures 300 dpi at the ordered 3 x 3 in size, above the 150 dpi minimum.",
+              "The white border is a solid background, so a die cut would follow a rectangle. A designer can remove it alone.",
+              "The customer comment is empty, so there is no conflicting size, shape, or material request."
+            ],
+            "designer_note": "Remove the solid white background so the die cut follows the circle and the BREW wordmark instead of the rectangular border. Confirm the art sits inside the safe margin at 3 x 3 in, then build the die-cut proof at the ordered size.",
+            "customer_note": "Hi Kenji, your BREW artwork is ready for proof at 3 x 3 in. Our designer will remove the white background so the die cut follows your logo's shape. We'll send your proof for review shortly.",
+            "requested": {
+              "width_in": null,
+              "height_in": null,
+              "shape": "none",
+              "material": ""
+            }
+          },
+          "result": "ready_for_proof",
+          "overridden": false
+        }
+      ],
+      "overridden_by_rules": false,
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork measures 300 dpi at the ordered 3 x 3 in size, above the 150 dpi minimum.",
+        "The white border is a solid background, so a die cut would follow a rectangle. A designer can remove it alone.",
+        "The customer comment is empty, so there is no conflicting size, shape, or material request."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the circle and the BREW wordmark instead of the rectangular border. Confirm the art sits inside the safe margin at 3 x 3 in, then build the die-cut proof at the ordered size.",
+      "customer_note": "Hi Kenji, your BREW artwork is ready for proof at 3 x 3 in. Our designer will remove the white background so the die cut follows your logo's shape. We'll send your proof for review shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 2,
+      "cost_usd": 0.0007386,
+      "latency_ns": 10372359837
+    }
+  }
+]
