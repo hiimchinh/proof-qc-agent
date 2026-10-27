@@ -2,7 +2,7 @@ package fleet
 
 import "github.com/hiimchinh/proof-qc-agent/internal/store"
 
-const DefaultQueue = "google/gemma-3-27b-it,x-ai/grok-4.7"
+const DefaultQueue = "google/gemma-4-31b-it,qwen/qwen3-vl-235b-a22b-instruct,x-ai/grok-4.7"
 
 // RemainingQueue excludes the current seats and every model in persisted history.
 // History is unbounded: even models retired long ago must never return.
