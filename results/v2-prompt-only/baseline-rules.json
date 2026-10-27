@@ -1,0 +1,3917 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Brian. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Ana. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Kenji. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "keep-square-on-diecut",
+      "file": "testdata/cases/keep-square-on-diecut.png",
+      "order": {
+        "customer": "Olivia Brown",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please keep the cream background as a square, don't cut around the logo."
+      },
+      "want": "ask_customer",
+      "why": "asks for a square sticker on a die-cut order: product change"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Olivia. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-diecut",
+      "file": "testdata/cases/lowres-diecut.png",
+      "order": {
+        "customer": "Marcus Lee",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "100 dpi at 3x3 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Marcus. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-rectangle-sharp",
+      "file": "testdata/cases/lowres-rectangle-sharp.png",
+      "order": {
+        "customer": "Priya Patel",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Make sure it looks sharp please"
+      },
+      "want": "recreate_artwork",
+      "why": "120 dpi; the comment asks for what recreating gives"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "120 dpi at 4x2 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Priya. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 240,
+        "effective_dpi": 120,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "120 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "medium-res",
+      "file": "testdata/cases/medium-res.png",
+      "order": {
+        "customer": "Tom Becker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "200 dpi prints"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 3x3 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Tom. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "hairlines",
+      "file": "testdata/cases/hairlines.png",
+      "order": {
+        "customer": "Sofia Rossi",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer thickens hairlines"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Sofia. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "near-edge-rectangle",
+      "file": "testdata/cases/near-edge-rectangle.png",
+      "order": {
+        "customer": "Luca Bianchi",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer moves the bar inside the safe margin"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "17136 px of artwork inside the 19 px safe margin"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Luca. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "17136 px of artwork inside the 19 px safe margin"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "empty-file",
+      "file": "testdata/cases/empty-file.png",
+      "order": {
+        "customer": "Emma Wilson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ask_customer",
+      "why": "no artwork"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "no printable pixels"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Emma. Upload your artwork and we'll make your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "empty_artwork",
+            "message": "no printable pixels"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "wrong-file-attached",
+      "file": "testdata/cases/wrong-file-attached.png",
+      "order": {
+        "customer": "Noah Davis",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+      },
+      "want": "ask_customer",
+      "why": "the right file is not attached"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Noah. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "size-change",
+      "file": "testdata/cases/size-change.png",
+      "order": {
+        "customer": "Mia Johnson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches instead of 3?"
+      },
+      "want": "ask_customer",
+      "why": "size differs from the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Mia. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "text-edit",
+      "file": "testdata/cases/text-edit.png",
+      "order": {
+        "customer": "Liam Garcia",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please change the text to say OPEN LATE."
+      },
+      "want": "ready_for_proof",
+      "why": "designer edits text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Liam. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "remove-white-bg",
+      "file": "testdata/cases/remove-white-bg.png",
+      "order": {
+        "customer": "Chloe Martin",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the white background please."
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloe. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "missing-blue-version",
+      "file": "testdata/cases/missing-blue-version.png",
+      "order": {
+        "customer": "Ethan Clark",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Use the blue version of the logo, not the red one."
+      },
+      "want": "ask_customer",
+      "why": "only the red version is attached"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Ethan. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "conflicting-background",
+      "file": "testdata/cases/conflicting-background.png",
+      "order": {
+        "customer": "Grace Kim",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the background transparent but keep the white box around the logo."
+      },
+      "want": "ask_customer",
+      "why": "two instructions contradict each other"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Grace. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-sending-hires",
+      "file": "testdata/cases/lowres-sending-hires.png",
+      "order": {
+        "customer": "Jack Turner",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "the customer is sending a better file; wait for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "110 dpi at 3x3 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Jack. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 330,
+        "height_px": 330,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "tiny-tagline",
+      "file": "testdata/cases/tiny-tagline.png",
+      "order": {
+        "customer": "Hannah Scott",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make sure the small text is readable."
+      },
+      "want": "ready_for_proof",
+      "why": "designer enlarges or thickens the tagline"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "0.01 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Hannah. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "rush-request",
+      "file": "testdata/cases/rush-request.png",
+      "order": {
+        "customer": "Owen Hughes",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love you guys! Rush please, need them for Saturday."
+      },
+      "want": "ready_for_proof",
+      "why": "turnaround request does not block the proof"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Owen. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "add-phone-number",
+      "file": "testdata/cases/add-phone-number.png",
+      "order": {
+        "customer": "Daniel Young",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Can you add my phone number 555-0100 under the logo?"
+      },
+      "want": "ready_for_proof",
+      "why": "designer adds text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Daniel. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-please-vectorize",
+      "file": "testdata/cases/lowres-please-vectorize.png",
+      "order": {
+        "customer": "Ava Walker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please recreate this as a vector if needed."
+      },
+      "want": "recreate_artwork",
+      "why": "140 dpi and the customer asks for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "140 dpi at 3x3 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Ava. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 420,
+        "height_px": 420,
+        "effective_dpi": 140,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "140 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "fullbleed-photo",
+      "file": "testdata/cases/fullbleed-photo.png",
+      "order": {
+        "customer": "Lucas Allen",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "full-bleed rectangle at 300 dpi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Lucas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "medium-thin-whitebox",
+      "file": "testdata/cases/medium-thin-whitebox.png",
+      "order": {
+        "customer": "Ella King",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "every finding is a designer fix"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "160 dpi at 3x3 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Ella. Your proof is on the way.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 160,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "160 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "holographic",
+      "file": "testdata/cases/holographic.png",
+      "order": {
+        "customer": "Leo Wright",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "material differs from the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Leo. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "same-size-confirmation",
+      "file": "testdata/cases/same-size-confirmation.png",
+      "order": {
+        "customer": "Zoe Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print it at 2x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "the size matches the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Zoe. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "spanish-remove-bg",
+      "file": "testdata/cases/spanish-remove-bg.png",
+      "order": {
+        "customer": "Diego Ramirez",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Por favor quiten el fondo blanco."
+      },
+      "want": "ready_for_proof",
+      "why": "asks, in Spanish, to remove the white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Diego. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-001-none",
+      "file": "testdata/cases/gen-001-none.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-002-rush",
+      "file": "testdata/cases/gen-002-rush.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-003-praise",
+      "file": "testdata/cases/gen-003-praise.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2x2 in; target 300",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Nguyễn. Your proof is on the way.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-004-same-size",
+      "file": "testdata/cases/gen-004-same-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Zoë. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-005-vibrant",
+      "file": "testdata/cases/gen-005-vibrant.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks José. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-006-remove-bg",
+      "file": "testdata/cases/gen-006-remove-bg.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2x2 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-007-remove-bg-fr",
+      "file": "testdata/cases/gen-007-remove-bg-fr.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Sam. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-008-remove-bg-de",
+      "file": "testdata/cases/gen-008-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 3x2 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Raj. Your proof is on the way.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-009-remove-bg-vi",
+      "file": "testdata/cases/gen-009-remove-bg-vi.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 4x2 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Mei. Your proof is on the way.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-010-add-text",
+      "file": "testdata/cases/gen-010-add-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-011-change-text",
+      "file": "testdata/cases/gen-011-change-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 3x3 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-012-thicker",
+      "file": "testdata/cases/gen-012-thicker.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-013-center",
+      "file": "testdata/cases/gen-013-center.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Center the logo please."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 3x3 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Nguyễn. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-014-bigger-text",
+      "file": "testdata/cases/gen-014-bigger-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-015-redraw-ok",
+      "file": "testdata/cases/gen-015-redraw-ok.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Fatima. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-016-size-up",
+      "file": "testdata/cases/gen-016-size-up.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "100 dpi at 3x3 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Mei. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-017-size-down",
+      "file": "testdata/cases/gen-017-size-down.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Actually I need them 1x1 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 2x2 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-018-to-square",
+      "file": "testdata/cases/gen-018-to-square.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-019-to-diecut",
+      "file": "testdata/cases/gen-019-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-020-holo",
+      "file": "testdata/cases/gen-020-holo.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2x2 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Nguyễn. Your proof is on the way.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-021-clear",
+      "file": "testdata/cases/gen-021-clear.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-022-glitter",
+      "file": "testdata/cases/gen-022-glitter.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Kate. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-023-other-file",
+      "file": "testdata/cases/gen-023-other-file.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-024-email-later",
+      "file": "testdata/cases/gen-024-email-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-025-hires-later",
+      "file": "testdata/cases/gen-025-hires-later.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "110 dpi at 2x2 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Zoë. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-026-contradict",
+      "file": "testdata/cases/gen-026-contradict.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2x2 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Fatima. Your proof is on the way.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-027-contradict-size",
+      "file": "testdata/cases/gen-027-contradict-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "100 dpi at 3x2 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Zoë. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-028-none",
+      "file": "testdata/cases/gen-028-none.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Nguyễn. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-029-rush",
+      "file": "testdata/cases/gen-029-rush.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "100 dpi at 3x2 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle",
+        "0.01 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-030-praise",
+      "file": "testdata/cases/gen-030-praise.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-031-same-size",
+      "file": "testdata/cases/gen-031-same-size.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print at 3x3 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 3x3 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks José. Your proof is on the way.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-032-vibrant",
+      "file": "testdata/cases/gen-032-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Kate. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-033-remove-bg",
+      "file": "testdata/cases/gen-033-remove-bg.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 2x2 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-034-remove-bg-fr",
+      "file": "testdata/cases/gen-034-remove-bg-fr.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 3x2 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks José. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-035-remove-bg-de",
+      "file": "testdata/cases/gen-035-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 2.5x2.5 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Raj. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-036-remove-bg-vi",
+      "file": "testdata/cases/gen-036-remove-bg-vi.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2x2 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-037-add-text",
+      "file": "testdata/cases/gen-037-add-text.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Fatima. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-038-change-text",
+      "file": "testdata/cases/gen-038-change-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 4x2 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Mei. Your proof is on the way.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-039-thicker",
+      "file": "testdata/cases/gen-039-thicker.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2.5x2.5 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Nguyễn. Your proof is on the way.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-040-center",
+      "file": "testdata/cases/gen-040-center.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Mei. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-041-bigger-text",
+      "file": "testdata/cases/gen-041-bigger-text.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Raj. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-042-redraw-ok",
+      "file": "testdata/cases/gen-042-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks José. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-043-size-up",
+      "file": "testdata/cases/gen-043-size-up.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Can you make these 4.5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 2.5x2.5 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-044-size-down",
+      "file": "testdata/cases/gen-044-size-down.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2.5x2.5 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-045-to-square",
+      "file": "testdata/cases/gen-045-to-square.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Kate. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-046-to-diecut",
+      "file": "testdata/cases/gen-046-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "112 px of artwork inside the 19 px safe margin",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-047-holo",
+      "file": "testdata/cases/gen-047-holo.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "112 px of artwork inside the 19 px safe margin",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Sam. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-048-clear",
+      "file": "testdata/cases/gen-048-clear.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Zoë. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-049-glitter",
+      "file": "testdata/cases/gen-049-glitter.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-050-other-file",
+      "file": "testdata/cases/gen-050-other-file.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Sam. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-051-email-later",
+      "file": "testdata/cases/gen-051-email-later.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 3x3 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-052-hires-later",
+      "file": "testdata/cases/gen-052-hires-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "110 dpi at 2x2 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-053-contradict",
+      "file": "testdata/cases/gen-053-contradict.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 3x3 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-054-contradict-size",
+      "file": "testdata/cases/gen-054-contradict-size.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-055-none",
+      "file": "testdata/cases/gen-055-none.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-056-rush",
+      "file": "testdata/cases/gen-056-rush.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Fatima. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-057-praise",
+      "file": "testdata/cases/gen-057-praise.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Sam. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-058-same-size",
+      "file": "testdata/cases/gen-058-same-size.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. Your proof is on the way.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-059-vibrant",
+      "file": "testdata/cases/gen-059-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Kate. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-060-remove-bg",
+      "file": "testdata/cases/gen-060-remove-bg.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks José. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-061-remove-bg-fr",
+      "file": "testdata/cases/gen-061-remove-bg-fr.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 2.5x2.5 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Zoë. Your proof is on the way.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-062-remove-bg-de",
+      "file": "testdata/cases/gen-062-remove-bg-de.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-063-remove-bg-vi",
+      "file": "testdata/cases/gen-063-remove-bg-vi.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 3x3 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. Your proof is on the way.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-064-add-text",
+      "file": "testdata/cases/gen-064-add-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "100 dpi at 4x2 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Mei. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-065-change-text",
+      "file": "testdata/cases/gen-065-change-text.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 3x2 in; target 300",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-066-thicker",
+      "file": "testdata/cases/gen-066-thicker.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-067-center",
+      "file": "testdata/cases/gen-067-center.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-068-bigger-text",
+      "file": "testdata/cases/gen-068-bigger-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at 3x3 in; target 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your proof is on the way.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-069-redraw-ok",
+      "file": "testdata/cases/gen-069-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi at 3x2 in; target 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks José. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-070-size-up",
+      "file": "testdata/cases/gen-070-size-up.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "100 dpi at 3x3 in; needs 300"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Fatima. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-071-size-down",
+      "file": "testdata/cases/gen-071-size-down.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-072-to-square",
+      "file": "testdata/cases/gen-072-to-square.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 2x2 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Zoë. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-073-to-diecut",
+      "file": "testdata/cases/gen-073-to-diecut.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Fatima. Your proof is on the way.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-074-holo",
+      "file": "testdata/cases/gen-074-holo.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "112 px of artwork inside the 19 px safe margin",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Chloé. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-075-clear",
+      "file": "testdata/cases/gen-075-clear.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Mei. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-076-glitter",
+      "file": "testdata/cases/gen-076-glitter.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "130 dpi at 3x3 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle",
+        "0.02 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks José. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-077-other-file",
+      "file": "testdata/cases/gen-077-other-file.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks José. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-078-email-later",
+      "file": "testdata/cases/gen-078-email-later.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "Thanks Łukasz. Your proof is on the way.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-079-hires-later",
+      "file": "testdata/cases/gen-079-hires-later.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "110 dpi at 2x2 in; needs 300",
+        "0.01 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Jonas. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  },
+  {
+    "case": {
+      "id": "gen-080-contradict",
+      "file": "testdata/cases/gen-080-contradict.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "100 dpi at 2x2 in; needs 300",
+        "border is solid rgb(255,255,255); a die cut would follow the rectangle",
+        "0.01 sq in of the artwork is thinner than 1/32 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Mei. We're redrawing your artwork so it prints sharp. Your proof follows soon.",
+      "preflight": {
+        "width_px": 200,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "baseline-rules",
+      "attempts": 1,
+      "cost_usd": 0,
+      "latency_ns": 0
+    }
+  }
+]

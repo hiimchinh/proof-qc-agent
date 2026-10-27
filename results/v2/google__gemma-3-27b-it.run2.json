@@ -1,0 +1,4140 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 300 dpi at the ordered size.",
+        "No customer comment requires action."
+      ],
+      "designer_note": "Move the text 'MULE' to be fully within the safe margins.",
+      "customer_note": "Hi Brian, your die-cut sticker artwork looks great! We've adjusted the text placement for clean edges. A proof will be ready shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011667,
+      "latency_ns": 8560833339
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is high resolution and meets the size requirements.",
+        "The customer comment is empty, so there are no additional requests."
+      ],
+      "designer_note": "Move art inside the safe margin.",
+      "customer_note": "Hi Ana! Your sticker artwork is ready for proof. We'll ensure the design fits within the printable area. You'll receive a preview shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010337,
+      "latency_ns": 2828774937
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "resolution is sufficient",
+        "comment is empty"
+      ],
+      "designer_note": "Remove the white background; die cut to the art's shape.",
+      "customer_note": "Hi Kenji! Your artwork is ready for proofing. We'll die cut the sticker to follow the shape of the design. You’ll receive a proof shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011811,
+      "latency_ns": 4146767808
+    }
+  },
+  {
+    "case": {
+      "id": "keep-square-on-diecut",
+      "file": "testdata/cases/keep-square-on-diecut.png",
+      "order": {
+        "customer": "Olivia Brown",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please keep the cream background as a square, don't cut around the logo."
+      },
+      "want": "ask_customer",
+      "why": "asks for a square sticker on a die-cut order: product change"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requests a rectangular sticker instead of a die cut, which the designer can adjust.",
+        "The image is high resolution and the designer can make the requested changes.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Make this a rectangle sticker, not a die cut. Keep the cream background as the sticker shape.",
+      "customer_note": "Thanks Olivia. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001342,
+      "latency_ns": 3231356520
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-diecut",
+      "file": "testdata/cases/lowres-diecut.png",
+      "order": {
+        "customer": "Marcus Lee",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00096384,
+      "latency_ns": 98016275723
+    },
+    "error": "google/gemma-3-27b-it: answer cut off at the token limit"
+  },
+  {
+    "case": {
+      "id": "lowres-rectangle-sharp",
+      "file": "testdata/cases/lowres-rectangle-sharp.png",
+      "order": {
+        "customer": "Priya Patel",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Make sure it looks sharp please"
+      },
+      "want": "recreate_artwork",
+      "why": "120 dpi; the comment asks for what recreating gives"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Low resolution: the image is 120 dpi at the ordered size but needs to be 300 dpi."
+      ],
+      "designer_note": "Recreate the artwork as a vector graphic.",
+      "customer_note": "Hi Priya, your sticker artwork will be recreated to ensure it prints sharply at the ordered size. We'll send a proof for your review soon!",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 240,
+        "effective_dpi": 120,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "120 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.000088,
+      "latency_ns": 6578782135
+    }
+  },
+  {
+    "case": {
+      "id": "medium-res",
+      "file": "testdata/cases/medium-res.png",
+      "order": {
+        "customer": "Tom Becker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "200 dpi prints"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size of 3x3 in; it needs to be 300 dpi."
+      ],
+      "designer_note": "",
+      "customer_note": "Tom, we're recreating your artwork at a higher resolution to ensure a crisp, clear sticker! You’ll receive a proof soon.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010068,
+      "latency_ns": 6618573526
+    }
+  },
+  {
+    "case": {
+      "id": "hairlines",
+      "file": "testdata/cases/hairlines.png",
+      "order": {
+        "customer": "Sofia Rossi",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer thickens hairlines"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and matches the order details.",
+        "The preflight check identified thin lines, which a designer can address."
+      ],
+      "designer_note": "Thicken the thin lines flagged in preflight to ensure clean printing.",
+      "customer_note": "Hi Sofia! Your sticker artwork looks great. We’ve thickened some of the lines to improve print quality. A proof will be ready shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012154,
+      "latency_ns": 8744741977
+    }
+  },
+  {
+    "case": {
+      "id": "near-edge-rectangle",
+      "file": "testdata/cases/near-edge-rectangle.png",
+      "order": {
+        "customer": "Luca Bianchi",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer moves the bar inside the safe margin"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the designer can address the safe margin issue.",
+        "The customer comment is empty and doesn't trigger any flags."
+      ],
+      "designer_note": "Move all artwork inside the safe margin. ",
+      "customer_note": "Hi Luca, your artwork is ready for proof! The designer will ensure all elements are within the safe print area for your rectangle stickers.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "17136 px of artwork inside the 19 px safe margin"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009153,
+      "latency_ns": 2676416948
+    }
+  },
+  {
+    "case": {
+      "id": "empty-file",
+      "file": "testdata/cases/empty-file.png",
+      "order": {
+        "customer": "Emma Wilson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ask_customer",
+      "why": "no artwork"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "empty_artwork"
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Emma, the artwork file appears to be blank. Please re-attach your artwork so we can create your die-cut stickers!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "empty_artwork",
+            "message": "no printable pixels"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001121,
+      "latency_ns": 1965309937
+    }
+  },
+  {
+    "case": {
+      "id": "wrong-file-attached",
+      "file": "testdata/cases/wrong-file-attached.png",
+      "order": {
+        "customer": "Noah Davis",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+      },
+      "want": "ask_customer",
+      "why": "the right file is not attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer states they attached the wrong file and will send the correct one tonight."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Noah, we received your comment about the file. We'll hold off on creating a proof until you send the correct logo tonight. We look forward to it!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001092,
+      "latency_ns": 2026537599
+    }
+  },
+  {
+    "case": {
+      "id": "size-change",
+      "file": "testdata/cases/size-change.png",
+      "order": {
+        "customer": "Mia Johnson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches instead of 3?"
+      },
+      "want": "ask_customer",
+      "why": "size differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer is asking for a size different from the order.",
+        "order change: a 5x5 in size instead of 3x3 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Mia. Your comment asks for a 5x5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a 5x5 in size instead of 3x3 in"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010008,
+      "latency_ns": 6643177760
+    }
+  },
+  {
+    "case": {
+      "id": "text-edit",
+      "file": "testdata/cases/text-edit.png",
+      "order": {
+        "customer": "Liam Garcia",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please change the text to say OPEN LATE."
+      },
+      "want": "ready_for_proof",
+      "why": "designer edits text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is high resolution and the customer request is a simple text edit."
+      ],
+      "designer_note": "Edit text to 'OPEN LATE'.",
+      "customer_note": "Liam, your sticker will have the text changed to 'OPEN LATE'. We'll send a proof for your review shortly!",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00008399,
+      "latency_ns": 2531836747
+    }
+  },
+  {
+    "case": {
+      "id": "remove-white-bg",
+      "file": "testdata/cases/remove-white-bg.png",
+      "order": {
+        "customer": "Chloe Martin",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the white background please."
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the request is a simple edit.",
+        "The preflight report indicates a solid background, which matches the image and the customer's request."
+      ],
+      "designer_note": "Remove the white background. Ensure the die cut follows the shape of the orange circle and text.",
+      "customer_note": "Hi Chloe! We're removing the white background from your sticker as requested. The final proof will have a die cut following the artwork's shape.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012655,
+      "latency_ns": 8524844897
+    }
+  },
+  {
+    "case": {
+      "id": "missing-blue-version",
+      "file": "testdata/cases/missing-blue-version.png",
+      "order": {
+        "customer": "Ethan Clark",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Use the blue version of the logo, not the red one."
+      },
+      "want": "ask_customer",
+      "why": "only the red version is attached"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image resolution is sufficient for the ordered size.",
+        "The customer's request is a simple color change."
+      ],
+      "designer_note": "Change the logo color to blue.",
+      "customer_note": "Hi Ethan! We'll update your design with the blue version of the logo. Your proof will be ready soon.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010871,
+      "latency_ns": 7604446801
+    }
+  },
+  {
+    "case": {
+      "id": "conflicting-background",
+      "file": "testdata/cases/conflicting-background.png",
+      "order": {
+        "customer": "Grace Kim",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the background transparent but keep the white box around the logo."
+      },
+      "want": "ask_customer",
+      "why": "two instructions contradict each other"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the customer request is a simple edit.",
+        "The comment does not conflict with the order details."
+      ],
+      "designer_note": "Remove the background; keep the white box.",
+      "customer_note": "Hi Grace! We'll remove the background from your artwork while keeping the white box around the logo, as requested. A proof will be ready soon.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011856,
+      "latency_ns": 9573669060
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-sending-hires",
+      "file": "testdata/cases/lowres-sending-hires.png",
+      "order": {
+        "customer": "Jack Turner",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "the customer is sending a better file; wait for it"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "customer states they will upload a new file"
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Jack Turner, we see your artwork appears blurry. Please upload the high-resolution file when you have it, and we'll create your proof!",
+      "preflight": {
+        "width_px": 330,
+        "height_px": 330,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001185,
+      "latency_ns": 2399957864
+    }
+  },
+  {
+    "case": {
+      "id": "tiny-tagline",
+      "file": "testdata/cases/tiny-tagline.png",
+      "order": {
+        "customer": "Hannah Scott",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make sure the small text is readable."
+      },
+      "want": "ready_for_proof",
+      "why": "designer enlarges or thickens the tagline"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the comment requests a simple fix.",
+        "The preflight report shows thin lines, which a designer can address."
+      ],
+      "designer_note": "Thicken the thin lines to at least 1/32 in. Ensure all text is clearly readable at the ordered size.",
+      "customer_note": "Hi Hannah, we've reviewed your artwork! A designer will thicken the small text to ensure it’s perfectly readable on your die-cut stickers.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001324,
+      "latency_ns": 3108371346
+    }
+  },
+  {
+    "case": {
+      "id": "rush-request",
+      "file": "testdata/cases/rush-request.png",
+      "order": {
+        "customer": "Owen Hughes",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love you guys! Rush please, need them for Saturday."
+      },
+      "want": "ready_for_proof",
+      "why": "turnaround request does not block the proof"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and meets the size requirements.",
+        "The customer requests a rush but doesn't ask for any artwork changes."
+      ],
+      "designer_note": "Move art inside the safe margin.",
+      "customer_note": "Hi Owen! We received your order and will prioritize it for a quick turnaround to have your stickers ready for Saturday.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00008668,
+      "latency_ns": 2743582511
+    }
+  },
+  {
+    "case": {
+      "id": "add-phone-number",
+      "file": "testdata/cases/add-phone-number.png",
+      "order": {
+        "customer": "Daniel Young",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Can you add my phone number 555-0100 under the logo?"
+      },
+      "want": "ready_for_proof",
+      "why": "designer adds text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the request is a simple text addition."
+      ],
+      "designer_note": "Add '555-0100' under the logo.",
+      "customer_note": "Hi Daniel, we're adding your phone number to the sticker design. A proof will be ready shortly for your review!",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001191,
+      "latency_ns": 2198168641
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-please-vectorize",
+      "file": "testdata/cases/lowres-please-vectorize.png",
+      "order": {
+        "customer": "Ava Walker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please recreate this as a vector if needed."
+      },
+      "want": "recreate_artwork",
+      "why": "140 dpi and the customer asks for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is below the 300 DPI threshold at the ordered size.",
+        "The customer requested recreation as a vector."
+      ],
+      "designer_note": "Recreate as vector.",
+      "customer_note": "Hi Ava, your sticker will be recreated as a vector to ensure a clean, high-quality print! We’ll send a proof for your review soon.",
+      "preflight": {
+        "width_px": 420,
+        "height_px": 420,
+        "effective_dpi": 140,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "140 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001041,
+      "latency_ns": 8432266127
+    }
+  },
+  {
+    "case": {
+      "id": "fullbleed-photo",
+      "file": "testdata/cases/fullbleed-photo.png",
+      "order": {
+        "customer": "Lucas Allen",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "full-bleed rectangle at 300 dpi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and meets the order specifications.",
+        "The comment is empty; no customer input is needed."
+      ],
+      "designer_note": "No changes needed.",
+      "customer_note": "Lucas, your sticker artwork is ready for proof! It will be a rectangular sticker, 3x2 inches, as ordered.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010706,
+      "latency_ns": 7826343113
+    }
+  },
+  {
+    "case": {
+      "id": "medium-thin-whitebox",
+      "file": "testdata/cases/medium-thin-whitebox.png",
+      "order": {
+        "customer": "Ella King",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "every finding is a designer fix"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is under 150 dpi at the ordered size."
+      ],
+      "designer_note": "Recreate this artwork at 300 dpi.",
+      "customer_note": "Ella, your sticker artwork is being recreated for the best possible print quality! We'll send a proof for your approval soon.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 160,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "160 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001297,
+      "latency_ns": 2145496057
+    }
+  },
+  {
+    "case": {
+      "id": "holographic",
+      "file": "testdata/cases/holographic.png",
+      "order": {
+        "customer": "Leo Wright",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "material differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The artwork is high resolution and the customer's request is a material change.",
+        "The customer's request does not conflict with the order details.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Change material to holographic vinyl.",
+      "customer_note": "Thanks Leo. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.000121,
+      "latency_ns": 2350154916
+    }
+  },
+  {
+    "case": {
+      "id": "same-size-confirmation",
+      "file": "testdata/cases/same-size-confirmation.png",
+      "order": {
+        "customer": "Zoe Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print it at 2x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "the size matches the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The file is high resolution and the customer confirms the size.",
+        "The requested size matches the order size."
+      ],
+      "designer_note": "No changes needed.",
+      "customer_note": "Hi Zoe, your die-cut sticker artwork looks great! We'll proceed with creating your proof at 2x2 inches as requested.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010945,
+      "latency_ns": 7827378256
+    }
+  },
+  {
+    "case": {
+      "id": "spanish-remove-bg",
+      "file": "testdata/cases/spanish-remove-bg.png",
+      "order": {
+        "customer": "Diego Ramirez",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Por favor quiten el fondo blanco."
+      },
+      "want": "ready_for_proof",
+      "why": "asks, in Spanish, to remove the white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is high resolution and the customer wants a simple edit.",
+        "The preflight confirms the image quality."
+      ],
+      "designer_note": "Remove the white background. Ensure the die-cut follows the shape of the circle.",
+      "customer_note": "Diego, we'll remove the white background from your sticker. The final sticker will be die-cut to the shape of the sun!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009386,
+      "latency_ns": 3314475553
+    }
+  },
+  {
+    "case": {
+      "id": "gen-001-none",
+      "file": "testdata/cases/gen-001-none.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "dpi is sufficient",
+        "comment is empty"
+      ],
+      "designer_note": "Confirm with customer if they want a die cut following the art, or a rectangular sticker (as the background suggests).",
+      "customer_note": "Hi Chloé! We noticed your image has a solid border. Let us know if you'd like the sticker to be die-cut to the shape of the art, or a standard rectangular sticker.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011003,
+      "latency_ns": 9232975463
+    }
+  },
+  {
+    "case": {
+      "id": "gen-002-rush",
+      "file": "testdata/cases/gen-002-rush.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Image resolution is sufficient.",
+        "Customer comment does not request changes to artwork, size, or shape."
+      ],
+      "designer_note": "No changes needed.",
+      "customer_note": "Hi Aisha! We received your request and will prioritize your stickers to be completed by Friday. We'll send a proof for your approval soon.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011014,
+      "latency_ns": 8215283435
+    }
+  },
+  {
+    "case": {
+      "id": "gen-003-praise",
+      "file": "testdata/cases/gen-003-praise.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The customer's comment does not request any changes; it's positive feedback.",
+        "The preflight check flags medium resolution and thin lines, which a designer can correct."
+      ],
+      "designer_note": "Increase resolution to 300 dpi. Thicken lines thinner than 1/32 inch.",
+      "customer_note": "Hi Nguyễn Văn An, we're glad you enjoy our stickers! We'll prepare a proof based on your order for a 2x2 inch die-cut sticker.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001389,
+      "latency_ns": 2419454444
+    }
+  },
+  {
+    "case": {
+      "id": "gen-004-same-size",
+      "file": "testdata/cases/gen-004-same-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the customer is only confirming the size."
+      ],
+      "designer_note": "Resize artwork to 4x2 inches. Die cut follows the rectangular border.",
+      "customer_note": "Hi Zoë! We’re happy to proceed with your sticker at 4x2 inches, die-cut to the shape of the rectangle. We'll send a proof shortly.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0000955,
+      "latency_ns": 3411227311
+    }
+  },
+  {
+    "case": {
+      "id": "gen-005-vibrant",
+      "file": "testdata/cases/gen-005-vibrant.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is high resolution and the customer request is straightforward and achievable by a designer."
+      ],
+      "designer_note": "Boost color saturation.",
+      "customer_note": "Hi José, we'll increase the color saturation to make your stickers vibrant! Your rectangular stickers will be 3x3 inches. You'll see a proof soon.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010913,
+      "latency_ns": 9567402563
+    }
+  },
+  {
+    "case": {
+      "id": "gen-006-remove-bg",
+      "file": "testdata/cases/gen-006-remove-bg.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The customer asks for a simple edit (background removal) that a designer can easily handle. DPI is below target, but still workable for a rectangular sticker of this size.",
+        "The image is not low resolution enough to necessitate a full recreate.",
+        "There is no ambiguity in the customer's request."
+      ],
+      "designer_note": "Remove the white background. Ensure art remains within safe margins.",
+      "customer_note": "Hi Łukasz, your stickers will be 2x2 inches with a rectangle cut. We'll remove the white background as requested and send a proof for your review!",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010733,
+      "latency_ns": 3318718052
+    }
+  },
+  {
+    "case": {
+      "id": "gen-007-remove-bg-fr",
+      "file": "testdata/cases/gen-007-remove-bg-fr.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image resolution is sufficient.",
+        "The comment asks for a simple edit within the designer's capabilities.",
+        "The preflight confirms a solid background."
+      ],
+      "designer_note": "Remove white background.",
+      "customer_note": "Hi Sam, we've removed the white background from your sticker! We'll send you a proof shortly.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011848,
+      "latency_ns": 11190905335
+    }
+  },
+  {
+    "case": {
+      "id": "gen-008-remove-bg-de",
+      "file": "testdata/cases/gen-008-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The resolution is acceptable for a proof; the designer can increase contrast and sharpen edges",
+        "The customer requests a simple edit."
+      ],
+      "designer_note": "Remove the white background.",
+      "customer_note": "Hi Raj, we're preparing your sticker proof now. We'll remove the white background as requested. Your die-cut sticker will be 3x2 inches.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012112,
+      "latency_ns": 8473877133
+    }
+  },
+  {
+    "case": {
+      "id": "gen-009-remove-bg-vi",
+      "file": "testdata/cases/gen-009-remove-bg-vi.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The customer asks for a simple change (remove background) a designer can handle.",
+        "The resolution is close to the target, and the other preflight findings are minor."
+      ],
+      "designer_note": "Remove the white background. Thicken thin lines.",
+      "customer_note": "Hi Mei Chen, we're preparing your proof now. We’ll remove the white background as requested and ensure lines are a good thickness for printing. You’ll receive a preview shortly!",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001407,
+      "latency_ns": 2839115747
+    }
+  },
+  {
+    "case": {
+      "id": "gen-010-add-text",
+      "file": "testdata/cases/gen-010-add-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and complete; the customer request is a simple edit.",
+        "The preflight flag is a minor issue the designer can address."
+      ],
+      "designer_note": "Thicken thin lines. Add \"example.com\" under the logo. Move art inside the safe margin.",
+      "customer_note": "Hi Łukasz, we're adding \"example.com\" below your logo and thickening any very thin lines. A proof will be ready shortly!",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001321,
+      "latency_ns": 2804685392
+    }
+  },
+  {
+    "case": {
+      "id": "gen-011-change-text",
+      "file": "testdata/cases/gen-011-change-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is above the minimum resolution.",
+        "The request is straightforward."
+      ],
+      "designer_note": "Change \"BOLT\" to \"bolt\".",
+      "customer_note": "Aisha, your proof will feature “bolt” in lowercase. We’ll confirm the die-cut follows the existing shape. Expect the updated proof shortly!",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "exclamation",
+          "detail": "!!"
+        }
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 2,
+      "cost_usd": 0.00021631,
+      "latency_ns": 16722492628
+    }
+  },
+  {
+    "case": {
+      "id": "gen-012-thicker",
+      "file": "testdata/cases/gen-012-thicker.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the customer's request is a simple edit.",
+        "The customer's request does not require further information."
+      ],
+      "designer_note": "Thicken the thin lines in the artwork.",
+      "customer_note": "Hi Łukasz, we're making your stickers now! We will increase the weight of the lines to make them bolder. You'll receive a proof shortly.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011893,
+      "latency_ns": 11348200158
+    }
+  },
+  {
+    "case": {
+      "id": "gen-013-center",
+      "file": "testdata/cases/gen-013-center.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Center the logo please."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is under 150 dpi at the ordered size, as flagged by preflight. It needs to be recreated at 300 dpi.",
+        "The comment is about art direction and does not require customer input or override the resolution issue."
+      ],
+      "designer_note": "Recreate the artwork at 300 dpi. Center the logo within the 3x3 inch dimensions. Die-cut to follow the shape of the art.",
+      "customer_note": "Hi An, we're recreating your artwork at a higher resolution for the best quality. Your logo will be centered as requested. You'll receive a proof soon!",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "lint": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 2,
+      "cost_usd": 0.00021312,
+      "latency_ns": 6455309612
+    }
+  },
+  {
+    "case": {
+      "id": "gen-014-bigger-text",
+      "file": "testdata/cases/gen-014-bigger-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300, well over the 150 DPI threshold.",
+        "The customer request is simple to address by a designer.",
+        "No conflicting or missing information is present."
+      ],
+      "designer_note": "Enlarge text. Ensure text is within the safe margin.",
+      "customer_note": "Hi Łukasz! We’ll increase the text size for your stickers. A proof will be ready shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009151,
+      "latency_ns": 2935968835
+    }
+  },
+  {
+    "case": {
+      "id": "gen-015-redraw-ok",
+      "file": "testdata/cases/gen-015-redraw-ok.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the customer gave permission to redraw; the preflight report flagged a solid background.",
+        "designer_note: remove the white background; create a die cut following the circle's shape.",
+        "customer_note: Hi Fatima! Your sticker will be die-cut to follow the shape of the circle in your artwork. We’ll remove the white background to achieve this."
+      ],
+      "designer_note": "remove the white background; create a die cut following the circle's shape.",
+      "customer_note": "Hi Fatima! Your sticker will be die-cut to follow the shape of the circle in your artwork. We’ll remove the white background to achieve this.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010032,
+      "latency_ns": 6196298815
+    }
+  },
+  {
+    "case": {
+      "id": "gen-016-size-up",
+      "file": "testdata/cases/gen-016-size-up.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer asks for a size different than the order.",
+        "order change: a 5 in size instead of 3x3 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Mei. Your comment asks for a 5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 5 in size instead of 3x3 in"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00008646,
+      "latency_ns": 2204502644
+    }
+  },
+  {
+    "case": {
+      "id": "gen-017-size-down",
+      "file": "testdata/cases/gen-017-size-down.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Actually I need them 1x1 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requests a size change, which the designer can address.",
+        "The resolution is acceptable for the new size.",
+        "order change: a 1x1 in size instead of 2x2 in"
+      ],
+      "designer_note": "Resize artwork to 1x1 inches. Ensure the artwork is within the safe margin for die-cutting.",
+      "customer_note": "Thanks Jonas. Your comment asks for a 1x1 in size instead of 2x2 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1x1 in size instead of 2x2 in"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012361,
+      "latency_ns": 8391630963
+    }
+  },
+  {
+    "case": {
+      "id": "gen-018-to-square",
+      "file": "testdata/cases/gen-018-to-square.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The artwork is high resolution and the customer's request can be fulfilled by a designer.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Change the product to rectangle. Keep the background. Ensure the sticker is 2.5x2.5 inches.",
+      "customer_note": "Thanks Chloé. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001309,
+      "latency_ns": 11971762837
+    }
+  },
+  {
+    "case": {
+      "id": "gen-019-to-diecut",
+      "file": "testdata/cases/gen-019-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The artwork is high resolution and the customer requests a change to the cut shape, which a designer can implement.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Die-cut around the logo. Move art to safe margins.",
+      "customer_note": "Thanks Jonas. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011424,
+      "latency_ns": 6023971313
+    }
+  },
+  {
+    "case": {
+      "id": "gen-020-holo",
+      "file": "testdata/cases/gen-020-holo.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The resolution is acceptable for the size; recreate_artwork is not needed.",
+        "The customer request is for material only and is achievable by the designer.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Print on holographic vinyl. Remove the white background.",
+      "customer_note": "Thanks Nguyễn. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012496,
+      "latency_ns": 6141643871
+    }
+  },
+  {
+    "case": {
+      "id": "gen-021-clear",
+      "file": "testdata/cases/gen-021-clear.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The artwork is high resolution and meets the order specifications aside from the material.",
+        "order change: clear instead of standard white vinyl"
+      ],
+      "designer_note": "Change the material to clear vinyl.",
+      "customer_note": "Thanks Jonas. Your comment asks for clear instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011058,
+      "latency_ns": 7285980642
+    }
+  },
+  {
+    "case": {
+      "id": "gen-022-glitter",
+      "file": "testdata/cases/gen-022-glitter.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "dpi is sufficient",
+        "customer request is a material change",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Change material to glitter.",
+      "customer_note": "Thanks Kate. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010442,
+      "latency_ns": 5273350440
+    }
+  },
+  {
+    "case": {
+      "id": "gen-023-other-file",
+      "file": "testdata/cases/gen-023-other-file.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer will provide a different file."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Łukasz, we received your request to use a green logo version. Please send the green logo file so we can create your proof for a 4\" x 2\" rectangle sticker!",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010482,
+      "latency_ns": 6412731570
+    }
+  },
+  {
+    "case": {
+      "id": "gen-024-email-later",
+      "file": "testdata/cases/gen-024-email-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer explicitly states this is a placeholder and final art is coming."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Chloé, we see you’re sending final artwork tomorrow. We’ll wait for your updated file to create your die-cut stickers, sized 4x2 inches. Please send the final art when it's ready!",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009259,
+      "latency_ns": 2555314909
+    }
+  },
+  {
+    "case": {
+      "id": "gen-025-hires-later",
+      "file": "testdata/cases/gen-025-hires-later.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "customer states they will upload a better file"
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Zoë, we see your file is low resolution. Please upload a higher-quality version—at least 300 dpi at 2x2 inches—when you can. We’ll hold off on creating a proof until then!",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010286,
+      "latency_ns": 4824336720
+    }
+  },
+  {
+    "case": {
+      "id": "gen-026-contradict",
+      "file": "testdata/cases/gen-026-contradict.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is within acceptable resolution for a proof, though not ideal.",
+        "The customer's request is a simple edit a designer can handle.",
+        "The customer's request doesn't conflict with the order details."
+      ],
+      "designer_note": "Remove the background, keeping the white box around the art. Resize to 2x2 in.",
+      "customer_note": "Hi Fatima, your sticker will have the background removed while keeping the white box. We’ll proceed with a proof for your review!",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00013735,
+      "latency_ns": 9375551383
+    }
+  },
+  {
+    "case": {
+      "id": "gen-027-contradict-size",
+      "file": "testdata/cases/gen-027-contradict-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "low_resolution"
+      ],
+      "designer_note": "Recreate the artwork at 300 dpi, 3x2 inches.",
+      "customer_note": "Hi Zoë! We're recreating your artwork at a higher resolution to ensure a crisp, high-quality sticker, sized 3x2 inches as ordered.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001224,
+      "latency_ns": 9060044918
+    }
+  },
+  {
+    "case": {
+      "id": "gen-028-none",
+      "file": "testdata/cases/gen-028-none.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and matches the order details.",
+        "No customer comment requires further action."
+      ],
+      "designer_note": "Move art inside the safe margin.",
+      "customer_note": "Hi Nguyễn Văn An, your sticker artwork is being prepared for proof. We will ensure the design fits within the sticker's dimensions. You'll receive a proof soon!",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010015,
+      "latency_ns": 4695300123
+    }
+  },
+  {
+    "case": {
+      "id": "gen-029-rush",
+      "file": "testdata/cases/gen-029-rush.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00095568,
+      "latency_ns": 75771851873
+    },
+    "error": "google/gemma-3-27b-it: answer cut off at the token limit"
+  },
+  {
+    "case": {
+      "id": "gen-030-praise",
+      "file": "testdata/cases/gen-030-praise.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Resolution is sufficient.",
+        "Customer comment doesn't request changes."
+      ],
+      "designer_note": "Die cut follows the rectangle shape, per preflight. ",
+      "customer_note": "Hi Łukasz! Your die-cut sticker is being created as requested. The die cut will follow the rectangular border of the design.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001259,
+      "latency_ns": 5639311452
+    }
+  },
+  {
+    "case": {
+      "id": "gen-031-same-size",
+      "file": "testdata/cases/gen-031-same-size.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print at 3x3 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is under 150 dpi at the ordered size."
+      ],
+      "designer_note": "Recreate artwork at 300 dpi.",
+      "customer_note": "Hi José, your artwork will be recreated at higher resolution for a sharper print! We'll send you a proof shortly.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0000975,
+      "latency_ns": 13357905153
+    }
+  },
+  {
+    "case": {
+      "id": "gen-032-vibrant",
+      "file": "testdata/cases/gen-032-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the customer's request is a simple color adjustment.",
+        "The order is for die-cut stickers, and the image has no issues regarding that."
+      ],
+      "designer_note": "Increase color saturation. Ensure colors are vibrant in the proof.",
+      "customer_note": "Kate, we'll adjust the colors to be as bright as possible when we create your sticker proof. We will produce die-cut stickers at 3x2 inches.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0000964,
+      "latency_ns": 3750553690
+    }
+  },
+  {
+    "case": {
+      "id": "gen-033-remove-bg",
+      "file": "testdata/cases/gen-033-remove-bg.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "low_resolution"
+      ],
+      "designer_note": "Recreate this artwork at 300 dpi. Remove the white background as requested.",
+      "customer_note": "Hi Aisha, we're recreating your artwork at a higher resolution for a crisp, clear sticker! We will also remove the white background as you requested.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.000114,
+      "latency_ns": 4397153928
+    }
+  },
+  {
+    "case": {
+      "id": "gen-034-remove-bg-fr",
+      "file": "testdata/cases/gen-034-remove-bg-fr.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00095296,
+      "latency_ns": 75556418362
+    },
+    "error": "google/gemma-3-27b-it: answer cut off at the token limit"
+  },
+  {
+    "case": {
+      "id": "gen-035-remove-bg-de",
+      "file": "testdata/cases/gen-035-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0006859,
+      "latency_ns": 86781562924
+    },
+    "error": "google/gemma-3-27b-it: answer cut off at the token limit"
+  },
+  {
+    "case": {
+      "id": "gen-036-remove-bg-vi",
+      "file": "testdata/cases/gen-036-remove-bg-vi.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is over 150 dpi and the customer only asks for a background removal."
+      ],
+      "designer_note": "Remove white background. Ensure the die-cut follows the shape of the artwork.",
+      "customer_note": "Hi Łukasz, we’ll remove the white background from your artwork and prepare a proof for your approval. The sticker will be die-cut to follow the artwork’s shape!",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009967,
+      "latency_ns": 3344176070
+    }
+  },
+  {
+    "case": {
+      "id": "gen-037-add-text",
+      "file": "testdata/cases/gen-037-add-text.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the request is a simple text addition."
+      ],
+      "designer_note": "Add \"example.com\" under the logo.",
+      "customer_note": "Hi Fatima, we're adding your website, example.com, below the logo as requested. You’ll receive a proof shortly to review!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001178,
+      "latency_ns": 4861038294
+    }
+  },
+  {
+    "case": {
+      "id": "gen-038-change-text",
+      "file": "testdata/cases/gen-038-change-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The resolution is acceptable, and the request is a simple text edit.",
+        "The customer request is clear and can be fulfilled by the designer."
+      ],
+      "designer_note": "Change 'KIWI' to 'kiwi'.",
+      "customer_note": "Hi Mei Chen, we're updating your sticker with 'kiwi' in lowercase as requested. A proof will be ready shortly!",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001266,
+      "latency_ns": 7667813719
+    }
+  },
+  {
+    "case": {
+      "id": "gen-039-thicker",
+      "file": "testdata/cases/gen-039-thicker.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is above 150 dpi and the issue is a simple edit.",
+        "The customer request is a design adjustment."
+      ],
+      "designer_note": "Thicken the lines in the artwork.",
+      "customer_note": "Hi Nguyễn Văn An, we're adjusting the lines in your artwork to be bolder for a clearer appearance. We’ll send a proof soon!",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001271,
+      "latency_ns": 5153265239
+    }
+  },
+  {
+    "case": {
+      "id": "gen-040-center",
+      "file": "testdata/cases/gen-040-center.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is high resolution and the customer request is a simple adjustment.",
+        "The comment does not ask for changes to size, shape, or material."
+      ],
+      "designer_note": "Center the logo within the 2.5x2.5 inch die-cut area.",
+      "customer_note": "Hi Mei Chen, we will center the logo in your 2.5x2.5 inch die-cut sticker. You'll receive a proof shortly!",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001285,
+      "latency_ns": 8516803570
+    }
+  },
+  {
+    "case": {
+      "id": "gen-041-bigger-text",
+      "file": "testdata/cases/gen-041-bigger-text.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the request is a simple edit."
+      ],
+      "designer_note": "Enlarge the text.",
+      "customer_note": "Hi Raj, we're happy to adjust the text size for your sticker. A designer will create a proof with the larger text shortly!",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001178,
+      "latency_ns": 5969273360
+    }
+  },
+  {
+    "case": {
+      "id": "gen-042-redraw-ok",
+      "file": "testdata/cases/gen-042-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is over 150 dpi at the ordered size.",
+        "The customer explicitly states to redraw if the file is not good enough, but doesn't indicate it *is* bad."
+      ],
+      "designer_note": "Confirm art is within the safe margin.",
+      "customer_note": "José, we're happy to proceed with your die-cut stickers! We will confirm the artwork is properly positioned within the safe margins before sending a proof for your approval.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009621,
+      "latency_ns": 3910243612
+    }
+  },
+  {
+    "case": {
+      "id": "gen-043-size-up",
+      "file": "testdata/cases/gen-043-size-up.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Can you make these 4.5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "low_resolution",
+        "order change: a 4.5 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Recreate at 4.5 inches wide; maintain aspect ratio. Ensure 300 dpi.",
+      "customer_note": "Thanks Chloé. Your comment asks for a 4.5 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 4.5 in size instead of 2.5x2.5 in"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010326,
+      "latency_ns": 8383317876
+    }
+  },
+  {
+    "case": {
+      "id": "gen-044-size-down",
+      "file": "testdata/cases/gen-044-size-down.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requests a size different from the order.",
+        "order change: a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Aisha. Your comment asks for a 1.25x1.25 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010519,
+      "latency_ns": 4393805880
+    }
+  },
+  {
+    "case": {
+      "id": "gen-045-to-square",
+      "file": "testdata/cases/gen-045-to-square.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The artwork resolution is sufficient.",
+        "The customer's request is achievable with designer edits.",
+        "order change: a 4x4 in size instead of 4x2 in; a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Make the sticker a 4x4 inch square. Remove the die cut path. Keep the background.",
+      "customer_note": "Thanks Kate. Your comment asks for a 4x4 in size instead of 4x2 in and a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 4x4 in size instead of 4x2 in",
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001328,
+      "latency_ns": 4568328418
+    }
+  },
+  {
+    "case": {
+      "id": "gen-046-to-diecut",
+      "file": "testdata/cases/gen-046-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer wants a die-cut sticker, which a designer handles.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Die-cut around the owl logo. Move art inside the safe margin. Thicken thin lines.",
+      "customer_note": "Thanks Jonas. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001335,
+      "latency_ns": 7377155772
+    }
+  },
+  {
+    "case": {
+      "id": "gen-047-holo",
+      "file": "testdata/cases/gen-047-holo.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The artwork is high resolution and the customer comment is a simple material request.",
+        "The preflight flags are easily addressed by the designer.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Move the artwork inside the safe margin. Thicken the thin lines. Proceed with proofing on holographic vinyl.",
+      "customer_note": "Thanks Sam. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00013054,
+      "latency_ns": 8905769600
+    }
+  },
+  {
+    "case": {
+      "id": "gen-048-clear",
+      "file": "testdata/cases/gen-048-clear.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "the artwork is high resolution",
+        "the comment requests a material change which a designer can implement",
+        "order change: clear vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Change the material to clear vinyl.",
+      "customer_note": "Thanks Zoë. Your comment asks for clear vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear vinyl instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009772,
+      "latency_ns": 3968753433
+    }
+  },
+  {
+    "case": {
+      "id": "gen-049-glitter",
+      "file": "testdata/cases/gen-049-glitter.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The image is high resolution and the comment is a straightforward material request.",
+        "The comment does not ask for changes to size, shape or artwork.",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Change material to glitter.",
+      "customer_note": "Thanks Aisha. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011315,
+      "latency_ns": 8146847170
+    }
+  },
+  {
+    "case": {
+      "id": "gen-050-other-file",
+      "file": "testdata/cases/gen-050-other-file.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer will provide a new file."
+      ],
+      "designer_note": "Wait for customer file.",
+      "customer_note": "Hi Sam! We'll hold off on your proof until you send the green logo version. We'll then create your die-cut stickers at 4x2 inches.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001067,
+      "latency_ns": 7695256002
+    }
+  },
+  {
+    "case": {
+      "id": "gen-051-email-later",
+      "file": "testdata/cases/gen-051-email-later.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment indicates placeholder art will be sent tomorrow; this requires customer input to proceed."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Aisha, your final artwork will be needed to create your proof. Please send it via email so we can get your stickers printed!",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009486,
+      "latency_ns": 12162794591
+    }
+  },
+  {
+    "case": {
+      "id": "gen-052-hires-later",
+      "file": "testdata/cases/gen-052-hires-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer states they will upload a better file."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Chloé, we see your file is low resolution. Please upload the higher quality version when it's ready, and we'll proceed with your proof!",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001184,
+      "latency_ns": 5889647246
+    }
+  },
+  {
+    "case": {
+      "id": "gen-053-contradict",
+      "file": "testdata/cases/gen-053-contradict.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The resolution is acceptable to upscale slightly and the customer's request is easily fulfilled by the designer.",
+        "The comment is clear and actionable without customer follow-up."
+      ],
+      "designer_note": "Remove the background; keep the white box. Upscale to 300 dpi.",
+      "customer_note": "Jonas, we're preparing your proof! We will remove the background while preserving the white box around the design, and upscale the artwork for crisp printing.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001367,
+      "latency_ns": 4591515948
+    }
+  },
+  {
+    "case": {
+      "id": "gen-054-contradict-size",
+      "file": "testdata/cases/gen-054-contradict-size.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment explicitly contradicts itself, requesting the artwork be 'bigger' while also maintaining the ordered size."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Jonas Müller, the order is for 2x2 inch stickers. To proceed, please confirm the desired size for your stickers!",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00008178,
+      "latency_ns": 3545338722
+    }
+  },
+  {
+    "case": {
+      "id": "gen-055-none",
+      "file": "testdata/cases/gen-055-none.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0009436,
+      "latency_ns": 83747718020
+    },
+    "error": "google/gemma-3-27b-it: answer cut off at the token limit"
+  },
+  {
+    "case": {
+      "id": "gen-056-rush",
+      "file": "testdata/cases/gen-056-rush.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is sufficient resolution and matches the order specifications.",
+        "The customer request is about delivery time, not artwork changes."
+      ],
+      "designer_note": "Move art inside the safe margin.",
+      "customer_note": "Hi Fatima, we'll get your stickers to proof as quickly as possible and aim to meet your Friday delivery. We will confirm once the proof is ready!",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0000887,
+      "latency_ns": 3807741652
+    }
+  },
+  {
+    "case": {
+      "id": "gen-057-praise",
+      "file": "testdata/cases/gen-057-praise.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork meets resolution requirements.",
+        "Customer comment is positive and doesn't request changes."
+      ],
+      "designer_note": "Move art inside the safe margin.",
+      "customer_note": "Hi Sam Carter, your die-cut sticker order is looking great! We'll create a proof shortly, keeping the 3\" x 2\" size and die-cut shape you requested.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.000122,
+      "latency_ns": 6113702959
+    }
+  },
+  {
+    "case": {
+      "id": "gen-058-same-size",
+      "file": "testdata/cases/gen-058-same-size.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and matches the order size.",
+        "The customer confirmed the size."
+      ],
+      "designer_note": "Thicken thin lines. Resize to 4x2 inches.",
+      "customer_note": "Hi Chloé! We've confirmed your sticker will be 4x2 inches. A designer will thicken the thin lines and then send you a proof for approval.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011664,
+      "latency_ns": 5165758206
+    }
+  },
+  {
+    "case": {
+      "id": "gen-059-vibrant",
+      "file": "testdata/cases/gen-059-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork resolution meets the order specifications.",
+        "The comment doesn't request a change in size, shape, or material.",
+        "The comment asks for a design edit (color adjustment) which a designer can make."
+      ],
+      "designer_note": "Brighten colors. Adjust as you see fit.",
+      "customer_note": "Kate, we'll brighten the colors in your design! We'll send you a proof to review shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010464,
+      "latency_ns": 16797820799
+    }
+  },
+  {
+    "case": {
+      "id": "gen-060-remove-bg",
+      "file": "testdata/cases/gen-060-remove-bg.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The image is high resolution and the customer request is a simple edit.",
+        "The preflight report confirms the background is solid white, as the customer noted."
+      ],
+      "designer_note": "Remove the white background and ensure the die cut follows the shape of the art.",
+      "customer_note": "José, we're happy to remove the white background! Your proof will show the die cut following the art's shape as requested. We'll send it to you shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001325,
+      "latency_ns": 5379641252
+    }
+  },
+  {
+    "case": {
+      "id": "gen-061-remove-bg-fr",
+      "file": "testdata/cases/gen-061-remove-bg-fr.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "",
+      "reasons": null,
+      "designer_note": "",
+      "customer_note": "",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0006863,
+      "latency_ns": 49629308500
+    },
+    "error": "google/gemma-3-27b-it: answer cut off at the token limit"
+  },
+  {
+    "case": {
+      "id": "gen-062-remove-bg-de",
+      "file": "testdata/cases/gen-062-remove-bg-de.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the customer requests a simple edit.",
+        "The comment asks for a background removal, which is a task for the designer."
+      ],
+      "designer_note": "Remove the white background. Thicken any lines under 1/32 inch.",
+      "customer_note": "Jonas, we will remove the white background from your die-cut stickers. We will also ensure all lines are a suitable thickness for printing. A proof will be ready shortly!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010336,
+      "latency_ns": 3772246759
+    }
+  },
+  {
+    "case": {
+      "id": "gen-063-remove-bg-vi",
+      "file": "testdata/cases/gen-063-remove-bg-vi.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The customer asks for a simple edit.",
+        "Resolution is acceptable for proofing."
+      ],
+      "designer_note": "Remove white background. Thicken thin lines.",
+      "customer_note": "Hi Jonas Müller, we're preparing your die-cut sticker! We’ll remove the white background as requested. You'll receive a proof soon.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001212,
+      "latency_ns": 4866700421
+    }
+  },
+  {
+    "case": {
+      "id": "gen-064-add-text",
+      "file": "testdata/cases/gen-064-add-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is under 150 dpi at ordered size."
+      ],
+      "designer_note": "Recreate artwork with 300 dpi.",
+      "customer_note": "Mei, we will recreate your artwork in higher resolution for printing. We'll add 'example.com' under the logo in the proof! Please expect your proof shortly.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009922,
+      "latency_ns": 13972242279
+    }
+  },
+  {
+    "case": {
+      "id": "gen-065-change-text",
+      "file": "testdata/cases/gen-065-change-text.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The resolution is above the minimum threshold.",
+        "The thin lines issue can be addressed by the designer."
+      ],
+      "designer_note": "Edit text 'SURF' to 'surf'. Thicken thin lines.",
+      "customer_note": "Hi Chloé, your updated proof will show 'surf' in lowercase. We'll also thicken any thin lines in your design for better print quality!",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010848,
+      "latency_ns": 15038743177
+    }
+  },
+  {
+    "case": {
+      "id": "gen-066-thicker",
+      "file": "testdata/cases/gen-066-thicker.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork meets resolution requirements.",
+        "The customer request is a simple edit a designer can handle."
+      ],
+      "designer_note": "Thicken the lines in the text \"PIXEL\".",
+      "customer_note": "Hi Aisha, we're enhancing the lines in your sticker’s text for improved visibility. A proof will be ready shortly!",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011562,
+      "latency_ns": 7117370928
+    }
+  },
+  {
+    "case": {
+      "id": "gen-067-center",
+      "file": "testdata/cases/gen-067-center.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is high resolution and the customer request is a simple adjustment.",
+        "The customer's request is achievable by the designer."
+      ],
+      "designer_note": "Center the logo within the 3x2 inch rectangle.",
+      "customer_note": "Hi Aisha, we're centering your logo within the sticker dimensions. You’ll receive a proof shortly to review!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00011159,
+      "latency_ns": 4937375027
+    }
+  },
+  {
+    "case": {
+      "id": "gen-068-bigger-text",
+      "file": "testdata/cases/gen-068-bigger-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The resolution (240 dpi) is acceptable, but can still benefit from improvement. This isn't low enough to force recreation.",
+        "The comment asks only for a design change (larger text) which the designer can handle."
+      ],
+      "designer_note": "Increase text size.",
+      "customer_note": "Hi Aisha! We've received your request to make the text larger in your sticker design. A designer will update the proof shortly with this change.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001125,
+      "latency_ns": 15372456307
+    }
+  },
+  {
+    "case": {
+      "id": "gen-069-redraw-ok",
+      "file": "testdata/cases/gen-069-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The preflight report indicates the resolution is below target (200 dpi vs 300 dpi). The customer explicitly authorized a redraw if the file isn't good enough."
+      ],
+      "designer_note": "Recreate the artwork to 300 dpi at 3x2 inches.",
+      "customer_note": "Hi José, we will recreate your artwork at a higher resolution to ensure a crisp, high-quality sticker. We'll proceed with a proof once the redraw is complete!",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001327,
+      "latency_ns": 3578885779
+    }
+  },
+  {
+    "case": {
+      "id": "gen-070-size-up",
+      "file": "testdata/cases/gen-070-size-up.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requests a size change (to 5 inches wide) that differs from the order (3x3 inches).",
+        "order change: a 5 in size instead of 3x3 in"
+      ],
+      "designer_note": "",
+      "customer_note": "Thanks Fatima. Your comment asks for a 5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 5 in size instead of 3x3 in"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001262,
+      "latency_ns": 4442858494
+    }
+  },
+  {
+    "case": {
+      "id": "gen-071-size-down",
+      "file": "testdata/cases/gen-071-size-down.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requests a different size than ordered, but it's a simple resize.",
+        "The artwork is high resolution and meets preflight requirements.",
+        "order change: a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Resize art to 1.25x1.25 inches. Thicken thin lines.",
+      "customer_note": "Thanks Łukasz. Your comment asks for a 1.25x1.25 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001222,
+      "latency_ns": 6999851568
+    }
+  },
+  {
+    "case": {
+      "id": "gen-072-to-square",
+      "file": "testdata/cases/gen-072-to-square.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "low_resolution",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Recreate the artwork at 300 dpi. Make it a 2x2 inch square sticker with a solid white background. Do not die cut.",
+      "customer_note": "Thanks Zoë. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012936,
+      "latency_ns": 8415656516
+    }
+  },
+  {
+    "case": {
+      "id": "gen-073-to-diecut",
+      "file": "testdata/cases/gen-073-to-diecut.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The image resolution is sufficient.",
+        "The customer's request is a change to the cut shape, which a designer can address.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Die cut around the logo. Ensure the cut line is clean and closely follows the logo's shape.",
+      "customer_note": "Thanks Fatima. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001285,
+      "latency_ns": 6496869173
+    }
+  },
+  {
+    "case": {
+      "id": "gen-074-holo",
+      "file": "testdata/cases/gen-074-holo.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is high resolution.",
+        "Customer request is a material change that the designer can handle.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Move artwork inside the safe margin. Thicken thin lines.",
+      "customer_note": "Thanks Chloé. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012289,
+      "latency_ns": 7113939774
+    }
+  },
+  {
+    "case": {
+      "id": "gen-075-clear",
+      "file": "testdata/cases/gen-075-clear.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The artwork is high enough resolution and the customer is requesting a material change, not an alteration to the art itself.",
+        "The DPI is sufficient (300) at the ordered size.",
+        "The request is for a material change, which the designer can handle.",
+        "order change: clear vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Change to clear vinyl material.",
+      "customer_note": "Thanks Mei. Your comment asks for clear vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear vinyl instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001013,
+      "latency_ns": 3673935701
+    }
+  },
+  {
+    "case": {
+      "id": "gen-076-glitter",
+      "file": "testdata/cases/gen-076-glitter.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "low_resolution",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Recreate this artwork at 300 dpi.",
+      "customer_note": "Thanks José. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001308,
+      "latency_ns": 5629431579
+    }
+  },
+  {
+    "case": {
+      "id": "gen-077-other-file",
+      "file": "testdata/cases/gen-077-other-file.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer will send a new file.",
+        "The comment refers to a file that is not attached."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi José, we're ready to start your proof once you send the green logo version! We’ll use that to create your 3x2 rectangle stickers. Please send it over when you're ready.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00010061,
+      "latency_ns": 6188314442
+    }
+  },
+  {
+    "case": {
+      "id": "gen-078-email-later",
+      "file": "testdata/cases/gen-078-email-later.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer states this is a placeholder and final art is coming."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Łukasz, we received a placeholder image. Please send the final artwork by email so we can complete your rectangle stickers!",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00009955,
+      "latency_ns": 5507983927
+    }
+  },
+  {
+    "case": {
+      "id": "gen-079-hires-later",
+      "file": "testdata/cases/gen-079-hires-later.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer states they will upload a better file tonight, overriding the low resolution issue."
+      ],
+      "designer_note": "",
+      "customer_note": "Hi Jonas Müller, we see your file is low resolution. Please upload the higher quality version when you can, and we'll get your die-cut stickers made!",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.00012196,
+      "latency_ns": 7391672517
+    }
+  },
+  {
+    "case": {
+      "id": "gen-080-contradict",
+      "file": "testdata/cases/gen-080-contradict.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "low_resolution"
+      ],
+      "designer_note": "Recreate the artwork at 300 dpi. Remove the background while keeping the white box. Thicken any lines under 1/32 in.",
+      "customer_note": "Hi Mei Chen, we’re recreating your artwork at a higher resolution for the best print quality. Your sticker will have the background removed, but the white box will remain, as requested. We'll send a proof soon!",
+      "preflight": {
+        "width_px": 200,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "google/gemma-3-27b-it",
+      "attempts": 1,
+      "cost_usd": 0.0001402,
+      "latency_ns": 6531333944
+    }
+  }
+]

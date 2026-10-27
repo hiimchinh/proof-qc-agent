@@ -1,0 +1,4043 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is attached and meets the resolution requirement at 300 dpi."
+      ],
+      "designer_note": "Prepare the artwork for the ordered 3 × 3 in die-cut proof.",
+      "customer_note": "Brian, your artwork is ready for proofing.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0004959,
+      "latency_ns": 2573007816
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is attached and meets the resolution requirement at the ordered size."
+      ],
+      "designer_note": "Prepare the 3 × 2 inch rectangular proof.",
+      "customer_note": "Ana, your artwork is ready for proofing.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0004593,
+      "latency_ns": 2721351149
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size. The solid background can be removed by the designer."
+      ],
+      "designer_note": "Remove the white background and create a single die-cut outline around the circle and text; size the artwork to fit the ordered 3 × 3 inches.",
+      "customer_note": "Kenji, your artwork is ready for proof. We’ll remove the white background and create a die-cut outline around the design.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00116285,
+      "latency_ns": 4070620749
+    }
+  },
+  {
+    "case": {
+      "id": "keep-square-on-diecut",
+      "file": "testdata/cases/keep-square-on-diecut.png",
+      "order": {
+        "customer": "Olivia Brown",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please keep the cream background as a square, don't cut around the logo."
+      },
+      "want": "ask_customer",
+      "why": "asks for a square sticker on a die-cut order: product change"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested square sticker differs from the ordered die-cut product."
+      ],
+      "designer_note": "Hold the proof until the sticker shape is confirmed.",
+      "customer_note": "Olivia, your order is for a die-cut sticker, but your comment requests a square with the cream background. Would you like to change the order to a square sticker or proceed with a die cut around the logo?",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00089855,
+      "latency_ns": 3910153356
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-diecut",
+      "file": "testdata/cases/lowres-diecut.png",
+      "order": {
+        "customer": "Marcus Lee",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 100 dpi at the ordered size, below the 150 dpi threshold."
+      ],
+      "designer_note": "Recreate the artwork at print quality for the 3 × 3 in die-cut sticker.",
+      "customer_note": "Marcus, we’ll recreate your artwork at print quality before preparing your proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001421,
+      "latency_ns": 3196010845
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-rectangle-sharp",
+      "file": "testdata/cases/lowres-rectangle-sharp.png",
+      "order": {
+        "customer": "Priya Patel",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Make sure it looks sharp please"
+      },
+      "want": "recreate_artwork",
+      "why": "120 dpi; the comment asks for what recreating gives"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 120 dpi at the ordered 4 × 2 in size, below the 150 dpi threshold."
+      ],
+      "designer_note": "Recreate the artwork at print resolution, preserving its appearance, and size it to 4 × 2 in.",
+      "customer_note": "Priya, we’ll recreate your artwork at print resolution so it looks sharp on your 4 × 2 in sticker.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 240,
+        "effective_dpi": 120,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "120 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001347,
+      "latency_ns": 2779104836
+    }
+  },
+  {
+    "case": {
+      "id": "medium-res",
+      "file": "testdata/cases/medium-res.png",
+      "order": {
+        "customer": "Tom Becker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "200 dpi prints"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 200 dpi at the ordered size, above the 150 dpi recreation threshold."
+      ],
+      "designer_note": "Prepare the 3 × 3 inch die-cut proof using the supplied artwork.",
+      "customer_note": "Tom, your artwork is ready for proofing.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00076955,
+      "latency_ns": 3486270436
+    }
+  },
+  {
+    "case": {
+      "id": "hairlines",
+      "file": "testdata/cases/hairlines.png",
+      "order": {
+        "customer": "Sofia Rossi",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer thickens hairlines"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 300 dpi at the ordered size; thin lines can be thickened by the designer."
+      ],
+      "designer_note": "Thicken lines below 1/32 in and prepare the 3 × 3 in die-cut proof.",
+      "customer_note": "Sofia, your artwork is ready for proofing. We’ll thicken the fine lines for print.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0006177,
+      "latency_ns": 2792151398
+    }
+  },
+  {
+    "case": {
+      "id": "near-edge-rectangle",
+      "file": "testdata/cases/near-edge-rectangle.png",
+      "order": {
+        "customer": "Luca Bianchi",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer moves the bar inside the safe margin"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size.",
+        "Artwork near the edge can be adjusted by the designer."
+      ],
+      "designer_note": "Move artwork inside the safe margin and prepare the 3 × 2 inch rectangular proof.",
+      "customer_note": "Luca, your artwork is ready for proofing. We’ll adjust it to fit the safe margin.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "17136 px of artwork inside the 19 px safe margin"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00110105,
+      "latency_ns": 4584662621
+    }
+  },
+  {
+    "case": {
+      "id": "empty-file",
+      "file": "testdata/cases/empty-file.png",
+      "order": {
+        "customer": "Emma Wilson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ask_customer",
+      "why": "no artwork"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The attached file contains no printable pixels."
+      ],
+      "designer_note": "Hold the proof until printable artwork is provided.",
+      "customer_note": "Hi Emma, the attached file contains no printable artwork. Please upload the design you'd like us to use for your sticker.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "empty_artwork",
+            "message": "no printable pixels"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00049705,
+      "latency_ns": 2936463238
+    }
+  },
+  {
+    "case": {
+      "id": "wrong-file-attached",
+      "file": "testdata/cases/wrong-file-attached.png",
+      "order": {
+        "customer": "Noah Davis",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+      },
+      "want": "ask_customer",
+      "why": "the right file is not attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer says the attached file is incorrect and will email the correct logo."
+      ],
+      "designer_note": "Wait for the correct logo before preparing the proof.",
+      "customer_note": "Noah, please email us the correct logo when it’s ready, and we’ll use it to prepare your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00054175,
+      "latency_ns": 2726516521
+    }
+  },
+  {
+    "case": {
+      "id": "size-change",
+      "file": "testdata/cases/size-change.png",
+      "order": {
+        "customer": "Mia Johnson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches instead of 3?"
+      },
+      "want": "ask_customer",
+      "why": "size differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested 5-inch size differs from the 3-by-3-inch order."
+      ],
+      "designer_note": "Hold the proof until the sticker size is confirmed.",
+      "customer_note": "Mia, your order is for 3-by-3-inch stickers. Would you like to update it to 5-by-5 inches or proceed at the ordered size?",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00092155,
+      "latency_ns": 3987298258
+    }
+  },
+  {
+    "case": {
+      "id": "text-edit",
+      "file": "testdata/cases/text-edit.png",
+      "order": {
+        "customer": "Liam Garcia",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please change the text to say OPEN LATE."
+      },
+      "want": "ready_for_proof",
+      "why": "designer edits text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork meets the resolution requirement, and the requested text edit can be made by the designer."
+      ],
+      "designer_note": "Change the text to “OPEN LATE” and prepare the 4 × 2 inch rectangular proof.",
+      "customer_note": "Liam, we’ll update the text to “OPEN LATE” in your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001451,
+      "latency_ns": 3723919329
+    }
+  },
+  {
+    "case": {
+      "id": "remove-white-bg",
+      "file": "testdata/cases/remove-white-bg.png",
+      "order": {
+        "customer": "Chloe Martin",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the white background please."
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size.",
+        "The white background can be removed by the designer."
+      ],
+      "designer_note": "Remove the white background and prepare the artwork for die cutting.",
+      "customer_note": "Chloe, we’ll remove the white background and prepare your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0009481,
+      "latency_ns": 3394882591
+    }
+  },
+  {
+    "case": {
+      "id": "missing-blue-version",
+      "file": "testdata/cases/missing-blue-version.png",
+      "order": {
+        "customer": "Ethan Clark",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Use the blue version of the logo, not the red one."
+      },
+      "want": "ask_customer",
+      "why": "only the red version is attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested blue version of the logo is not attached."
+      ],
+      "designer_note": "Use the blue logo once supplied.",
+      "customer_note": "Hi Ethan, please upload the blue version of your logo so we can prepare your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0007566,
+      "latency_ns": 3985672593
+    }
+  },
+  {
+    "case": {
+      "id": "conflicting-background",
+      "file": "testdata/cases/conflicting-background.png",
+      "order": {
+        "customer": "Grace Kim",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the background transparent but keep the white box around the logo."
+      },
+      "want": "ask_customer",
+      "why": "two instructions contradict each other"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The white box has no visible boundary separating it from the white background, so its intended extent needs clarification."
+      ],
+      "designer_note": "After clarification, preserve the specified white box and make the surrounding background transparent.",
+      "customer_note": "Grace, where should the white box end around the logo? Please share its desired dimensions or mark its boundary so we can make the surrounding background transparent.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0014984,
+      "latency_ns": 5786559450
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-sending-hires",
+      "file": "testdata/cases/lowres-sending-hires.png",
+      "order": {
+        "customer": "Jack Turner",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "the customer is sending a better file; wait for it"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer mentioned a high-resolution file that has not been attached.",
+        "The attached artwork is 110 dpi at the ordered size."
+      ],
+      "designer_note": "Hold the proof until the high-resolution file arrives.",
+      "customer_note": "Jack, please upload the high-resolution file you mentioned so we can prepare your proof.",
+      "preflight": {
+        "width_px": 330,
+        "height_px": 330,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001671,
+      "latency_ns": 3985759365
+    }
+  },
+  {
+    "case": {
+      "id": "tiny-tagline",
+      "file": "testdata/cases/tiny-tagline.png",
+      "order": {
+        "customer": "Hannah Scott",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make sure the small text is readable."
+      },
+      "want": "ready_for_proof",
+      "why": "designer enlarges or thickens the tagline"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size. Thin lines and small text can be adjusted by the designer."
+      ],
+      "designer_note": "Thicken thin lines and adjust the small text for readability at 3 × 3 inches.",
+      "customer_note": "Hannah, we’ll adjust the small text for readability in your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005881,
+      "latency_ns": 2895334841
+    }
+  },
+  {
+    "case": {
+      "id": "rush-request",
+      "file": "testdata/cases/rush-request.png",
+      "order": {
+        "customer": "Owen Hughes",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love you guys! Rush please, need them for Saturday."
+      },
+      "want": "ready_for_proof",
+      "why": "turnaround request does not block the proof"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is attached and meets the resolution requirement."
+      ],
+      "designer_note": "Prepare the 2 × 2 in die-cut proof and flag the rush request and Saturday deadline.",
+      "customer_note": "Hi Owen, we’ll flag your rush request and Saturday deadline for the team to review.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001846,
+      "latency_ns": 3774605404
+    }
+  },
+  {
+    "case": {
+      "id": "add-phone-number",
+      "file": "testdata/cases/add-phone-number.png",
+      "order": {
+        "customer": "Daniel Young",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Can you add my phone number 555-0100 under the logo?"
+      },
+      "want": "ready_for_proof",
+      "why": "designer adds text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size.",
+        "The phone number is provided and can be added by the designer."
+      ],
+      "designer_note": "Add 555-0100 under the logo, keeping the artwork within the safe margin.",
+      "customer_note": "Daniel, we’ll add 555-0100 under the logo for your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001835,
+      "latency_ns": 3573904084
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-please-vectorize",
+      "file": "testdata/cases/lowres-please-vectorize.png",
+      "order": {
+        "customer": "Ava Walker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please recreate this as a vector if needed."
+      },
+      "want": "recreate_artwork",
+      "why": "140 dpi and the customer asks for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 140 dpi at the ordered size, below the 150 dpi threshold."
+      ],
+      "designer_note": "Recreate the artwork as a vector and prepare it for the 3 × 3 in die-cut proof.",
+      "customer_note": "Ava, we’ll recreate your artwork as a vector before preparing your proof.",
+      "preflight": {
+        "width_px": 420,
+        "height_px": 420,
+        "effective_dpi": 140,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "140 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001361,
+      "latency_ns": 2506270971
+    }
+  },
+  {
+    "case": {
+      "id": "fullbleed-photo",
+      "file": "testdata/cases/fullbleed-photo.png",
+      "order": {
+        "customer": "Lucas Allen",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "full-bleed rectangle at 300 dpi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size, with no preflight findings."
+      ],
+      "designer_note": "Prepare the gradient artwork for the 3 × 2 inch rectangular proof.",
+      "customer_note": "Lucas, your artwork is ready for proofing.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0006243,
+      "latency_ns": 2525912072
+    }
+  },
+  {
+    "case": {
+      "id": "medium-thin-whitebox",
+      "file": "testdata/cases/medium-thin-whitebox.png",
+      "order": {
+        "customer": "Ella King",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "every finding is a designer fix"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 160 dpi at the ordered size, above the recreation threshold.",
+        "The background and thin lines can be adjusted by the designer."
+      ],
+      "designer_note": "Remove the white background and thicken lines to at least 1/32 in. Prepare the die-cut proof at 3 × 3 in.",
+      "customer_note": "Ella, your artwork is ready for proofing. We’ll remove the white background and strengthen the thin lines.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 160,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "160 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001826,
+      "latency_ns": 3584978726
+    }
+  },
+  {
+    "case": {
+      "id": "holographic",
+      "file": "testdata/cases/holographic.png",
+      "order": {
+        "customer": "Leo Wright",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "material differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Holographic vinyl was requested for an order listed as die-cut stickers."
+      ],
+      "designer_note": "Hold the proof pending confirmation of the material.",
+      "customer_note": "Hi Leo, your order is for die-cut stickers, and you requested holographic vinyl. Please confirm whether you’d like to update the order to holographic vinyl.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0018663,
+      "latency_ns": 6471891015
+    }
+  },
+  {
+    "case": {
+      "id": "same-size-confirmation",
+      "file": "testdata/cases/same-size-confirmation.png",
+      "order": {
+        "customer": "Zoe Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print it at 2x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "the size matches the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The requested 2 × 2 inch size matches the order, and the artwork is 300 dpi at that size."
+      ],
+      "designer_note": "Prepare the artwork for a 2 × 2 inch die-cut proof.",
+      "customer_note": "Zoe, your artwork is ready for a 2 × 2 inch proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001529,
+      "latency_ns": 2796810315
+    }
+  },
+  {
+    "case": {
+      "id": "spanish-remove-bg",
+      "file": "testdata/cases/spanish-remove-bg.png",
+      "order": {
+        "customer": "Diego Ramirez",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Por favor quiten el fondo blanco."
+      },
+      "want": "ready_for_proof",
+      "why": "asks, in Spanish, to remove the white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the white background can be removed by the designer."
+      ],
+      "designer_note": "Remove the white background and prepare the die-cut proof at 3 × 3 inches.",
+      "customer_note": "Diego, quitaremos el fondo blanco y prepararemos la prueba de tu sticker.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005882,
+      "latency_ns": 2523205820
+    }
+  },
+  {
+    "case": {
+      "id": "gen-001-none",
+      "file": "testdata/cases/gen-001-none.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size; the solid background can be removed for the die cut."
+      ],
+      "designer_note": "Remove the white background and prepare the artwork for a die cut at 4 × 2 inches.",
+      "customer_note": "Chloé, your artwork is ready for proofing.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001461,
+      "latency_ns": 2412238368
+    }
+  },
+  {
+    "case": {
+      "id": "gen-002-rush",
+      "file": "testdata/cases/gen-002-rush.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size.",
+        "The requested Friday deadline does not block proof preparation."
+      ],
+      "designer_note": "Prepare the die-cut proof at 2.5 × 2.5 inches and flag the Friday deadline for delivery review.",
+      "customer_note": "Hi Aisha, we’ll prepare your proof and review the Friday delivery request.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0007466,
+      "latency_ns": 3373908601
+    }
+  },
+  {
+    "case": {
+      "id": "gen-003-praise",
+      "file": "testdata/cases/gen-003-praise.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, above the 150 dpi recreation threshold.",
+        "Thin lines can be thickened during proof preparation."
+      ],
+      "designer_note": "Thicken lines below 1/32 inch and prepare the 2 × 2 inch die-cut proof.",
+      "customer_note": "Nguyễn, thanks for ordering with us again! We’ll thicken the thin lines and prepare your proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 2,
+      "cost_usd": 0.003375,
+      "latency_ns": 7305599278
+    }
+  },
+  {
+    "case": {
+      "id": "gen-004-same-size",
+      "file": "testdata/cases/gen-004-same-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size.",
+        "The requested 4 × 2 inch size matches the order.",
+        "The solid background can be removed by the designer."
+      ],
+      "designer_note": "Remove the white background and prepare a 4 × 2 inch die-cut proof around the artwork.",
+      "customer_note": "Zoë, we’ll remove the white background and prepare your 4 × 2 inch die-cut proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.002058,
+      "latency_ns": 3911052243
+    }
+  },
+  {
+    "case": {
+      "id": "gen-005-vibrant",
+      "file": "testdata/cases/gen-005-vibrant.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the color adjustment can be handled by the designer."
+      ],
+      "designer_note": "Make the colors as bright as possible and prepare the 3 × 3-inch rectangular proof.",
+      "customer_note": "José, we’ll make the colors as bright as possible for your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005813,
+      "latency_ns": 3205804595
+    }
+  },
+  {
+    "case": {
+      "id": "gen-006-remove-bg",
+      "file": "testdata/cases/gen-006-remove-bg.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, above the recreation threshold.",
+        "Removing the white background is a designer-editable fix."
+      ],
+      "designer_note": "Remove the white background and prepare the 2 × 2 in rectangular proof.",
+      "customer_note": "Łukasz, we’ll remove the white background and prepare your proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001556,
+      "latency_ns": 3231613436
+    }
+  },
+  {
+    "case": {
+      "id": "gen-007-remove-bg-fr",
+      "file": "testdata/cases/gen-007-remove-bg-fr.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the white background can be removed by the designer."
+      ],
+      "designer_note": "Remove the white background and prepare the die-cut outline around the artwork.",
+      "customer_note": "Sam, nous enlèverons le fond blanc avant de préparer votre épreuve.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001696,
+      "latency_ns": 3205415399
+    }
+  },
+  {
+    "case": {
+      "id": "gen-008-remove-bg-de",
+      "file": "testdata/cases/gen-008-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 240 dpi at the ordered size, above the 150 dpi threshold.",
+        "The designer can remove the white background."
+      ],
+      "designer_note": "Remove the white background and prepare the die-cut proof at the ordered size.",
+      "customer_note": "Raj, wir entfernen den weißen Hintergrund und erstellen deinen Korrekturabzug.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00096075,
+      "latency_ns": 3631099239
+    }
+  },
+  {
+    "case": {
+      "id": "gen-009-remove-bg-vi",
+      "file": "testdata/cases/gen-009-remove-bg-vi.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 240 dpi at the ordered size, above the 150 dpi threshold.",
+        "The designer can remove the white background and thicken the thin lines."
+      ],
+      "designer_note": "Remove the white background, thicken lines below 1/32 in, and prepare the die-cut proof at 4 × 2 in.",
+      "customer_note": "Mei ơi, chúng mình sẽ xoá nền trắng và làm dày các nét mảnh trước khi gửi bản thiết kế để bạn duyệt.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0011442,
+      "latency_ns": 4101858123
+    }
+  },
+  {
+    "case": {
+      "id": "gen-010-add-text",
+      "file": "testdata/cases/gen-010-add-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the requested text and thin-line fix can be handled by the designer."
+      ],
+      "designer_note": "Add example.com under the logo and thicken lines below 1/32 inch.",
+      "customer_note": "Łukasz, we’ll add example.com under the logo and adjust the thin lines for printing.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001515,
+      "latency_ns": 2626172788
+    }
+  },
+  {
+    "case": {
+      "id": "gen-011-change-text",
+      "file": "testdata/cases/gen-011-change-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 240 dpi at the ordered size, above the 150 dpi recreation threshold.",
+        "The lowercase text change and background removal can be completed by the designer."
+      ],
+      "designer_note": "Change “BOLT” to “bolt,” remove the white background, and prepare a die-cut contour around the artwork.",
+      "customer_note": "Aisha, we’ll change the word to lowercase and prepare your die-cut proof.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00091185,
+      "latency_ns": 3921416019
+    }
+  },
+  {
+    "case": {
+      "id": "gen-012-thicker",
+      "file": "testdata/cases/gen-012-thicker.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and bolding the thin lines is a designer-editable fix."
+      ],
+      "designer_note": "Thicken the thin lines as requested and prepare the proof.",
+      "customer_note": "Łukasz, we’ll make the thin lines bolder for your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005619,
+      "latency_ns": 2857494962
+    }
+  },
+  {
+    "case": {
+      "id": "gen-013-center",
+      "file": "testdata/cases/gen-013-center.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Center the logo please."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 130 dpi at the ordered size, below the 150 dpi threshold."
+      ],
+      "designer_note": "Recreate the logo, remove the white background, and center it for the 3 × 3 inch die-cut proof.",
+      "customer_note": "Nguyễn, we’ll recreate and center your logo for a crisp 3 × 3 inch die-cut proof.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 2,
+      "cost_usd": 0.0036030000000000003,
+      "latency_ns": 7465356374
+    }
+  },
+  {
+    "case": {
+      "id": "gen-014-bigger-text",
+      "file": "testdata/cases/gen-014-bigger-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the requested text adjustment can be made by the designer."
+      ],
+      "designer_note": "Make the NOVA text a bit larger.",
+      "customer_note": "Łukasz, we’ll make the text a bit larger for your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005298,
+      "latency_ns": 2951988546
+    }
+  },
+  {
+    "case": {
+      "id": "gen-015-redraw-ok",
+      "file": "testdata/cases/gen-015-redraw-ok.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size. The white background can be removed before proofing."
+      ],
+      "designer_note": "Remove the white background and prepare the die-cut outline around the artwork.",
+      "customer_note": "Fatima, we’ll remove the white background and prepare your die-cut proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0007269,
+      "latency_ns": 3020231611
+    }
+  },
+  {
+    "case": {
+      "id": "gen-016-size-up",
+      "file": "testdata/cases/gen-016-size-up.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested 5-inch width differs from the ordered 3 × 3-inch size.",
+        "The artwork is 100 dpi at the ordered size and needs recreation."
+      ],
+      "designer_note": "After the size is confirmed, recreate the low-resolution artwork at the confirmed size.",
+      "customer_note": "Mei, would you like to update your order to 5 inches wide, or proceed with the ordered 3 × 3-inch size?",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001812,
+      "latency_ns": 3793998051
+    }
+  },
+  {
+    "case": {
+      "id": "gen-017-size-down",
+      "file": "testdata/cases/gen-017-size-down.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Actually I need them 1x1 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested 1×1-inch size differs from the ordered 2×2-inch size."
+      ],
+      "designer_note": "Hold the proof until the sticker size is confirmed.",
+      "customer_note": "Hi Jonas, your order is for 2×2-inch stickers, but your comment requests 1×1 inches. Please confirm whether you’d like to update the order to 1×1 inches.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001647,
+      "latency_ns": 3176114027
+    }
+  },
+  {
+    "case": {
+      "id": "gen-018-to-square",
+      "file": "testdata/cases/gen-018-to-square.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested square sticker differs from the ordered die-cut product."
+      ],
+      "designer_note": "Keep the background. Await confirmation of the sticker shape before making the proof.",
+      "customer_note": "Hi Chloé, your order is for a die-cut sticker, but your comment requests a square sticker. Would you like to change the order to a square sticker or keep it die-cut?",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0009689,
+      "latency_ns": 3290898083
+    }
+  },
+  {
+    "case": {
+      "id": "gen-019-to-diecut",
+      "file": "testdata/cases/gen-019-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested die-cut shape differs from the ordered rectangle."
+      ],
+      "designer_note": "Hold the proof until the sticker shape is confirmed.",
+      "customer_note": "Jonas, your order is for a rectangle, but your comment requests a cut around the logo. Please confirm whether you’d like to change the order to die-cut or keep it rectangular.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001538,
+      "latency_ns": 2605295690
+    }
+  },
+  {
+    "case": {
+      "id": "gen-020-holo",
+      "file": "testdata/cases/gen-020-holo.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, above the recreation threshold.",
+        "The solid background can be removed during proof preparation."
+      ],
+      "designer_note": "Remove the white background, set the die-cut contour, and prepare the proof for holographic vinyl.",
+      "customer_note": "Hi Nguyễn, your artwork is ready for a holographic vinyl proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 2,
+      "cost_usd": 0.004796,
+      "latency_ns": 11011941799
+    }
+  },
+  {
+    "case": {
+      "id": "gen-021-clear",
+      "file": "testdata/cases/gen-021-clear.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size.",
+        "The order does not specify a material that conflicts with the requested clear vinyl."
+      ],
+      "designer_note": "Prepare the 2 × 2 inch die-cut proof for clear vinyl, keeping the unprinted areas clear.",
+      "customer_note": "Jonas, we’ll prepare your proof on clear vinyl so your laptop shows through.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Jonas"
+        }
+      ],
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 2,
+      "cost_usd": 0.005492749999999999,
+      "latency_ns": 11572096501
+    }
+  },
+  {
+    "case": {
+      "id": "gen-022-glitter",
+      "file": "testdata/cases/gen-022-glitter.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requested glitter material, which is not specified in the order."
+      ],
+      "designer_note": "Hold the proof until the material is confirmed.",
+      "customer_note": "Hi Kate, would you like to update your order to glitter material, or proceed with the material on your current order?",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0008998,
+      "latency_ns": 3746376605
+    }
+  },
+  {
+    "case": {
+      "id": "gen-023-other-file",
+      "file": "testdata/cases/gen-023-other-file.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requested a green logo version that has not been attached."
+      ],
+      "designer_note": "Wait for the green logo file before making the proof.",
+      "customer_note": "Łukasz, please send the green version of the logo so we can prepare your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001371,
+      "latency_ns": 2743063846
+    }
+  },
+  {
+    "case": {
+      "id": "gen-024-email-later",
+      "file": "testdata/cases/gen-024-email-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The attached image is a placeholder; the final artwork has not been provided."
+      ],
+      "designer_note": "Wait for the final artwork before making the proof.",
+      "customer_note": "Chloé, please email the final artwork when it’s ready so we can prepare your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001603,
+      "latency_ns": 3531772915
+    }
+  },
+  {
+    "case": {
+      "id": "gen-025-hires-later",
+      "file": "testdata/cases/gen-025-hires-later.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer plans to upload a better-quality file, which is not attached.",
+        "The attached artwork is 110 dpi at the ordered size."
+      ],
+      "designer_note": "Wait for the customer's promised artwork before preparing the proof.",
+      "customer_note": "Hi Zoë, please upload the better-quality artwork you mentioned so we can prepare your proof.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.002073,
+      "latency_ns": 5020469537
+    }
+  },
+  {
+    "case": {
+      "id": "gen-026-contradict",
+      "file": "testdata/cases/gen-026-contradict.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The request to remove the background but keep the white box is ambiguous because the background is white."
+      ],
+      "designer_note": "Hold the proof until the customer clarifies which white area to retain.",
+      "customer_note": "Fatima, please clarify which white area you’d like removed and which white box you’d like to keep.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001721,
+      "latency_ns": 3859873067
+    }
+  },
+  {
+    "case": {
+      "id": "gen-027-contradict-size",
+      "file": "testdata/cases/gen-027-contradict-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The request to make it bigger while keeping the order size needs clarification.",
+        "The artwork is 100 dpi at the ordered size and needs recreation."
+      ],
+      "designer_note": "Clarify the requested enlargement, then recreate the low-resolution artwork.",
+      "customer_note": "Zoë, would you like the artwork enlarged within the 3 × 2 inch sticker, or would you like a larger sticker?",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001963,
+      "latency_ns": 4628015881
+    }
+  },
+  {
+    "case": {
+      "id": "gen-028-none",
+      "file": "testdata/cases/gen-028-none.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, with no preflight findings."
+      ],
+      "designer_note": "Prepare the 2.5 × 2.5 inch rectangular proof using the supplied artwork.",
+      "customer_note": "Nguyễn, your artwork is ready for proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 2,
+      "cost_usd": 0.0014144499999999998,
+      "latency_ns": 6965191795
+    }
+  },
+  {
+    "case": {
+      "id": "gen-029-rush",
+      "file": "testdata/cases/gen-029-rush.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 100 dpi at the ordered 3 × 2 in size, below the 150 dpi threshold."
+      ],
+      "designer_note": "Recreate the artwork at 3 × 2 in, remove the white background for die cutting, and thicken the thin lines.",
+      "customer_note": "Łukasz, we’ll recreate your artwork for a clean proof and check whether delivery by Friday is possible.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001767,
+      "latency_ns": 4773755074
+    }
+  },
+  {
+    "case": {
+      "id": "gen-030-praise",
+      "file": "testdata/cases/gen-030-praise.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size. The solid background can be removed by the designer."
+      ],
+      "designer_note": "Remove the white background and create a die-cut contour around the circle and text, keeping them together.",
+      "customer_note": "Łukasz, thank you for ordering with us again! We’ll prepare your proof for review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00078845,
+      "latency_ns": 4057265732
+    }
+  },
+  {
+    "case": {
+      "id": "gen-031-same-size",
+      "file": "testdata/cases/gen-031-same-size.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print at 3x3 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The requested 3 × 3 inch size matches the order, and the artwork is above 150 dpi."
+      ],
+      "designer_note": "Prepare the die-cut proof at 3 × 3 inches.",
+      "customer_note": "José, we’ll prepare your proof at 3 × 3 inches.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00091005,
+      "latency_ns": 3347195011
+    }
+  },
+  {
+    "case": {
+      "id": "gen-032-vibrant",
+      "file": "testdata/cases/gen-032-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size, and the color request can be handled by the designer."
+      ],
+      "designer_note": "Make the colors as bright as possible and prepare the die-cut proof at the ordered size.",
+      "customer_note": "Kate, we’ll make the colors as bright as possible for your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00056985,
+      "latency_ns": 3181539884
+    }
+  },
+  {
+    "case": {
+      "id": "gen-033-remove-bg",
+      "file": "testdata/cases/gen-033-remove-bg.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 130 dpi at the ordered size, below the 150 dpi threshold."
+      ],
+      "designer_note": "Recreate the artwork at the ordered 2 × 2 in size and remove the white background.",
+      "customer_note": "Aisha, we’ll recreate your artwork for the 2 × 2 in sticker and remove the white background before preparing your proof.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001456,
+      "latency_ns": 3156698388
+    }
+  },
+  {
+    "case": {
+      "id": "gen-034-remove-bg-fr",
+      "file": "testdata/cases/gen-034-remove-bg-fr.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 130 dpi at the ordered size, below 150 dpi."
+      ],
+      "designer_note": "Recreate the artwork at print resolution and remove the white background.",
+      "customer_note": "José, nous allons recréer votre visuel à une résolution adaptée et enlever le fond blanc avant de préparer votre épreuve.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001575,
+      "latency_ns": 4087086563
+    }
+  },
+  {
+    "case": {
+      "id": "gen-035-remove-bg-de",
+      "file": "testdata/cases/gen-035-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 130 dpi at the ordered size, below 150 dpi."
+      ],
+      "designer_note": "Recreate the artwork at print resolution and remove the white background for the die cut.",
+      "customer_note": "Raj, wir erstellen die Grafik für den Druck neu und entfernen den weißen Hintergrund.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001577,
+      "latency_ns": 4842981144
+    }
+  },
+  {
+    "case": {
+      "id": "gen-036-remove-bg-vi",
+      "file": "testdata/cases/gen-036-remove-bg-vi.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, above the 150 dpi recreation threshold.",
+        "The requested white-background removal can be completed by the designer."
+      ],
+      "designer_note": "Remove the white background and prepare the artwork for a 2 × 2 in die-cut proof.",
+      "customer_note": "Łukasz, chúng tôi sẽ xoá nền trắng và chuẩn bị bản duyệt theo kích thước 2 × 2 inch.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001822,
+      "latency_ns": 3579772207
+    }
+  },
+  {
+    "case": {
+      "id": "gen-037-add-text",
+      "file": "testdata/cases/gen-037-add-text.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the requested website text can be added by the designer."
+      ],
+      "designer_note": "Add example.com under the logo, keeping it within the safe margin.",
+      "customer_note": "Fatima, we’ll add example.com under your logo in the proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005499,
+      "latency_ns": 2980288698
+    }
+  },
+  {
+    "case": {
+      "id": "gen-038-change-text",
+      "file": "testdata/cases/gen-038-change-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 240 dpi at the ordered size, above the 150 dpi recreation threshold.",
+        "The lowercase text edit can be made by the designer."
+      ],
+      "designer_note": "Change “KIWI” to “kiwi” and prepare the die-cut proof at 4 × 2 inches.",
+      "customer_note": "Mei, we’ll change the word to lowercase and prepare your proof.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001535,
+      "latency_ns": 3034560767
+    }
+  },
+  {
+    "case": {
+      "id": "gen-039-thicker",
+      "file": "testdata/cases/gen-039-thicker.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, above the 150 dpi threshold.",
+        "The designer can make the thin lines bolder."
+      ],
+      "designer_note": "Thicken the thin lines and prepare the proof at 2.5 × 2.5 inches.",
+      "customer_note": "Nguyễn, we’ll make the thin lines bolder for your proof.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 2,
+      "cost_usd": 0.003358,
+      "latency_ns": 6457556330
+    }
+  },
+  {
+    "case": {
+      "id": "gen-040-center",
+      "file": "testdata/cases/gen-040-center.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size, and centering the logo is a designer-editable request."
+      ],
+      "designer_note": "Center the logo and prepare the 2.5 × 2.5 inch die-cut proof.",
+      "customer_note": "Mei, we’ll center your logo and prepare your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005864,
+      "latency_ns": 2572598641
+    }
+  },
+  {
+    "case": {
+      "id": "gen-041-bigger-text",
+      "file": "testdata/cases/gen-041-bigger-text.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and enlarging the text is a designer-editable change."
+      ],
+      "designer_note": "Make the BREW text a bit larger, keeping it within the safe margin.",
+      "customer_note": "Raj, we’ll make the text a bit larger in your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005665,
+      "latency_ns": 3824281075
+    }
+  },
+  {
+    "case": {
+      "id": "gen-042-redraw-ok",
+      "file": "testdata/cases/gen-042-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size, and preflight found no issues."
+      ],
+      "designer_note": "Prepare the 2 × 2 inch die-cut proof using the supplied artwork.",
+      "customer_note": "José, your artwork is ready for proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001711,
+      "latency_ns": 4449629562
+    }
+  },
+  {
+    "case": {
+      "id": "gen-043-size-up",
+      "file": "testdata/cases/gen-043-size-up.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Can you make these 4.5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested 4.5-inch width differs from the ordered 2.5-inch width.",
+        "The artwork is 130 dpi at the ordered size and needs recreation."
+      ],
+      "designer_note": "Once the size is confirmed, recreate the low-resolution artwork and size it for the proof.",
+      "customer_note": "Hi Chloé, would you like to update your order to 4.5 inches wide, or proceed with the ordered 2.5-inch size?",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001744,
+      "latency_ns": 4972833204
+    }
+  },
+  {
+    "case": {
+      "id": "gen-044-size-down",
+      "file": "testdata/cases/gen-044-size-down.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested 1.25 × 1.25 inch size differs from the ordered 2.5 × 2.5 inch size."
+      ],
+      "designer_note": "Hold the proof until the sticker size is confirmed.",
+      "customer_note": "Aisha, you requested 1.25 × 1.25 inch stickers, but your order is for 2.5 × 2.5 inches. Please confirm which size you'd like so we can proceed.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001591,
+      "latency_ns": 4490838678
+    }
+  },
+  {
+    "case": {
+      "id": "gen-045-to-square",
+      "file": "testdata/cases/gen-045-to-square.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested square sticker conflicts with the die-cut, 4 × 2 inch order."
+      ],
+      "designer_note": "Keep the background. Confirm the sticker shape and dimensions before preparing the proof.",
+      "customer_note": "Hi Kate, your order is for a 4 × 2 inch die-cut sticker, but your comment requests a square sticker. Would you like to change the order to a square? If so, what dimensions would you like?",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001845,
+      "latency_ns": 3586812638
+    }
+  },
+  {
+    "case": {
+      "id": "gen-046-to-diecut",
+      "file": "testdata/cases/gen-046-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested die-cut shape differs from the ordered rectangle."
+      ],
+      "designer_note": "After shape confirmation, move artwork inside the safe margin and thicken thin lines.",
+      "customer_note": "Jonas, would you like to change your order to die-cut stickers around the logo, or keep the ordered rectangular shape?",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001667,
+      "latency_ns": 3608558989
+    }
+  },
+  {
+    "case": {
+      "id": "gen-047-holo",
+      "file": "testdata/cases/gen-047-holo.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size.",
+        "The order does not specify a material, so the holographic vinyl request does not conflict with it."
+      ],
+      "designer_note": "Move artwork inside the safe margin, thicken thin lines, and prepare the proof on holographic vinyl.",
+      "customer_note": "Sam, we’ll prepare your proof on holographic vinyl and adjust the artwork for print.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Sam"
+        }
+      ],
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 2,
+      "cost_usd": 0.004216,
+      "latency_ns": 9178158120
+    }
+  },
+  {
+    "case": {
+      "id": "gen-048-clear",
+      "file": "testdata/cases/gen-048-clear.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the order does not specify a conflicting material."
+      ],
+      "designer_note": "Prepare the die-cut proof on clear vinyl, keeping the background transparent.",
+      "customer_note": "Zoë, we’ll prepare your proof on clear vinyl so your laptop shows through.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00209,
+      "latency_ns": 6706250139
+    }
+  },
+  {
+    "case": {
+      "id": "gen-049-glitter",
+      "file": "testdata/cases/gen-049-glitter.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment requests glitter material, which is not specified on the order."
+      ],
+      "designer_note": "Hold the proof until the material is confirmed.",
+      "customer_note": "Hi Aisha, your comment requests glitter material, which isn’t specified on your order. Would you like to update the order to glitter before we prepare your proof?",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001997,
+      "latency_ns": 5322464363
+    }
+  },
+  {
+    "case": {
+      "id": "gen-050-other-file",
+      "file": "testdata/cases/gen-050-other-file.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested green version of the logo has not been attached."
+      ],
+      "designer_note": "Wait for the green logo file before making the proof.",
+      "customer_note": "Hi Sam, please send the green version of your logo so we can make your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001359,
+      "latency_ns": 2468671111
+    }
+  },
+  {
+    "case": {
+      "id": "gen-051-email-later",
+      "file": "testdata/cases/gen-051-email-later.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The attached image is a placeholder; the final artwork has not been provided.",
+        "The placeholder is 130 dpi at the ordered size."
+      ],
+      "designer_note": "Wait for the final artwork before preparing the proof.",
+      "customer_note": "Aisha, please email the final artwork when it’s ready so we can prepare your proof.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00155,
+      "latency_ns": 3345837417
+    }
+  },
+  {
+    "case": {
+      "id": "gen-052-hires-later",
+      "file": "testdata/cases/gen-052-hires-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer plans to upload a replacement file that is not yet attached.",
+        "The attached artwork is 110 dpi at the ordered size."
+      ],
+      "designer_note": "Wait for the planned upload before preparing the proof.",
+      "customer_note": "Chloé, please upload the file you plan to send tonight so we can prepare your proof.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.004289,
+      "latency_ns": 10487410568
+    }
+  },
+  {
+    "case": {
+      "id": "gen-053-contradict",
+      "file": "testdata/cases/gen-053-contradict.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The image has a solid white background, so it is unclear which background to remove and which white box to keep."
+      ],
+      "designer_note": "Hold the proof until the white box and background removal are clarified.",
+      "customer_note": "Jonas, which white area would you like removed, and where should the white box remain? You can mark up the image to show us.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00098195,
+      "latency_ns": 3550841567
+    }
+  },
+  {
+    "case": {
+      "id": "gen-054-contradict-size",
+      "file": "testdata/cases/gen-054-contradict-size.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The request to make it bigger conflicts with keeping it the same size as the order."
+      ],
+      "designer_note": "Wait for size clarification before preparing the proof.",
+      "customer_note": "Hi Jonas, would you like the artwork enlarged within the ordered 2 × 2 inch sticker, or would you like a larger sticker? If you want a larger sticker, please let us know the dimensions.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.002051,
+      "latency_ns": 3593421934
+    }
+  },
+  {
+    "case": {
+      "id": "gen-055-none",
+      "file": "testdata/cases/gen-055-none.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size, with no preflight findings."
+      ],
+      "designer_note": "Prepare a 2.5 × 2.5 inch die-cut proof.",
+      "customer_note": "Aisha, your artwork is ready for proofing.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00071115,
+      "latency_ns": 2889721493
+    }
+  },
+  {
+    "case": {
+      "id": "gen-056-rush",
+      "file": "testdata/cases/gen-056-rush.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size.",
+        "The requested Friday timing does not block proofing."
+      ],
+      "designer_note": "Prepare the 4 × 2 inch die-cut proof and flag the Friday timing request.",
+      "customer_note": "Hi Fatima, we’ll prepare your proof and check whether Friday delivery is possible.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001731,
+      "latency_ns": 4162835739
+    }
+  },
+  {
+    "case": {
+      "id": "gen-057-praise",
+      "file": "testdata/cases/gen-057-praise.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is attached and meets the resolution requirement at the ordered size.",
+        "The comment requests no changes."
+      ],
+      "designer_note": "Prepare the 3 × 2 inch die-cut proof.",
+      "customer_note": "Thanks for ordering with us again, Sam! Your artwork is ready for proofing.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005349,
+      "latency_ns": 2605560715
+    }
+  },
+  {
+    "case": {
+      "id": "gen-058-same-size",
+      "file": "testdata/cases/gen-058-same-size.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The requested 4×2 inch size matches the order, and the artwork is 300 dpi at that size. Thin lines can be thickened by the designer."
+      ],
+      "designer_note": "Thicken lines to at least 1/32 inch and prepare the die-cut proof at 4×2 inches.",
+      "customer_note": "Chloé, your artwork is ready for proofing at 4×2 inches. We’ll thicken the fine lines for printing.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001623,
+      "latency_ns": 3400902236
+    }
+  },
+  {
+    "case": {
+      "id": "gen-059-vibrant",
+      "file": "testdata/cases/gen-059-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 300 dpi at the ordered size, and the color adjustment can be made by the designer."
+      ],
+      "designer_note": "Make the colors as bright as possible for print.",
+      "customer_note": "Kate, we’ll make the colors as bright as possible for your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00054135,
+      "latency_ns": 2679950205
+    }
+  },
+  {
+    "case": {
+      "id": "gen-060-remove-bg",
+      "file": "testdata/cases/gen-060-remove-bg.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and background removal can be completed by the designer."
+      ],
+      "designer_note": "Remove the white background and prepare the artwork for a die-cut proof at 3 × 2 inches.",
+      "customer_note": "José, we’ll remove the white background and prepare your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005665,
+      "latency_ns": 2911281226
+    }
+  },
+  {
+    "case": {
+      "id": "gen-061-remove-bg-fr",
+      "file": "testdata/cases/gen-061-remove-bg-fr.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, and removing the white background is a designer fix."
+      ],
+      "designer_note": "Remove the white background and prepare the die-cut proof at 2.5 × 2.5 inches.",
+      "customer_note": "Zoë, nous enlèverons le fond blanc pour préparer votre épreuve.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001681,
+      "latency_ns": 3218513496
+    }
+  },
+  {
+    "case": {
+      "id": "gen-062-remove-bg-de",
+      "file": "testdata/cases/gen-062-remove-bg-de.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size.",
+        "Background removal and thin-line adjustments can be completed by the designer."
+      ],
+      "designer_note": "Remove the white background, thicken lines below 1/32 inch, and prepare the die-cut proof at 3 × 3 inches.",
+      "customer_note": "Jonas, wir entfernen den weißen Hintergrund und verstärken die dünnen Linien für deinen Proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0009848,
+      "latency_ns": 5073908784
+    }
+  },
+  {
+    "case": {
+      "id": "gen-063-remove-bg-vi",
+      "file": "testdata/cases/gen-063-remove-bg-vi.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The attached artwork is 240 dpi at the ordered size, above the 150 dpi recreation threshold.",
+        "Removing the white background and thickening thin lines are designer fixes."
+      ],
+      "designer_note": "Remove the white background, thicken lines below 1/32 in, and prepare the 3 × 3 in die-cut proof.",
+      "customer_note": "Jonas, chúng tôi sẽ xóa nền trắng và chuẩn bị bản duyệt cho bạn.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00102865,
+      "latency_ns": 4043537848
+    }
+  },
+  {
+    "case": {
+      "id": "gen-064-add-text",
+      "file": "testdata/cases/gen-064-add-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 100 dpi at the ordered size, below 150 dpi."
+      ],
+      "designer_note": "Recreate the artwork at print quality and add example.com under the logo.",
+      "customer_note": "Mei, we’ll recreate your artwork for print quality and add example.com under the logo.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001337,
+      "latency_ns": 4151129510
+    }
+  },
+  {
+    "case": {
+      "id": "gen-065-change-text",
+      "file": "testdata/cases/gen-065-change-text.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, above the 150 dpi threshold.",
+        "The text change and thin-line adjustment can be made by the designer."
+      ],
+      "designer_note": "Change “SURF” to “surf” and thicken lines thinner than 1/32 inch.",
+      "customer_note": "Chloé, we’ll change “SURF” to “surf” and thicken the thin lines for your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001852,
+      "latency_ns": 5015855797
+    }
+  },
+  {
+    "case": {
+      "id": "gen-066-thicker",
+      "file": "testdata/cases/gen-066-thicker.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the requested line thickening can be handled by the designer."
+      ],
+      "designer_note": "Thicken the thin lines as requested and prepare the 2.5 × 2.5-inch rectangle proof.",
+      "customer_note": "Aisha, we’ll make the thin lines bolder in your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00061175,
+      "latency_ns": 3593390165
+    }
+  },
+  {
+    "case": {
+      "id": "gen-067-center",
+      "file": "testdata/cases/gen-067-center.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and centering the logo is a designer adjustment."
+      ],
+      "designer_note": "Center the logo on the 3 × 2 inch rectangular sticker.",
+      "customer_note": "Aisha, your artwork is ready for proofing. We’ll center the logo.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0005496,
+      "latency_ns": 3418396740
+    }
+  },
+  {
+    "case": {
+      "id": "gen-068-bigger-text",
+      "file": "testdata/cases/gen-068-bigger-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 240 dpi at the ordered size, above the recreation threshold.",
+        "The text enlargement and background removal can be handled by the designer."
+      ],
+      "designer_note": "Enlarge the text slightly and remove the white background for the die-cut proof.",
+      "customer_note": "Aisha, we’ll enlarge the text slightly and prepare your die-cut proof.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0006068,
+      "latency_ns": 3386256418
+    }
+  },
+  {
+    "case": {
+      "id": "gen-069-redraw-ok",
+      "file": "testdata/cases/gen-069-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 200 dpi at the ordered size, above the 150 dpi recreation threshold."
+      ],
+      "designer_note": "Prepare the die-cut proof at 3 × 2 inches; redraw if needed.",
+      "customer_note": "José, your artwork is ready for proof preparation.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00158,
+      "latency_ns": 3906120277
+    }
+  },
+  {
+    "case": {
+      "id": "gen-070-size-up",
+      "file": "testdata/cases/gen-070-size-up.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested 5-inch width differs from the ordered 3 × 3-inch size.",
+        "The artwork is 100 dpi at the ordered size and needs recreation."
+      ],
+      "designer_note": "Confirm the final size, then recreate the low-resolution artwork.",
+      "customer_note": "Fatima, would you like to update your order to 5 inches wide, or proceed with the ordered 3 × 3-inch size?",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001747,
+      "latency_ns": 4706152744
+    }
+  },
+  {
+    "case": {
+      "id": "gen-071-size-down",
+      "file": "testdata/cases/gen-071-size-down.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested 1.25 × 1.25 inch size differs from the ordered 2.5 × 2.5 inch size."
+      ],
+      "designer_note": "Thicken the thin lines after the size is confirmed.",
+      "customer_note": "Łukasz, your order is for 2.5 × 2.5 inches, but your comment requests 1.25 × 1.25 inches. Please confirm which size you’d like so we can update the order and prepare your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0007737,
+      "latency_ns": 4052009061
+    }
+  },
+  {
+    "case": {
+      "id": "gen-072-to-square",
+      "file": "testdata/cases/gen-072-to-square.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested square sticker conflicts with the die-cut order.",
+        "The artwork is 130 dpi at the ordered size and needs recreation."
+      ],
+      "designer_note": "Hold the proof until the shape is confirmed. Recreate the low-resolution artwork and retain the background.",
+      "customer_note": "Hi Zoë, your order is for die-cut stickers, but your comment requests a square sticker. Would you like to change the order to square or keep the die-cut shape? We’ll retain the background and recreate the artwork for print.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001771,
+      "latency_ns": 4558205139
+    }
+  },
+  {
+    "case": {
+      "id": "gen-073-to-diecut",
+      "file": "testdata/cases/gen-073-to-diecut.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The requested die-cut shape differs from the ordered rectangle."
+      ],
+      "designer_note": "Hold the proof until the customer confirms the sticker shape.",
+      "customer_note": "Fatima, your order is for a rectangle, but you requested a cut around the logo. Would you like to change the order to die-cut or keep the rectangle?",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0008816,
+      "latency_ns": 3722228221
+    }
+  },
+  {
+    "case": {
+      "id": "gen-074-holo",
+      "file": "testdata/cases/gen-074-holo.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size.",
+        "The order does not specify a material that conflicts with the holographic vinyl request.",
+        "The safe-margin and thin-line issues can be corrected by the designer."
+      ],
+      "designer_note": "Prepare the proof for holographic vinyl; move artwork inside the safe margin and thicken thin lines.",
+      "customer_note": "Chloé, we’ll prepare your proof for holographic vinyl.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.0017818,
+      "latency_ns": 6112760836
+    }
+  },
+  {
+    "case": {
+      "id": "gen-075-clear",
+      "file": "testdata/cases/gen-075-clear.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is 300 dpi at the ordered size, and the order does not specify a conflicting material."
+      ],
+      "designer_note": "Remove the white background and prepare the 2 × 2 inch rectangular proof for clear vinyl.",
+      "customer_note": "Mei, we’ll prepare your proof on clear vinyl so the laptop shows through the background.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.002275,
+      "latency_ns": 4854235291
+    }
+  },
+  {
+    "case": {
+      "id": "gen-076-glitter",
+      "file": "testdata/cases/gen-076-glitter.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "The artwork is 130 dpi at the ordered size.",
+        "Glitter is requested; no ordered material is specified to indicate a conflict."
+      ],
+      "designer_note": "Recreate the artwork, remove the white background, thicken thin lines, and prepare the die-cut proof on glitter stock.",
+      "customer_note": "José, we’ll recreate your artwork for a crisp 3 × 3-inch proof and show it on glitter stock.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.002336,
+      "latency_ns": 4602092925
+    }
+  },
+  {
+    "case": {
+      "id": "gen-077-other-file",
+      "file": "testdata/cases/gen-077-other-file.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer requested a green logo file that has not been attached."
+      ],
+      "designer_note": "Wait for the green logo file before preparing the proof.",
+      "customer_note": "José, please send the green version of your logo so we can prepare your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.00048495,
+      "latency_ns": 2319039221
+    }
+  },
+  {
+    "case": {
+      "id": "gen-078-email-later",
+      "file": "testdata/cases/gen-078-email-later.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The attached image is a placeholder; the final artwork has not been provided."
+      ],
+      "designer_note": "Hold the proof until the final artwork arrives.",
+      "customer_note": "Łukasz, please email the final artwork when it’s ready so we can prepare your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.001462,
+      "latency_ns": 2589821428
+    }
+  },
+  {
+    "case": {
+      "id": "gen-079-hires-later",
+      "file": "testdata/cases/gen-079-hires-later.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The customer plans to upload a better-quality file that is not attached.",
+        "The attached artwork is 110 dpi at the ordered size and has thin lines."
+      ],
+      "designer_note": "Wait for the promised file; check its resolution and thicken any lines below 1/32 in.",
+      "customer_note": "Hi Jonas, please upload the artwork you mentioned when it’s ready so we can prepare your proof.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.002992,
+      "latency_ns": 7308699404
+    }
+  },
+  {
+    "case": {
+      "id": "gen-080-contradict",
+      "file": "testdata/cases/gen-080-contradict.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The white background and white box need clarification before editing.",
+        "The artwork is 100 dpi at the ordered size and needs recreation."
+      ],
+      "designer_note": "After clarification, recreate the artwork, thicken thin lines, and apply the requested background treatment.",
+      "customer_note": "Mei, which white areas would you like removed, and which should remain as the box around the artwork?",
+      "preflight": {
+        "width_px": 200,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "openai/gpt-6.1-terra",
+      "attempts": 1,
+      "cost_usd": 0.003786,
+      "latency_ns": 8745827693
+    }
+  }
+]

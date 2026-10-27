@@ -1,0 +1,4271 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 3×3 in size, above the 150 dpi recreate threshold.",
+        "Artwork is attached and the comment is empty, so nothing only the customer can resolve.",
+        "Black background can be removed by the designer for the ordered die-cut."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the red circle and MULE lettering as one shape. Keep the red color and layout as shown.",
+      "customer_note": "Brian, we will remove the black background and cut your sticker around the red circle and MULE lettering for your 3 inch die-cut.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007358,
+      "latency_ns": 13215027697
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3x2 inch size, above the 150 recreate threshold.",
+        "Comment is empty, so nothing conflicts with the rectangle order and no customer input is missing.",
+        "Artwork is attached and a designer can proof it as a 3x2 inch rectangle."
+      ],
+      "designer_note": "Proof as a 3x2 inch rectangle sticker. Keep the orange circle and TACOS text centered; leave the white field as the sticker background.",
+      "customer_note": "Ana, your TACOS art is ready for a 3 by 2 inch rectangle sticker proof. We will send that proof for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.005998,
+      "latency_ns": 10468077836
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3 x 3 in size, above the 150 dpi recreate threshold.",
+        "The comment is empty, so there is no missing file, conflicting instruction, or size, shape, or material mismatch.",
+        "The solid white border would make a die cut follow the rectangle; removing that background is a designer-only fix."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the navy circle and BREW lettering, not the rectangular border. Size the art to 3 x 3 in.",
+      "customer_note": "Kenji, we'll remove the white background so your die-cut sticker follows the circle and BREW logo. Your proof is coming next.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00754,
+      "latency_ns": 11742158766
+    }
+  },
+  {
+    "case": {
+      "id": "keep-square-on-diecut",
+      "file": "testdata/cases/keep-square-on-diecut.png",
+      "order": {
+        "customer": "Olivia Brown",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please keep the cream background as a square, don't cut around the logo."
+      },
+      "want": "ask_customer",
+      "why": "asks for a square sticker on a die-cut order: product change"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks to keep the cream background as a square and not cut around the logo, which is a rectangle shape different from the ordered die-cut.",
+        "Effective resolution is 300 dpi, so the file does not need to be recreated.",
+        "A shape that differs from the order has to be confirmed by the customer before a proof.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof. Customer wants the cream background kept as a square, not contoured around the logo, which conflicts with the die-cut order. After they confirm, build a 3×3 square sticker with the cream background intact.",
+      "customer_note": "Thanks Olivia. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.01247,
+      "latency_ns": 20578957172
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-diecut",
+      "file": "testdata/cases/lowres-diecut.png",
+      "order": {
+        "customer": "Marcus Lee",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 100 dpi at the ordered 3x3 in, below the 150 dpi recreate threshold.",
+        "Artwork is a simple teal circle and ROCK wordmark that can be rebuilt as vector.",
+        "Comment is empty, so nothing conflicts with the die-cut 3x3 order."
+      ],
+      "designer_note": "Recreate the teal circle and ROCK lettering as vector art at 3x3 in. Die-cut around the circle and text and remove the black background.",
+      "customer_note": "Marcus, we are rebuilding your teal circle and ROCK design as crisp artwork for your 3x3 die-cut sticker and will send a proof to review.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.005494,
+      "latency_ns": 11043579424
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-rectangle-sharp",
+      "file": "testdata/cases/lowres-rectangle-sharp.png",
+      "order": {
+        "customer": "Priya Patel",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Make sure it looks sharp please"
+      },
+      "want": "recreate_artwork",
+      "why": "120 dpi; the comment asks for what recreating gives"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 120 dpi at the ordered 4x2 in size, under the 150 dpi threshold.",
+        "The comment only asks for a sharp print and does not change size, shape, or material."
+      ],
+      "designer_note": "Recreate the navy circle and SURF CO wordmark as vector art on a 4x2 in rectangle so it prints sharp.",
+      "customer_note": "Priya, we'll rebuild your Surf Co logo as crisp artwork so your 4x2 rectangle sticker looks sharp.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 240,
+        "effective_dpi": 120,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "120 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007674,
+      "latency_ns": 9543985773
+    }
+  },
+  {
+    "case": {
+      "id": "medium-res",
+      "file": "testdata/cases/medium-res.png",
+      "order": {
+        "customer": "Tom Becker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "200 dpi prints"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 200 dpi at the ordered 3x3 in, which is above the 150 dpi recreate threshold.",
+        "Comment is empty, so nothing conflicts with the die-cut 3x3 order and no customer unblock is needed.",
+        "Black background can be removed by the designer so the die-cut follows the orange circle and HIVE lettering."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the orange circle and HIVE lettering. Size to 3x3 in.",
+      "customer_note": "Tom, your 3×3 die-cut proof is underway. The sticker will follow the orange circle and HIVE lettering.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.009496,
+      "latency_ns": 13275537470
+    }
+  },
+  {
+    "case": {
+      "id": "hairlines",
+      "file": "testdata/cases/hairlines.png",
+      "order": {
+        "customer": "Sofia Rossi",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer thickens hairlines"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 3 x 3 in size, above the 150 dpi recreate threshold.",
+        "The only preflight issue is thin lines, which the designer can thicken without a new file.",
+        "The comment is empty, so there is no size, shape, material, or conflicting instruction that only the customer can resolve."
+      ],
+      "designer_note": "Thicken the thin vertical lines above the circle to at least 1/32 in. Proof as a 3 x 3 in die cut around the finished art.",
+      "customer_note": "Sofia, your 3 x 3 in die-cut proof is being prepared. The fine lines above the circle will be thickened so they print cleanly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.01482,
+      "latency_ns": 26841083964
+    }
+  },
+  {
+    "case": {
+      "id": "near-edge-rectangle",
+      "file": "testdata/cases/near-edge-rectangle.png",
+      "order": {
+        "customer": "Luca Bianchi",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer moves the bar inside the safe margin"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 3×2 inch size, above the 150 dpi recreate threshold.",
+        "The comment is empty, so nothing conflicts with the rectangle order or requires the customer.",
+        "Content sits inside the safe margin; the designer can inset the art alone."
+      ],
+      "designer_note": "Inset the artwork so the red bar and all other elements clear the 19 px safe margin. Keep the ordered 3×2 inch rectangle size.",
+      "customer_note": "Luca, your 3×2 inch rectangle proof is next. We'll pull the design inside the safe margin so the red bar and lettering stay clear of the cut.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "17136 px of artwork inside the 19 px safe margin"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006054,
+      "latency_ns": 10666850396
+    }
+  },
+  {
+    "case": {
+      "id": "empty-file",
+      "file": "testdata/cases/empty-file.png",
+      "order": {
+        "customer": "Emma Wilson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ask_customer",
+      "why": "no artwork"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Preflight flags empty artwork with no printable pixels.",
+        "The file is blank and the comment does not describe any art to recreate.",
+        "Only the customer can supply the missing artwork."
+      ],
+      "designer_note": "Hold the proof. The file has no printable pixels. Wait for Emma to send artwork.",
+      "customer_note": "Emma, please send the artwork for your 3×3 die-cut stickers so we can make your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "empty_artwork",
+            "message": "no printable pixels"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007202,
+      "latency_ns": 11132343561
+    }
+  },
+  {
+    "case": {
+      "id": "wrong-file-attached",
+      "file": "testdata/cases/wrong-file-attached.png",
+      "order": {
+        "customer": "Noah Davis",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+      },
+      "want": "ask_customer",
+      "why": "the right file is not attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment states the attached file is the wrong logo and the correct artwork is not attached.",
+        "Only the customer can supply the right file before a proof can be made."
+      ],
+      "designer_note": "Hold the proof. Do not use the attached OLD LOGO art. Wait for the correct logo Noah will email.",
+      "customer_note": "Noah, we'll hold your 3 inch die-cut proof until the correct logo arrives by email. Send that file and we'll build the proof from it.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006484,
+      "latency_ns": 10615506651
+    }
+  },
+  {
+    "case": {
+      "id": "size-change",
+      "file": "testdata/cases/size-change.png",
+      "order": {
+        "customer": "Mia Johnson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches instead of 3?"
+      },
+      "want": "ask_customer",
+      "why": "size differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for 5 inches while the order is 3 x 3 inches",
+        "Size change must be confirmed before a proof can be made",
+        "order change: a 5x5 in size instead of 3x3 in"
+      ],
+      "designer_note": "Hold the proof until Mia confirms changing the order from 3 x 3 inches to 5 x 5 inches.",
+      "customer_note": "Thanks Mia. Your comment asks for a 5x5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a 5x5 in size instead of 3x3 in"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00716,
+      "latency_ns": 11486866252
+    }
+  },
+  {
+    "case": {
+      "id": "text-edit",
+      "file": "testdata/cases/text-edit.png",
+      "order": {
+        "customer": "Liam Garcia",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please change the text to say OPEN LATE."
+      },
+      "want": "ready_for_proof",
+      "why": "designer edits text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 4 × 2 inch size, above the 150 dpi recreate threshold.",
+        "The comment only asks to change the text to OPEN LATE, which the customer wrote out, so the designer can edit it.",
+        "No size, shape, or material change, and no missing file or contradictory instructions."
+      ],
+      "designer_note": "Change OPEN to OPEN LATE in the same teal. Refit the longer line inside the safe margin on the 4 × 2 inch rectangle.",
+      "customer_note": "Liam, we'll update the text to OPEN LATE and send your 4 × 2 inch rectangle sticker proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00833,
+      "latency_ns": 12693145550
+    }
+  },
+  {
+    "case": {
+      "id": "remove-white-bg",
+      "file": "testdata/cases/remove-white-bg.png",
+      "order": {
+        "customer": "Chloe Martin",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the white background please."
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×3 in size, above the 150 recreate threshold.",
+        "The comment only asks to remove the white background, which a designer can do alone.",
+        "No missing file, size/shape/material change, or contradictory instructions."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the orange circle and FOX lettering. Keep the art at the ordered 3×3 in size.",
+      "customer_note": "Chloe, we'll remove the white background so your die-cut sticker follows the orange circle and FOX lettering. Your proof is on the way.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006956,
+      "latency_ns": 9134385739
+    }
+  },
+  {
+    "case": {
+      "id": "missing-blue-version",
+      "file": "testdata/cases/missing-blue-version.png",
+      "order": {
+        "customer": "Ethan Clark",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Use the blue version of the logo, not the red one."
+      },
+      "want": "ask_customer",
+      "why": "only the red version is attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for the blue logo, but only the red version is attached.",
+        "The blue file is not on the order, so the customer must supply it before a proof can be made.",
+        "Effective DPI is 300 at 3×3 in, so resolution is not the blocker."
+      ],
+      "designer_note": "Hold the proof until Ethan sends the blue logo file.",
+      "customer_note": "Ethan, send the blue version of your logo and we’ll make the proof from that.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.005746,
+      "latency_ns": 8708923239
+    }
+  },
+  {
+    "case": {
+      "id": "conflicting-background",
+      "file": "testdata/cases/conflicting-background.png",
+      "order": {
+        "customer": "Grace Kim",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the background transparent but keep the white box around the logo."
+      },
+      "want": "ask_customer",
+      "why": "two instructions contradict each other"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for a transparent background and to keep the white box, which contradict each other on a die-cut.",
+        "Keeping the white box would make the cut follow the rectangle instead of the logo."
+      ],
+      "designer_note": "Hold the proof. Ask Grace whether to cut around the orange logo and word or keep the white square; do not remove the white box until she chooses.",
+      "customer_note": "Grace, your note asks for a transparent background and also to keep the white box around the logo. On a die-cut sticker those look different. Tell us whether to cut around the orange logo and word or keep the white square, and we'll build the proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.013,
+      "latency_ns": 18560238219
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-sending-hires",
+      "file": "testdata/cases/lowres-sending-hires.png",
+      "order": {
+        "customer": "Jack Turner",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "the customer is sending a better file; wait for it"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Effective resolution is 110 dpi at the ordered 3x3 in, which is under 150 dpi.",
+        "The comment refers to a high-res file that is not attached and will be uploaded tomorrow, which takes priority over recreating the artwork."
+      ],
+      "designer_note": "Hold the proof until Jack uploads the high-res file, then build the 3x3 die-cut from that file.",
+      "customer_note": "Jack, send the high-res file when it is ready and we will build your 3x3 die-cut proof from that.",
+      "preflight": {
+        "width_px": 330,
+        "height_px": 330,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.009266,
+      "latency_ns": 15399084143
+    }
+  },
+  {
+    "case": {
+      "id": "tiny-tagline",
+      "file": "testdata/cases/tiny-tagline.png",
+      "order": {
+        "customer": "Hannah Scott",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make sure the small text is readable."
+      },
+      "want": "ready_for_proof",
+      "why": "designer enlarges or thickens the tagline"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300, above the 150 recreate threshold.",
+        "The comment only asks that the small text be readable; thin lines can be thickened by the designer.",
+        "No size, shape, or material change is requested, and the artwork is attached."
+      ],
+      "designer_note": "Remove the black background and die-cut around the circle and lettering. Thicken and enlarge the small text under CAFE so it is readable at 3 in; recolor it to the teal if needed so it prints clearly.",
+      "customer_note": "Hannah, we'll thicken the small text so it stays readable on your 3 inch die-cut sticker and send the proof for review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.012752,
+      "latency_ns": 21229207089
+    }
+  },
+  {
+    "case": {
+      "id": "rush-request",
+      "file": "testdata/cases/rush-request.png",
+      "order": {
+        "customer": "Owen Hughes",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love you guys! Rush please, need them for Saturday."
+      },
+      "want": "ready_for_proof",
+      "why": "turnaround request does not block the proof"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2×2 in size, above the 150 dpi recreate threshold.",
+        "Comment only asks for a rush and does not change size, shape, or material, and artwork is attached.",
+        "Black background can be removed by the designer so the die-cut follows the red circle and YAY."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the red circle and YAY. Size to 2 × 2 in. Rush for Saturday.",
+      "customer_note": "Owen, we're rushing your 2×2 die-cut proof for Saturday. It will show the red circle and YAY with the black background removed and the cut following the art.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.010108,
+      "latency_ns": 17369726531
+    }
+  },
+  {
+    "case": {
+      "id": "add-phone-number",
+      "file": "testdata/cases/add-phone-number.png",
+      "order": {
+        "customer": "Daniel Young",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Can you add my phone number 555-0100 under the logo?"
+      },
+      "want": "ready_for_proof",
+      "why": "designer adds text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 4 × 2 in size, above the 150 dpi recreate threshold.",
+        "The comment asks only to add the phone number 555-0100 under the logo, which the designer can set from the text provided.",
+        "No size, shape, or material change is requested, and the attached art matches the rectangle order."
+      ],
+      "designer_note": "Add 555-0100 under the logo. Keep the existing navy artwork and produce a 4 × 2 in rectangle proof.",
+      "customer_note": "Daniel, we'll add 555-0100 under your logo and send a proof of your 4 × 2 inch rectangle sticker.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00621,
+      "latency_ns": 10531566707
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-please-vectorize",
+      "file": "testdata/cases/lowres-please-vectorize.png",
+      "order": {
+        "customer": "Ava Walker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please recreate this as a vector if needed."
+      },
+      "want": "recreate_artwork",
+      "why": "140 dpi and the customer asks for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 140 dpi at the ordered 3x3 in, under the 150 dpi threshold.",
+        "The comment asks to recreate the art as a vector if needed and does not conflict with the order.",
+        "No missing file, size, shape, or material change requires the customer."
+      ],
+      "designer_note": "Recreate the navy circle and WOLF wordmark as vector art. Remove the black background and die-cut around the logo at 3×3 in.",
+      "customer_note": "Ava, we'll rebuild your circle and WOLF logo as a crisp vector and cut the sticker around the art at 3×3 in.",
+      "preflight": {
+        "width_px": 420,
+        "height_px": 420,
+        "effective_dpi": 140,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "140 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.010338,
+      "latency_ns": 16029680882
+    }
+  },
+  {
+    "case": {
+      "id": "fullbleed-photo",
+      "file": "testdata/cases/fullbleed-photo.png",
+      "order": {
+        "customer": "Lucas Allen",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "full-bleed rectangle at 300 dpi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 3 × 2 in size, above the 150 dpi recreate threshold.",
+        "The attached file is usable full-bleed artwork and the comment is empty, so nothing conflicts with the ordered rectangle.",
+        "No missing file, contradictory instructions, or size, shape, or material change that only the customer can resolve."
+      ],
+      "designer_note": "Proof the supplied gradient as a 3 × 2 in rectangle sticker at full bleed. No text or cut changes.",
+      "customer_note": "Lucas, your 3 × 2 inch rectangle sticker proof is being prepared from the artwork you sent.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.011248,
+      "latency_ns": 18638618390
+    }
+  },
+  {
+    "case": {
+      "id": "medium-thin-whitebox",
+      "file": "testdata/cases/medium-thin-whitebox.png",
+      "order": {
+        "customer": "Ella King",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "every finding is a designer fix"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 160 dpi, above the 150 dpi recreate threshold.",
+        "Comment is empty, so nothing conflicts with the 3x3 die-cut order.",
+        "Designer can remove the solid white background so the cut follows the art and thicken the thin lines."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the circle, tick marks, and ZEN lettering. Thicken lines under 1/32 in. Keep the teal art and size the proof to 3x3 in.",
+      "customer_note": "Ella, your 3x3 die-cut proof will follow the circle, lines, and ZEN lettering. We'll remove the white background and thicken the fine lines so they print clearly.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 160,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "160 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00795,
+      "latency_ns": 10589977739
+    }
+  },
+  {
+    "case": {
+      "id": "holographic",
+      "file": "testdata/cases/holographic.png",
+      "order": {
+        "customer": "Leo Wright",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "material differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment requests holographic vinyl, which is not the material on this die-cut order.",
+        "A material different from the order must be confirmed by the customer before proofing.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof. Customer asked for holographic vinyl; order has no holographic stock. Wait for confirmation before proofing.",
+      "customer_note": "Thanks Leo. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.014002,
+      "latency_ns": 24200989787
+    }
+  },
+  {
+    "case": {
+      "id": "same-size-confirmation",
+      "file": "testdata/cases/same-size-confirmation.png",
+      "order": {
+        "customer": "Zoe Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print it at 2x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "the size matches the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2x2 size, above the 150 dpi recreate threshold.",
+        "Comment asks to print at 2x2 inches, which matches the order size, shape, and material.",
+        "Black background removal and die-cut around the circle and lettering are designer fixes."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the orange circle and BEE text. Size to 2 x 2 inches.",
+      "customer_note": "Zoe, your sticker will be printed at 2x2 inches and cut around the orange circle and BEE lettering, with the black background removed.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006486,
+      "latency_ns": 9789670689
+    }
+  },
+  {
+    "case": {
+      "id": "spanish-remove-bg",
+      "file": "testdata/cases/spanish-remove-bg.png",
+      "order": {
+        "customer": "Diego Ramirez",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Por favor quiten el fondo blanco."
+      },
+      "want": "ready_for_proof",
+      "why": "asks, in Spanish, to remove the white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×3 in size, so the file is print-ready.",
+        "The comment only asks to remove the white background, which the designer can do so the die cut follows the art."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the orange circle and SOL lettering. Keep the ordered 3×3 in die-cut size.",
+      "customer_note": "Diego, we'll remove the white background and cut the sticker around the orange circle and SOL text on your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.003786,
+      "latency_ns": 4977938666
+    }
+  },
+  {
+    "case": {
+      "id": "gen-001-none",
+      "file": "testdata/cases/gen-001-none.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 4 × 2 in, so the file does not need recreation.",
+        "The comment is empty: no missing file, no conflicting size, shape, or material, and artwork is attached.",
+        "A solid white background would make the die cut follow the rectangle; removing that background is a designer fix."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the blue circle and NOVA lettering. Keep the sticker at 4 × 2 in.",
+      "customer_note": "Chloé, your proof will be a die-cut NOVA sticker at 4 × 2 in, with the white background removed so the cut follows the circle and lettering.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00895,
+      "latency_ns": 12338132121
+    }
+  },
+  {
+    "case": {
+      "id": "gen-002-rush",
+      "file": "testdata/cases/gen-002-rush.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2.5 × 2.5 in size, above the 150 recreate threshold.",
+        "Artwork is attached and the comment only asks for a Friday delivery; it does not change size, shape, or material or contradict the order.",
+        "Removing the black background and contour-cutting around the circle and wordmark is a designer-only fix."
+      ],
+      "designer_note": "Remove the black background and die-cut around the purple circle and MULE wordmark as one sticker. Keep the ordered 2.5 × 2.5 in size. Prioritize for Friday if the schedule allows.",
+      "customer_note": "Aisha, your 2.5 × 2.5 in die-cut proof is being prepared now, with the black background removed so the cut follows the circle and MULE. We'll push this through to aim for Friday.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.011126,
+      "latency_ns": 14532752215
+    }
+  },
+  {
+    "case": {
+      "id": "gen-003-praise",
+      "file": "testdata/cases/gen-003-praise.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 200 dpi, above the 150 dpi recreate threshold.",
+        "Thin lines can be thickened by the designer.",
+        "Comment does not request a different size, shape, or material, and artwork is attached."
+      ],
+      "designer_note": "Thicken the thin vertical lines above the circle to at least 1/32 in. Remove the black background and die-cut around the red artwork at 2x2 in.",
+      "customer_note": "Nguyễn, we'll thicken the fine lines and cut around your artwork for a clean 2x2 die-cut proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 2,
+      "cost_usd": 0.02757,
+      "latency_ns": 47620774368
+    }
+  },
+  {
+    "case": {
+      "id": "gen-004-same-size",
+      "file": "testdata/cases/gen-004-same-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 4x2 size, above the 150 recreate threshold.",
+        "The comment asks for 4x2 inches, which matches the order, and does not request a different shape or material.",
+        "The solid white background can be removed by the designer so the die cut follows the circle and lettering instead of the rectangle."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the blue circle and TACO lettering. Keep the art at 4x2 inches.",
+      "customer_note": "Zoë, your 4x2 inch die-cut sticker is set for proof. We'll remove the white background and cut around the blue circle and TACO lettering.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00936,
+      "latency_ns": 11059890746
+    }
+  },
+  {
+    "case": {
+      "id": "gen-005-vibrant",
+      "file": "testdata/cases/gen-005-vibrant.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×3 inch size, above the 150 recreate threshold.",
+        "The comment only asks to make the colors as bright as possible, which the designer can do.",
+        "No size, shape, or material different from the order is requested, and the artwork is attached."
+      ],
+      "designer_note": "Boost the red to maximum brightness and saturation. Proof as a 3×3 inch rectangle.",
+      "customer_note": "José, we'll make the red as bright as we can and prepare your 3×3 inch rectangle proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006496,
+      "latency_ns": 8832782982
+    }
+  },
+  {
+    "case": {
+      "id": "gen-006-remove-bg",
+      "file": "testdata/cases/gen-006-remove-bg.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment only asks to remove the white background, which the designer can do alone.",
+        "Effective resolution is 200 dpi at 2x2 in, above the 150 dpi recreate threshold.",
+        "No size, shape, or material change is requested, and the request matches the rectangle order."
+      ],
+      "designer_note": "Remove the white background. Keep the purple circle and TACO text. Proof as a 2x2 inch rectangle.",
+      "customer_note": "Łukasz, we'll remove the white background and send your 2x2 inch rectangle proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00612,
+      "latency_ns": 8022502238
+    }
+  },
+  {
+    "case": {
+      "id": "gen-007-remove-bg-fr",
+      "file": "testdata/cases/gen-007-remove-bg-fr.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 4×2 in size, above the 150 dpi recreate threshold.",
+        "Comment only asks to remove the white background, which a designer can do for this die-cut order.",
+        "No different size, shape, or material is requested, and the instructions are not contradictory."
+      ],
+      "designer_note": "Remove the white background and die-cut around the purple circle and BREW.",
+      "customer_note": "Sam, we will remove the white background so your die-cut sticker follows the purple circle and BREW.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006922,
+      "latency_ns": 9655800471
+    }
+  },
+  {
+    "case": {
+      "id": "gen-008-remove-bg-de",
+      "file": "testdata/cases/gen-008-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment only asks to remove the white background, which a designer can do.",
+        "Effective resolution is 240 dpi at 3x2 in, above the 150 dpi recreate threshold.",
+        "No size, shape, or material change is requested, and nothing contradicts the die-cut order."
+      ],
+      "designer_note": "Remove the white background and die-cut around the blue circle and KIWI wordmark, not the rectangular canvas.",
+      "customer_note": "Raj, we'll remove the white background and cut your sticker around the blue circle and KIWI logo.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008366,
+      "latency_ns": 11433055990
+    }
+  },
+  {
+    "case": {
+      "id": "gen-009-remove-bg-vi",
+      "file": "testdata/cases/gen-009-remove-bg-vi.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment only asks to remove the white background, which the designer can do.",
+        "Effective resolution is 240 dpi at 4x2 in, above the 150 dpi recreate threshold.",
+        "No size, shape, or material change versus the die-cut order, and instructions do not conflict.",
+        "Thin lines above the circle can be thickened by the designer."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the purple circle, bars, and SURF lettering. Thicken the thin vertical bars to at least 1/32 in. Keep the ordered 4x2 in die-cut size.",
+      "customer_note": "Mei, we will remove the white background and cut around your purple logo and SURF lettering. Your proof will show the die-cut sticker at 4x2 in.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008718,
+      "latency_ns": 12322912341
+    }
+  },
+  {
+    "case": {
+      "id": "gen-010-add-text",
+      "file": "testdata/cases/gen-010-add-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300, above the 150 recreate threshold.",
+        "The comment states the exact website text to add, which the designer can place.",
+        "Thin lines can be thickened by the designer without customer input."
+      ],
+      "designer_note": "Remove the black background and die-cut around the art. Thicken lines under 1/32 in. Add \"example.com\" under the logo.",
+      "customer_note": "Łukasz, your proof will include example.com under the logo, with the fine lines thickened so they print cleanly on your die-cut stickers.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00874,
+      "latency_ns": 12071352694
+    }
+  },
+  {
+    "case": {
+      "id": "gen-011-change-text",
+      "file": "testdata/cases/gen-011-change-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment only asks to change BOLT to lowercase, which the designer can edit.",
+        "240 dpi at 3x3 in is above the 150 dpi recreate threshold.",
+        "White background can be removed so the die cut follows the circle and lettering."
+      ],
+      "designer_note": "Change BOLT to bolt. Remove the white background so the die cut follows the circle and lettering.",
+      "customer_note": "Aisha, we'll change BOLT to bolt and remove the white background so the die cut follows the circle and lettering.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.005844,
+      "latency_ns": 6826215299
+    }
+  },
+  {
+    "case": {
+      "id": "gen-012-thicker",
+      "file": "testdata/cases/gen-012-thicker.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2.5 in size, so the file does not need recreation.",
+        "The comment only asks to thicken thin lines, which the designer can do without customer input."
+      ],
+      "designer_note": "Thicken the thin lines so they print stronger, then proof at the ordered 2.5 x 2.5 in die-cut size.",
+      "customer_note": "Łukasz, we will thicken the thin lines so they look stronger on your die-cut stickers and send the proof at 2.5 x 2.5 in.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.005136,
+      "latency_ns": 7348945358
+    }
+  },
+  {
+    "case": {
+      "id": "gen-013-center",
+      "file": "testdata/cases/gen-013-center.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Center the logo please."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 130 dpi at the ordered 3x3 in, below the 150 dpi recreate threshold.",
+        "Comment only asks to center the logo, which the designer can do while rebuilding the simple circle and wordmark as vector art and removing the white background for a true die cut."
+      ],
+      "designer_note": "Recreate the blue circle and MULE wordmark as clean vector art. Remove the white background so the die cut follows the logo. Center the logo in the 3x3 in die-cut.",
+      "customer_note": "Hi Nguyễn, we will rebuild your logo as crisp artwork, center it, and cut around the design for your 3x3 die-cut sticker.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 2,
+      "cost_usd": 0.021012,
+      "latency_ns": 34848813355
+    }
+  },
+  {
+    "case": {
+      "id": "gen-014-bigger-text",
+      "file": "testdata/cases/gen-014-bigger-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×2 in size, above the 150 dpi recreate threshold.",
+        "The comment only asks to enlarge the existing NOVA text, which the designer can do alone.",
+        "No size, shape, or material change is requested, and nothing contradicts the rectangle order."
+      ],
+      "designer_note": "Enlarge the NOVA text slightly under the red circle. Keep the art on a 3×2 in rectangle sticker.",
+      "customer_note": "Łukasz, we'll make the NOVA text a bit larger on your 3×2 inch rectangle sticker and prepare the proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006294,
+      "latency_ns": 8813161876
+    }
+  },
+  {
+    "case": {
+      "id": "gen-015-redraw-ok",
+      "file": "testdata/cases/gen-015-redraw-ok.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×2 in size, above the 150 dpi recreate threshold.",
+        "White background is a designer-only fix so the die-cut follows the circle and SURF text instead of the rectangle.",
+        "Comment only permits a redraw if needed and does not request a different size, shape, or material or contradict the order."
+      ],
+      "designer_note": "Remove the solid white background so the die-cut follows the teal circle and SURF lettering. Keep colors and layout; no redraw needed at 300 dpi.",
+      "customer_note": "Fatima, your file is print-ready. We'll knock out the white background so the die-cut follows the teal circle and SURF lettering, then send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00744,
+      "latency_ns": 11388559003
+    }
+  },
+  {
+    "case": {
+      "id": "gen-016-size-up",
+      "file": "testdata/cases/gen-016-size-up.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for 5 inches wide, which differs from the ordered 3×3 in size.",
+        "A size different from the order must be confirmed by the customer and takes priority over recreating the low-resolution file.",
+        "order change: a 5 in size instead of 3x3 in"
+      ],
+      "designer_note": "Hold the proof. Ordered size is 3×3 in die-cut; comment requests 5 in wide. Confirm final width and height before proceeding.",
+      "customer_note": "Thanks Mei. Your comment asks for a 5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 5 in size instead of 3x3 in"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006534,
+      "latency_ns": 9461622662
+    }
+  },
+  {
+    "case": {
+      "id": "gen-017-size-down",
+      "file": "testdata/cases/gen-017-size-down.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Actually I need them 1x1 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment requests 1x1 in stickers, which differs from the ordered 2x2 in size.",
+        "A size change from the order can only be confirmed by the customer.",
+        "order change: a 1x1 in size instead of 2x2 in"
+      ],
+      "designer_note": "Hold the proof until Jonas confirms 1x1 in versus the ordered 2x2 in.",
+      "customer_note": "Thanks Jonas. Your comment asks for a 1x1 in size instead of 2x2 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1x1 in size instead of 2x2 in"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006526,
+      "latency_ns": 8886154576
+    }
+  },
+  {
+    "case": {
+      "id": "gen-018-to-square",
+      "file": "testdata/cases/gen-018-to-square.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for a square sticker that keeps the white background and is not cut around the art, which is a different shape from the ordered die-cut.",
+        "Effective resolution is 300 dpi, so the file does not need to be recreated.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof until Chloé confirms a square sticker instead of die-cut. If confirmed, keep the white background and cut a square; do not cut around the circle.",
+      "customer_note": "Thanks Chloé. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.011568,
+      "latency_ns": 13830855276
+    }
+  },
+  {
+    "case": {
+      "id": "gen-019-to-diecut",
+      "file": "testdata/cases/gen-019-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks to cut around the logo (die-cut), which differs from the ordered rectangle shape.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Hold the proof until Jonas confirms die-cut around the logo or the ordered 2×2 rectangle.",
+      "customer_note": "Thanks Jonas. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007406,
+      "latency_ns": 8626280371
+    }
+  },
+  {
+    "case": {
+      "id": "gen-020-holo",
+      "file": "testdata/cases/gen-020-holo.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for holographic vinyl, a material not on this die-cut order.",
+        "A material change blocks the proof and takes priority over designer fixes.",
+        "Effective resolution is 200 dpi, so recreation is not required.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until holographic vinyl is confirmed. If confirmed, remove the white background so the die cut follows the circle and TACO, and proof at 2×2 in on holographic vinyl.",
+      "customer_note": "Thanks Nguyễn. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.016354,
+      "latency_ns": 26993632498
+    }
+  },
+  {
+    "case": {
+      "id": "gen-021-clear",
+      "file": "testdata/cases/gen-021-clear.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2x2 size, above the 150 dpi recreate threshold.",
+        "Artwork is attached and the comment does not change size or shape or contradict itself.",
+        "Clear vinyl is specified in the comment; the designer can remove the black background so the laptop shows through.",
+        "order change: clear vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Remove the black background. Proof as a 2x2 die-cut on clear vinyl, cutting around the teal circle and FORGE wordmark.",
+      "customer_note": "Thanks Jonas. Your comment asks for clear vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear vinyl instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.017122,
+      "latency_ns": 31543653038
+    }
+  },
+  {
+    "case": {
+      "id": "gen-022-glitter",
+      "file": "testdata/cases/gen-022-glitter.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for glitter stock, which is not the ordered material.",
+        "Artwork is 300 dpi at 3×2 in, so resolution does not block the proof.",
+        "Material change must be confirmed before a proof is made.",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until Kate confirms glitter stock. On confirmation, remove the black background and die-cut around the circle and NOVA.",
+      "customer_note": "Thanks Kate. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.010204,
+      "latency_ns": 18220462491
+    }
+  },
+  {
+    "case": {
+      "id": "gen-023-other-file",
+      "file": "testdata/cases/gen-023-other-file.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for a green logo the customer says they will send, and that file is not attached.",
+        "Only the customer can provide the missing artwork, so the proof cannot proceed."
+      ],
+      "designer_note": "Hold the proof until Łukasz sends the green logo, then replace the navy logo with that file.",
+      "customer_note": "Łukasz, send the green version of the logo and we will use it on your 4×2 inch rectangle sticker proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007808,
+      "latency_ns": 9867759562
+    }
+  },
+  {
+    "case": {
+      "id": "gen-024-email-later",
+      "file": "testdata/cases/gen-024-email-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment states the attached file is a placeholder and that final art will arrive by email tomorrow, so that file is not attached.",
+        "Missing final artwork blocks the proof and overrides designer-side fixes such as removing the white background."
+      ],
+      "designer_note": "Do not proof this placeholder. Wait for Chloé's final artwork by email, then build the 4×2 die-cut proof from that file.",
+      "customer_note": "Chloé, this file is a placeholder. Email the final artwork and we'll make your 4×2 die-cut proof from that file.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007576,
+      "latency_ns": 10752043914
+    }
+  },
+  {
+    "case": {
+      "id": "gen-025-hires-later",
+      "file": "testdata/cases/gen-025-hires-later.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Effective resolution is 110 dpi at the ordered 2x2 in, under 150 dpi.",
+        "The comment says a better file will be uploaded tonight, and that file is not attached.",
+        "A missing replacement file the customer promised wins over recreating the low-resolution art."
+      ],
+      "designer_note": "Hold the proof. Do not recreate the 110 dpi file; wait for the higher-quality upload Zoë said she will send tonight.",
+      "customer_note": "Zoë, send the higher-quality file tonight and we will make your 2×2 in die-cut proof from that upload.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.01067,
+      "latency_ns": 14222732544
+    }
+  },
+  {
+    "case": {
+      "id": "gen-026-contradict",
+      "file": "testdata/cases/gen-026-contradict.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment both removes the background and keeps the white box, which contradict each other.",
+        "A white border would make the die cut follow a square; removing it would cut around the circle and TACO.",
+        "200 dpi is above the 150 dpi recreate threshold, and contradictory instructions take priority."
+      ],
+      "designer_note": "Hold the proof. Wait for Fatima to choose die-cut around the circle and TACO with the white removed, or keep the white square border.",
+      "customer_note": "Fatima, please confirm the finish for your 2×2 die-cut sticker: remove the white so we cut around the purple circle and TACO, or keep the white box so the sticker stays square.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.01144,
+      "latency_ns": 17798915742
+    }
+  },
+  {
+    "case": {
+      "id": "gen-027-contradict-size",
+      "file": "testdata/cases/gen-027-contradict-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment says to make it bigger and also keep the same size as the order, which contradict each other.",
+        "Contradictory instructions take priority over the 100 dpi finding."
+      ],
+      "designer_note": "Hold the proof. Comment conflicts: enlarge the art and keep the ordered 3x2 in size. After they confirm, recreate the 100 dpi artwork at the confirmed size.",
+      "customer_note": "Zoë, your note says to make it bigger and also keep the same size as this order. Confirm whether you want the logo enlarged on the 3x2 in sticker, or a different sticker size, and we will make the proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.013738,
+      "latency_ns": 22085726930
+    }
+  },
+  {
+    "case": {
+      "id": "gen-028-none",
+      "file": "testdata/cases/gen-028-none.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300, above the 150 dpi recreate threshold.",
+        "Artwork is attached and is already 2.5 × 2.5 in at the ordered size.",
+        "The comment is empty, so nothing conflicts with the rectangle order."
+      ],
+      "designer_note": "Proof the supplied logo as-is on a 2.5 × 2.5 in rectangle; keep the white background.",
+      "customer_note": "Nguyễn, your TACO logo is set for proof on a 2.5 × 2.5 in rectangle sticker.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 2,
+      "cost_usd": 0.03401,
+      "latency_ns": 57250504728
+    }
+  },
+  {
+    "case": {
+      "id": "gen-029-rush",
+      "file": "testdata/cases/gen-029-rush.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 100 dpi at the ordered 3×2 in, below the 150 dpi recreate threshold.",
+        "Comment only asks for a Friday timeline and does not change size, shape, or material, so the customer does not need to unblock the proof.",
+        "White background and thin tick marks are corrected while the logo is rebuilt."
+      ],
+      "designer_note": "Recreate the purple circle, NOVA wordmark, and top tick marks as vector art at 3×2 in. Remove the white background so the die cut follows the logo. Thicken the tick marks to at least 1/32 in.",
+      "customer_note": "Łukasz, we'll rebuild your NOVA logo so it prints sharp at 3×2 inches and cut the sticker around the circle and lettering, leaving the white background out. Your proof is next.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.01152,
+      "latency_ns": 18303763732
+    }
+  },
+  {
+    "case": {
+      "id": "gen-030-praise",
+      "file": "testdata/cases/gen-030-praise.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×3 in size, above the 150 recreate threshold.",
+        "The solid white border is a background the designer can remove so the die cut follows the circle and lettering.",
+        "The comment is only praise and does not request a different size, shape, or material, refer to a missing file, or contradict the order."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the teal circle and KIWI lettering. Keep colors and text as shown and size to 3×3 in.",
+      "customer_note": "Łukasz, we'll remove the white background so your die-cut sticker follows the circle and KIWI lettering. Your proof is next.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.0098,
+      "latency_ns": 10435400575
+    }
+  },
+  {
+    "case": {
+      "id": "gen-031-same-size",
+      "file": "testdata/cases/gen-031-same-size.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print at 3x3 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "240 dpi at the ordered 3x3 in is above the 150 dpi recreate threshold.",
+        "Comment asks only for 3x3 inches, which matches the order.",
+        "No missing file, conflicting instructions, or shape/material change."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the circle and BLOOM wordmark. Size to 3x3 inches.",
+      "customer_note": "José, we’ll print your BLOOM sticker at 3x3 inches and die-cut around the circle and wordmark, with the black background removed. A proof is on the way.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.013582,
+      "latency_ns": 21761995834
+    }
+  },
+  {
+    "case": {
+      "id": "gen-032-vibrant",
+      "file": "testdata/cases/gen-032-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3 x 2 in size, above the 150 dpi recreate threshold.",
+        "The comment only asks to brighten the colors, which the designer can do.",
+        "No missing file, size, shape, or material change, and no conflicting instructions."
+      ],
+      "designer_note": "Remove the black background. Push the red to maximum brightness and saturation. Die-cut around the circle and MULE. Size to 3 x 2 in.",
+      "customer_note": "Kate, we'll brighten the red as much as possible, remove the black background, and cut the sticker around the circle and MULE.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.009828,
+      "latency_ns": 15648311933
+    }
+  },
+  {
+    "case": {
+      "id": "gen-033-remove-bg",
+      "file": "testdata/cases/gen-033-remove-bg.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 130 dpi at the ordered 2×2 in, under the 150 dpi recreate threshold.",
+        "Comment only asks to remove the white background, which the designer can do while redrawing.",
+        "No missing file, size/shape/material change, or conflicting instructions that would require asking the customer."
+      ],
+      "designer_note": "Recreate the navy circle and PIXEL wordmark as crisp vector art. Remove the white background and die-cut tightly around the logo at 2×2 in.",
+      "customer_note": "Aisha, we'll remove the white background and redraw the navy circle and PIXEL lettering so your 2×2 die-cut sticker stays sharp.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.009522,
+      "latency_ns": 15725288611
+    }
+  },
+  {
+    "case": {
+      "id": "gen-034-remove-bg-fr",
+      "file": "testdata/cases/gen-034-remove-bg-fr.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 130 dpi at the ordered 3×2 in, below the 150 dpi recreate threshold.",
+        "The logo is simple geometry (solid orange circle plus PIXEL wordmark) and can be rebuilt as vector.",
+        "The comment only asks to remove the white background, which the designer can do while recreating; it does not change size, shape, or material or otherwise require the customer."
+      ],
+      "designer_note": "Recreate the orange circle and PIXEL wordmark as vector. Remove the white background and die-cut around the circle and text at 3×2 in.",
+      "customer_note": "José, we are rebuilding your PIXEL logo as crisp vector art and removing the white background so the die-cut follows the orange circle and lettering.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00869,
+      "latency_ns": 13236726782
+    }
+  },
+  {
+    "case": {
+      "id": "gen-035-remove-bg-de",
+      "file": "testdata/cases/gen-035-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 130 dpi at the ordered 2.5×2.5 in, under the 150 dpi recreate threshold.",
+        "Logo is a simple purple circle plus the word DASH and can be rebuilt as vector.",
+        "Comment only asks to remove the white background; size, shape, and material match the die-cut order, so nothing requires the customer."
+      ],
+      "designer_note": "Recreate the purple circle and DASH wordmark as vector at 2.5×2.5 in. Remove the white background and die-cut around the circle and lettering.",
+      "customer_note": "Raj, we'll rebuild your DASH logo as crisp vector art, remove the white background, and die-cut the sticker around the circle and lettering at 2.5 × 2.5 in.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007394,
+      "latency_ns": 10434138985
+    }
+  },
+  {
+    "case": {
+      "id": "gen-036-remove-bg-vi",
+      "file": "testdata/cases/gen-036-remove-bg-vi.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment only asks to remove the white background, which a designer can do alone.",
+        "Effective resolution is 200 dpi at 2x2 in, above the 150 dpi recreate threshold.",
+        "No missing file, conflicting instructions, or size, shape, or material change."
+      ],
+      "designer_note": "Remove the solid white background and die-cut around the orange circle and BLOOM lettering. Keep the ordered 2x2 in size.",
+      "customer_note": "Łukasz, we will remove the white background so your die-cut sticker follows the orange circle and BLOOM lettering at 2x2 in.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008226,
+      "latency_ns": 13347646392
+    }
+  },
+  {
+    "case": {
+      "id": "gen-037-add-text",
+      "file": "testdata/cases/gen-037-add-text.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×2 in size, so the file does not need recreation.",
+        "The comment only asks to add text the customer wrote out (example.com under the logo), which a designer can do alone."
+      ],
+      "designer_note": "Add “example.com” under the BREW logo in matching red, sized to fit the 3×2 in rectangle and kept inside the safe margin.",
+      "customer_note": "Fatima, we’ll add example.com under your logo and prepare the proof for your 3×2 rectangle sticker.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.004654,
+      "latency_ns": 7100863223
+    }
+  },
+  {
+    "case": {
+      "id": "gen-038-change-text",
+      "file": "testdata/cases/gen-038-change-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 240 dpi at the ordered 4x2 in size, above the 150 dpi recreate threshold.",
+        "The comment only asks to change the existing word to all lowercase, which a designer can edit on the proof."
+      ],
+      "designer_note": "Change KIWI to all lowercase (kiwi). Keep the purple circle and die-cut around the art at 4x2 in.",
+      "customer_note": "Mei, we'll change the word to all lowercase and include it on your die-cut proof.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006084,
+      "latency_ns": 6683211813
+    }
+  },
+  {
+    "case": {
+      "id": "gen-039-thicker",
+      "file": "testdata/cases/gen-039-thicker.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi is above the 150 dpi recreate threshold",
+        "Comment only asks to bold thin lines, which a designer can do",
+        "No size, shape, or material change and no missing file"
+      ],
+      "designer_note": "Thicken any thin lines so they look bolder. Keep the red circle and FORGE wordmark and fit the art to the 2.5 x 2.5 in rectangle.",
+      "customer_note": "Nguyễn, we will thicken the thin lines so they look bolder on your 2.5 by 2.5 inch rectangle sticker proof.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 2,
+      "cost_usd": 0.036382,
+      "latency_ns": 58733976814
+    }
+  },
+  {
+    "case": {
+      "id": "gen-040-center",
+      "file": "testdata/cases/gen-040-center.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi, above the 150 dpi recreate threshold.",
+        "Centering the logo and removing the solid black field are designer-side fixes."
+      ],
+      "designer_note": "Remove the solid black background. Center the blue circle and BLOOM wordmark in the 2.5 × 2.5 in die-cut and contour-cut around the logo.",
+      "customer_note": "Mei, we'll center your logo and cut the sticker around the blue circle and BLOOM text.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.012506,
+      "latency_ns": 20678709459
+    }
+  },
+  {
+    "case": {
+      "id": "gen-041-bigger-text",
+      "file": "testdata/cases/gen-041-bigger-text.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2.5 in size, above the recreate threshold.",
+        "Comment only asks to enlarge the existing BREW text, which a designer can do.",
+        "No missing file, size, shape, or material conflict."
+      ],
+      "designer_note": "Remove the black background. Enlarge the BREW text slightly. Die-cut around the circle and text, keeping art inside the safe margin.",
+      "customer_note": "Raj, we'll enlarge the BREW text a bit and cut the sticker around your logo for the proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006302,
+      "latency_ns": 8859994384
+    }
+  },
+  {
+    "case": {
+      "id": "gen-042-redraw-ok",
+      "file": "testdata/cases/gen-042-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 2 x 2 in size, above the 150 dpi recreate threshold.",
+        "Artwork is attached and the comment only permits a redraw if needed; file quality is sufficient.",
+        "Removing the black background and cutting around the circle and lettering are designer-only fixes.",
+        "The comment does not request a different size, shape, or material."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the teal circle and BREW lettering. Keep the teal color and size to 2 x 2 inches.",
+      "customer_note": "José, your 2 inch die-cut proof is in progress. We'll remove the black background and cut around the circle and BREW lettering.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008622,
+      "latency_ns": 12791570696
+    }
+  },
+  {
+    "case": {
+      "id": "gen-043-size-up",
+      "file": "testdata/cases/gen-043-size-up.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Can you make these 4.5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for 4.5 inches wide, which differs from the ordered 2.5 × 2.5 in size.",
+        "A size different from the order must be confirmed by the customer before proofing.",
+        "This size mismatch takes priority over the 130 dpi low-resolution finding.",
+        "order change: a 4.5 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Hold the proof. Customer asked for 4.5 in wide instead of the ordered 2.5 × 2.5 in. Wait for confirmed width and height before resizing or recreating.",
+      "customer_note": "Thanks Chloé. Your comment asks for a 4.5 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 4.5 in size instead of 2.5x2.5 in"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.011846,
+      "latency_ns": 17439127670
+    }
+  },
+  {
+    "case": {
+      "id": "gen-044-size-down",
+      "file": "testdata/cases/gen-044-size-down.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment requests 1.25x1.25 inches, which differs from the ordered 2.5x2.5 die-cut size.",
+        "A size change from the order must be confirmed by the customer before a proof is made.",
+        "order change: a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Hold the proof. Order is 2.5x2.5 die-cut; comment asks for 1.25x1.25. Wait for size confirmation before resizing.",
+      "customer_note": "Thanks Aisha. Your comment asks for a 1.25x1.25 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00766,
+      "latency_ns": 10414783438
+    }
+  },
+  {
+    "case": {
+      "id": "gen-045-to-square",
+      "file": "testdata/cases/gen-045-to-square.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for a square sticker that keeps the background and is not cut around the art, which differs from the ordered 4×2 die-cut.",
+        "No square size in inches is stated, so only the customer can confirm the size.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof until Kate confirms the square size. Keep the white background and do not cut around the logo.",
+      "customer_note": "Thanks Kate. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.0124,
+      "latency_ns": 19079938885
+    }
+  },
+  {
+    "case": {
+      "id": "gen-046-to-diecut",
+      "file": "testdata/cases/gen-046-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks to cut around the logo instead of the ordered rectangle shape.",
+        "Shape change from the order can only be confirmed by the customer.",
+        "Effective DPI is 300, so recreation is not required.",
+        "Thin lines and edge clearance are designer-fixable once the shape is confirmed.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Hold the proof until Jonas confirms die-cut instead of the ordered rectangle. If confirmed, cut around the logo, thicken the thin marks above the circle, and keep art inside the safe margin.",
+      "customer_note": "Thanks Jonas. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008754,
+      "latency_ns": 12969453666
+    }
+  },
+  {
+    "case": {
+      "id": "gen-047-holo",
+      "file": "testdata/cases/gen-047-holo.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment requests holographic vinyl, which is not the material on this rectangle sticker order.",
+        "A material change can only be confirmed by the customer and blocks the proof.",
+        "Effective DPI is 300, so the file does not need to be recreated.",
+        "order change: holographic vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until Sam confirms holographic vinyl. After the order is updated, thicken the thin rays, move the art inside the safe margin, and proof the 4×2 rectangle on holographic vinyl.",
+      "customer_note": "Thanks Sam. Your comment asks for holographic vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic vinyl instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.01509,
+      "latency_ns": 27654917374
+    }
+  },
+  {
+    "case": {
+      "id": "gen-048-clear",
+      "file": "testdata/cases/gen-048-clear.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for clear vinyl, a material not on the die-cut order.",
+        "Only the customer can confirm that material change before a proof is made.",
+        "order change: clear vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until clear vinyl is confirmed. Then remove the black background so the stock shows through and keep the orange circle and KIWI.",
+      "customer_note": "Thanks Zoë. Your comment asks for clear vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear vinyl instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.016192,
+      "latency_ns": 29684326229
+    }
+  },
+  {
+    "case": {
+      "id": "gen-049-glitter",
+      "file": "testdata/cases/gen-049-glitter.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for glitter stock, a material different from the order.",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until Aisha confirms glitter stock. If confirmed, switch the order to glitter and proof the supplied art as a 2×2 die-cut.",
+      "customer_note": "Thanks Aisha. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.011034,
+      "latency_ns": 18288798606
+    }
+  },
+  {
+    "case": {
+      "id": "gen-050-other-file",
+      "file": "testdata/cases/gen-050-other-file.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment refers to a green logo file that is not attached.",
+        "The customer said they will send that file, so the proof cannot proceed from the attached red artwork."
+      ],
+      "designer_note": "Hold the proof until Sam sends the green logo, then use that file instead of the attached red version.",
+      "customer_note": "Sam, send the green version of your logo and we will use it for your die-cut proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006774,
+      "latency_ns": 9328252201
+    }
+  },
+  {
+    "case": {
+      "id": "gen-051-email-later",
+      "file": "testdata/cases/gen-051-email-later.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment states the attached file is a placeholder and that final art will arrive by email tomorrow.",
+        "The final artwork is not attached, so only the customer can unblock the proof.",
+        "A missing final file takes priority over the 130 dpi low-resolution finding."
+      ],
+      "designer_note": "Hold the proof. Do not use the placeholder; wait for the final artwork the customer is emailing.",
+      "customer_note": "Aisha, we'll make your 3x3 rectangle proof as soon as your final artwork arrives by email. Send that file and we'll get your proof started.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006574,
+      "latency_ns": 10024154207
+    }
+  },
+  {
+    "case": {
+      "id": "gen-052-hires-later",
+      "file": "testdata/cases/gen-052-hires-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Effective resolution is 110 dpi at the ordered 2x2 in, which is under 150 dpi.",
+        "The comment says a better file will be uploaded tonight, so it refers to artwork that is not attached.",
+        "A missing replacement file the customer promised wins over recreating the low-resolution art."
+      ],
+      "designer_note": "Hold the proof until Chloé uploads the replacement file. Do not recreate the current 110 dpi art.",
+      "customer_note": "Chloé, we'll start your 2x2 rectangle sticker proof as soon as the better file arrives. Send it whenever you're ready tonight.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.009254,
+      "latency_ns": 14347787815
+    }
+  },
+  {
+    "case": {
+      "id": "gen-053-contradict",
+      "file": "testdata/cases/gen-053-contradict.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks to remove the background and also keep the white box, which contradict each other.",
+        "Removing the background on this die-cut order would cut around the circle and KIWI; keeping the white box would leave a square sticker.",
+        "Only the customer can choose which result to proof.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof until Jonas chooses a die cut around the circle and KIWI, or a square sticker that keeps the white box.",
+      "customer_note": "Thanks Jonas. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.012002,
+      "latency_ns": 18902349653
+    }
+  },
+  {
+    "case": {
+      "id": "gen-054-contradict-size",
+      "file": "testdata/cases/gen-054-contradict-size.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment both asks to make the sticker bigger and to keep the ordered size, which contradict each other.",
+        "Contradictory instructions can only be resolved by the customer and take priority over a proof.",
+        "Effective resolution is 300 dpi, so low resolution is not the issue."
+      ],
+      "designer_note": "Hold the proof until Jonas confirms size. Do not enlarge past the ordered 2×2 inch rectangle.",
+      "customer_note": "Jonas, your note asks to make the sticker bigger and also keep the ordered 2×2 inch size. Please confirm whether you want the 2×2 inch rectangle as ordered, or a different size.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00599,
+      "latency_ns": 9848242367
+    }
+  },
+  {
+    "case": {
+      "id": "gen-055-none",
+      "file": "testdata/cases/gen-055-none.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2.5 in size, above the 150 dpi recreate threshold.",
+        "Artwork is attached and the comment is empty, so nothing conflicts with the die-cut order.",
+        "Black background is a designer-only fix and can be removed before the die-cut."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the teal circle and BOLT wordmark at 2.5 x 2.5 in. Keep the teal color.",
+      "customer_note": "Aisha, your 2.5 inch die-cut proof is in progress. We will remove the black background and cut around the circle and BOLT lettering.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00617,
+      "latency_ns": 8552755853
+    }
+  },
+  {
+    "case": {
+      "id": "gen-056-rush",
+      "file": "testdata/cases/gen-056-rush.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 4 x 2 in size, above the 150 dpi recreate threshold.",
+        "Artwork is attached and the comment only asks about timing, not a different size, shape, or material.",
+        "Black background can be removed by the designer so the die-cut follows the circle and wordmark."
+      ],
+      "designer_note": "Remove the black background. Die-cut around the orange circle and BREW. Size to 4 x 2 in.",
+      "customer_note": "Fatima, your die-cut proof is underway. The black background will be removed so the cut follows the orange circle and BREW.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007554,
+      "latency_ns": 12888769999
+    }
+  },
+  {
+    "case": {
+      "id": "gen-057-praise",
+      "file": "testdata/cases/gen-057-praise.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3 x 2 in size, above the 150 dpi recreate threshold.",
+        "Artwork is attached and the comment does not request a different size, shape, or material or contradict the order.",
+        "The black background can be removed by the designer so the die-cut follows the purple circle and BREW."
+      ],
+      "designer_note": "Remove the black background and die-cut around the purple circle and BREW. Keep the ordered 3 x 2 in size.",
+      "customer_note": "Sam, your proof is being prepared. We'll remove the black background and cut the sticker around the purple circle and BREW lettering.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00821,
+      "latency_ns": 10518506188
+    }
+  },
+  {
+    "case": {
+      "id": "gen-058-same-size",
+      "file": "testdata/cases/gen-058-same-size.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300, above the 150 dpi recreate threshold.",
+        "Comment asks for 4x2 inches, matching the order, with no conflicting size, shape, or material.",
+        "Thin lines can be thickened by the designer, and the black background can be removed for die-cut."
+      ],
+      "designer_note": "Thicken the thin vertical lines above the circle to at least 1/32 in. Remove the black background and die-cut around the logo at 4x2 in.",
+      "customer_note": "Chloé, your 4x2 inch die-cut proof is underway. We will thicken the fine lines above the circle so they print cleanly and cut the sticker around your logo.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.010404,
+      "latency_ns": 17430822599
+    }
+  },
+  {
+    "case": {
+      "id": "gen-059-vibrant",
+      "file": "testdata/cases/gen-059-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 3×3 in size, above the 150 dpi recreate threshold.",
+        "The comment only asks to brighten colors, which the designer can do without a new file.",
+        "No size, shape, or material change is requested, and the artwork is attached."
+      ],
+      "designer_note": "Boost the purple as bright and saturated as print allows. Center the circle and SURF wordmark on the 3×3 in rectangle and keep art inside the safe margin.",
+      "customer_note": "Kate, we will push the purple as bright as print allows and send your 3×3 rectangle proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00821,
+      "latency_ns": 9363431004
+    }
+  },
+  {
+    "case": {
+      "id": "gen-060-remove-bg",
+      "file": "testdata/cases/gen-060-remove-bg.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300, above the 150 recreate threshold.",
+        "Comment only asks to remove the white background, which the designer can do for a die cut around the circle and SURF text.",
+        "No size, shape, or material conflict with the order."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the red circle and SURF text. Keep the art at the ordered 3 x 2 in size.",
+      "customer_note": "José, we'll remove the white background so the die cut follows the red circle and SURF text on your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007778,
+      "latency_ns": 8450663527
+    }
+  },
+  {
+    "case": {
+      "id": "gen-061-remove-bg-fr",
+      "file": "testdata/cases/gen-061-remove-bg-fr.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "200 dpi is above the 150 dpi recreate threshold.",
+        "Customer only asks to remove the white background, which a designer can do.",
+        "No size, shape, or material change and no conflicting instructions."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the purple circle and KIWI lettering. Keep the purple color and text as shown.",
+      "customer_note": "Zoë, we'll remove the white background so your die-cut sticker follows the purple circle and KIWI lettering. Your proof is next.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008002,
+      "latency_ns": 11733453874
+    }
+  },
+  {
+    "case": {
+      "id": "gen-062-remove-bg-de",
+      "file": "testdata/cases/gen-062-remove-bg-de.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3×3 in size, so the file does not need recreation.",
+        "The comment only asks to remove the white background, which a designer can do.",
+        "Thin lines can be thickened by the designer without customer input.",
+        "No missing file, size/shape/material change, or contradictory instructions."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the art. Thicken the thin vertical lines above the circle to at least 1/32 in. Keep the design at 3×3 in.",
+      "customer_note": "Jonas, we will remove the white background and thicken the fine lines so your die-cut sticker is ready at 3×3 inches.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008324,
+      "latency_ns": 14881202075
+    }
+  },
+  {
+    "case": {
+      "id": "gen-063-remove-bg-vi",
+      "file": "testdata/cases/gen-063-remove-bg-vi.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 240 at 3x3 in, above the 150 dpi recreate threshold.",
+        "The comment only asks to remove the white background, which the designer can do alone.",
+        "Thin lines can be thickened by the designer; no size, shape, or material change is requested."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the logo. Thicken the thin vertical lines above the circle to at least 1/32 in. Keep the ordered 3x3 in die-cut size.",
+      "customer_note": "Jonas, we'll remove the white background, thicken the fine lines above the circle, and cut the sticker around your logo for the proof.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.012572,
+      "latency_ns": 17375778758
+    }
+  },
+  {
+    "case": {
+      "id": "gen-064-add-text",
+      "file": "testdata/cases/gen-064-add-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 100 dpi at the ordered 4×2 in size, under the 150 dpi threshold.",
+        "The comment only asks to add the website text the customer wrote out, which can be done while recreating.",
+        "Nothing in the comment conflicts with the order or requires the customer to unblock the proof."
+      ],
+      "designer_note": "Recreate the purple circle and BREW wordmark as clean vector art at 4×2 in. Remove the black background, add example.com under the logo, and die-cut around the art.",
+      "customer_note": "Mei, we're recreating your logo at full print quality and adding example.com underneath on your 4×2 die-cut sticker.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008288,
+      "latency_ns": 14917150813
+    }
+  },
+  {
+    "case": {
+      "id": "gen-065-change-text",
+      "file": "testdata/cases/gen-065-change-text.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 200 dpi, above the 150 dpi recreate threshold.",
+        "Comment only asks to change the word to lowercase, which the designer can edit.",
+        "Thin lines and the black background can be fixed by the designer for a die-cut."
+      ],
+      "designer_note": "Change SURF to lowercase surf. Remove the black background and die-cut around the purple art. Thicken the thin vertical lines so they meet the 1/32 in minimum.",
+      "customer_note": "Chloé, we'll set the word to lowercase and cut the sticker around your art. We'll also thicken the thin lines so they print cleanly.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008326,
+      "latency_ns": 11379823420
+    }
+  },
+  {
+    "case": {
+      "id": "gen-066-thicker",
+      "file": "testdata/cases/gen-066-thicker.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 2.5 × 2.5 in size, above the 150 dpi recreate threshold.",
+        "The comment only asks to thicken thin lines, which the designer can do without customer input.",
+        "No missing file, conflicting instructions, or size, shape, or material change versus the rectangle order."
+      ],
+      "designer_note": "Thicken the thin lines so they print bolder. Keep the red circle and PIXEL art on the 2.5 × 2.5 in rectangle.",
+      "customer_note": "Aisha, we will thicken the thin lines so they look bolder on your 2.5 × 2.5 inch rectangle sticker proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006498,
+      "latency_ns": 10114608028
+    }
+  },
+  {
+    "case": {
+      "id": "gen-067-center",
+      "file": "testdata/cases/gen-067-center.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective DPI is 300 at the ordered 3 × 2 in size, above the 150 threshold.",
+        "The comment only asks to center the logo, which the designer can do alone.",
+        "No size, shape, or material request conflicts with the rectangle order."
+      ],
+      "designer_note": "Center the blue circle and BREW wordmark on the 3 × 2 in rectangle sticker. Keep the white background and supplied colors.",
+      "customer_note": "Aisha, we will center your logo on the 3 × 2 inch rectangle sticker and send the proof for review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006594,
+      "latency_ns": 11155848920
+    }
+  },
+  {
+    "case": {
+      "id": "gen-068-bigger-text",
+      "file": "testdata/cases/gen-068-bigger-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment only asks to enlarge the text, which a designer can do.",
+        "240 dpi is above the 150 dpi recreate threshold.",
+        "White background can be removed so the die cut follows the art."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the circle and lettering. Enlarge the BREW text slightly and keep it inside the safe margin. Proof at 3x3 in.",
+      "customer_note": "Aisha, we'll make the BREW text a bit larger and cut the sticker around the circle and lettering on your 3x3 die-cut proof.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008788,
+      "latency_ns": 9591739701
+    }
+  },
+  {
+    "case": {
+      "id": "gen-069-redraw-ok",
+      "file": "testdata/cases/gen-069-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 200 dpi at the ordered 3×2 in, above the 150 dpi recreate threshold.",
+        "The mark is a simple circle and the word BLOOM, which a designer can redraw cleanly.",
+        "The comment authorizes a redraw if the file is not good enough and does not change size, shape, or material."
+      ],
+      "designer_note": "Remove the black background. Redraw the navy circle and BLOOM wordmark as clean vector art, match the existing color, and die-cut around the art at 3×2 in.",
+      "customer_note": "José, we will redraw the circle and BLOOM lettering so your die-cut sticker prints sharp at 3×2 inches.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00813,
+      "latency_ns": 13888262559
+    }
+  },
+  {
+    "case": {
+      "id": "gen-070-size-up",
+      "file": "testdata/cases/gen-070-size-up.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for 5 inches wide, which differs from the ordered 3x3 in die-cut size.",
+        "Height is not stated, so only the customer can confirm the new size.",
+        "A size change different from the order overrides the low-resolution recreate path.",
+        "order change: a 5 in size instead of 3x3 in"
+      ],
+      "designer_note": "Hold the proof. Customer asked for 5 in width versus the ordered 3x3 die-cut; wait for confirmed width and height before resizing or recreating.",
+      "customer_note": "Thanks Fatima. Your comment asks for a 5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 5 in size instead of 3x3 in"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008408,
+      "latency_ns": 13647666975
+    }
+  },
+  {
+    "case": {
+      "id": "gen-071-size-down",
+      "file": "testdata/cases/gen-071-size-down.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment requests 1.25x1.25 in, which differs from the ordered 2.5x2.5 in die-cut size.",
+        "Size change must be confirmed before a proof can be made.",
+        "order change: a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Hold the proof until Łukasz confirms 1.25 x 1.25 in versus the ordered 2.5 x 2.5 in. Once confirmed, thicken the thin marks above the circle and die-cut around the art.",
+      "customer_note": "Thanks Łukasz. Your comment asks for a 1.25x1.25 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.00721,
+      "latency_ns": 11896401518
+    }
+  },
+  {
+    "case": {
+      "id": "gen-072-to-square",
+      "file": "testdata/cases/gen-072-to-square.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for a square sticker with the background kept and no cut around the art, which is a different shape from the die-cut order.",
+        "A shape change only the customer can confirm takes priority over recreating the 130 dpi artwork.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof. Customer wants a square sticker with the white background kept, not a die cut. Wait for confirmation before changing the order shape.",
+      "customer_note": "Thanks Zoë. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.011568,
+      "latency_ns": 16904225962
+    }
+  },
+  {
+    "case": {
+      "id": "gen-073-to-diecut",
+      "file": "testdata/cases/gen-073-to-diecut.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks to cut around the logo instead of a rectangle, which is a shape different from the ordered rectangle sticker.",
+        "Shape mismatch must be confirmed by the customer before a proof can be made.",
+        "Artwork is 300 dpi, so resolution does not block the proof.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Hold the proof until Fatima confirms die-cut instead of the ordered rectangle.",
+      "customer_note": "Thanks Fatima. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.006898,
+      "latency_ns": 10123099858
+    }
+  },
+  {
+    "case": {
+      "id": "gen-074-holo",
+      "file": "testdata/cases/gen-074-holo.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment requests holographic vinyl, which is not the material on this rectangle sticker order.",
+        "A material change has to be confirmed by the customer before proofing.",
+        "Artwork is 300 dpi, so it does not need recreation; thin lines and edge clearance are designer fixes after the material is confirmed.",
+        "order change: holographic vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Wait for confirmation of holographic vinyl. Then thicken the thin vertical lines to at least 1/32 in and move all artwork inside the safe margin.",
+      "customer_note": "Thanks Chloé. Your comment asks for holographic vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic vinyl instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.0168,
+      "latency_ns": 29660946605
+    }
+  },
+  {
+    "case": {
+      "id": "gen-075-clear",
+      "file": "testdata/cases/gen-075-clear.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment requests clear vinyl, which is not the material on this rectangle order.",
+        "Artwork is 300 dpi at the ordered 2×2 size, so resolution is fine.",
+        "Material mismatch must be confirmed before proofing; white background would also need removal so the laptop can show through.",
+        "order change: clear vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until Mei confirms a change to clear vinyl. If confirmed, remove the white background so only the navy circle and FORGE text print.",
+      "customer_note": "Thanks Mei. Your comment asks for clear vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear vinyl instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.015084,
+      "latency_ns": 28299478187
+    }
+  },
+  {
+    "case": {
+      "id": "gen-076-glitter",
+      "file": "testdata/cases/gen-076-glitter.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for glitter stock, which is not the ordered material.",
+        "A material change must be confirmed by the customer before a proof.",
+        "That confirmation overrides recreating the 130 dpi artwork.",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until José confirms glitter. After yes: recreate at 300 dpi for 3x3 in, remove the white background, thicken the lines above the circle, and die-cut around the logo.",
+      "customer_note": "Thanks José. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008566,
+      "latency_ns": 14814598802
+    }
+  },
+  {
+    "case": {
+      "id": "gen-077-other-file",
+      "file": "testdata/cases/gen-077-other-file.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for a green logo file that is not attached, so the proof cannot proceed until the customer sends it."
+      ],
+      "designer_note": "Hold the proof until José sends the green logo, then replace the purple artwork with that file on the ordered 3×2 rectangle.",
+      "customer_note": "José, send the green version of the logo and we’ll use it for your sticker proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008556,
+      "latency_ns": 11160323584
+    }
+  },
+  {
+    "case": {
+      "id": "gen-078-email-later",
+      "file": "testdata/cases/gen-078-email-later.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment states the attached file is a placeholder and that final art will arrive by email tomorrow.",
+        "The real artwork is not attached, so only the customer can unblock the proof.",
+        "Effective DPI is 300 at the ordered 2×2 inch size, so resolution is not the issue."
+      ],
+      "designer_note": "Hold the proof until Łukasz emails the final artwork; do not proof the placeholder.",
+      "customer_note": "Łukasz, email the final artwork and we will build your 2×2 inch rectangle sticker proof from that file.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.007902,
+      "latency_ns": 9426216754
+    }
+  },
+  {
+    "case": {
+      "id": "gen-079-hires-later",
+      "file": "testdata/cases/gen-079-hires-later.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment says a better file will be uploaded tonight and that file is not attached.",
+        "Customer-promised replacement file blocks the proof and wins over recreating the 110 dpi art."
+      ],
+      "designer_note": "Hold the proof until Jonas uploads the replacement file he mentioned.",
+      "customer_note": "Jonas, send the higher-quality file when you have it tonight and we will make your 2x2 die-cut proof from that artwork.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.008894,
+      "latency_ns": 11348301187
+    }
+  },
+  {
+    "case": {
+      "id": "gen-080-contradict",
+      "file": "testdata/cases/gen-080-contradict.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks to remove the background and also keep the white box, which contradict each other.",
+        "Contradictory instructions must be resolved by the customer and take priority over the 100 dpi finding."
+      ],
+      "designer_note": "Hold the proof. Ask Mei to choose die-cut around the art with the white removed, or keep the white box as a rectangular cut. After she confirms, recreate the 100 dpi art and thicken the thin lines above the circle.",
+      "customer_note": "Mei, please confirm how the sticker should be cut. Removing the background cuts around the purple circle and KIWI text. Keeping the white box cuts along that rectangle. Reply with one option and your proof will be made.",
+      "preflight": {
+        "width_px": 200,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "x-ai/grok-4.7",
+      "attempts": 1,
+      "cost_usd": 0.012598,
+      "latency_ns": 17535470476
+    }
+  }
+]

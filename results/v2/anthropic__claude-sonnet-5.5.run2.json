@@ -1,0 +1,4307 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi and meets the 150 dpi minimum",
+        "Comment is empty, so there are no conflicting instructions, missing files or changes to size, shape or material",
+        "Clean red circle with MULE text, with no thin lines or safe margin problems visible"
+      ],
+      "designer_note": "Build the die-cut proof at 3x3 in. Cut around the red circle and MULE text together. If the background is white and not transparent, remove it. Confirm the art sits inside the safe margin.",
+      "customer_note": "Hi Brian, your artwork is sharp at 300 dpi for the 3x3 in die-cut size. Our designer is preparing your proof now, with the cut line following your red circle and MULE text. You will receive it shortly to review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007068,
+      "latency_ns": 4980533664
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which gives 300 dpi, above the 150 dpi minimum.",
+        "Comment is empty, so there are no conflicting instructions, missing files, or requests for a different size, shape or material.",
+        "Artwork is a simple orange circle with the text TACOS on a white background, with no preflight findings."
+      ],
+      "designer_note": "Build the proof as a 3x2 in rectangle sticker using the artwork as supplied. Check that the circle and TACOS text sit inside the safe margin.",
+      "customer_note": "Hi Ana, your artwork is sharp at 300 dpi for the 3x2 in rectangle sticker. Our designer is now preparing your proof, and you will receive it shortly to review and approve.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006446,
+      "latency_ns": 4891434680
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "The comment is empty, so there is no conflicting request for size, shape, material or a missing file.",
+        "The solid white background would make the die cut follow the square, but a designer can remove it alone."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the navy circle and BREW text together. Confirm all art sits inside the safe margin. Keep the size at 3x3 in and build the proof.",
+      "customer_note": "Hi Kenji, your artwork is sharp and ready for a proof. We will remove the white background so the die cut follows your navy circle and BREW lettering instead of a square. Your designer will send the proof shortly for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00709,
+      "latency_ns": 4892801701
+    }
+  },
+  {
+    "case": {
+      "id": "keep-square-on-diecut",
+      "file": "testdata/cases/keep-square-on-diecut.png",
+      "order": {
+        "customer": "Olivia Brown",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please keep the cream background as a square, don't cut around the logo."
+      },
+      "want": "ask_customer",
+      "why": "asks for a square sticker on a die-cut order: product change"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer explicitly wants the cream background kept and a square sticker, not a cut around the logo.",
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi, so resolution is fine.",
+        "The solid background flag is intentional per the comment; no customer input is needed.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Keep the cream (250,240,215) background. Set up a square/rectangle cut line at 3x3 in instead of a die cut around the logo. Do not remove the background. Confirm the text and circle sit inside the safe margin.",
+      "customer_note": "Thanks Olivia. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00729,
+      "latency_ns": 5216551335
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-diecut",
+      "file": "testdata/cases/lowres-diecut.png",
+      "order": {
+        "customer": "Marcus Lee",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 100 dpi at the ordered 3x3 in size, below the 150 dpi minimum",
+        "Comment is empty, so there are no conflicting instructions, missing files or changes to size, shape or material",
+        "Design is simple (teal circle with ROCK text), so it can be rebuilt cleanly"
+      ],
+      "designer_note": "Recreate the artwork as a clean high-resolution version at 3x3 in, 300 dpi. Rebuild the teal circle and the bold sans-serif 'ROCK' text in the same teal, matching the original layout and color. Remove the white background and set up the die cut around the art.",
+      "customer_note": "Hi Marcus, your design is a bit low in resolution for a crisp 3x3 in sticker, so our designers will recreate it as sharp, print-ready artwork that matches your teal circle and ROCK text. You will see the proof soon and can review it before anything prints.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006228,
+      "latency_ns": 5928095520
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-rectangle-sharp",
+      "file": "testdata/cases/lowres-rectangle-sharp.png",
+      "order": {
+        "customer": "Priya Patel",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Make sure it looks sharp please"
+      },
+      "want": "recreate_artwork",
+      "why": "120 dpi; the comment asks for what recreating gives"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 480x240 px, which is 120 dpi at the ordered 4x2 in size and under the 150 dpi minimum.",
+        "The comment asks for a sharp result but does not request a different size, shape or material and does not refer to a missing file.",
+        "Artwork is simple (a solid navy circle and 'SURF CO' text), so it can be recreated cleanly."
+      ],
+      "designer_note": "Recreate the artwork as clean vector at 4x2 in, 300 dpi. Rebuild the navy circle and the bold sans-serif 'SURF CO' text, matching the navy color and layout. Keep a white background on a rectangle sticker and keep all art inside the safe margin. Make edges crisp.",
+      "customer_note": "Hi Priya, your design is simple and bold, so we will recreate it as sharp, high-resolution artwork at 4x2 in. The navy circle and 'SURF CO' text will keep the same look and colors. You will see the crisp version in your proof for approval.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 240,
+        "effective_dpi": 120,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "120 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0066,
+      "latency_ns": 5763971281
+    }
+  },
+  {
+    "case": {
+      "id": "medium-res",
+      "file": "testdata/cases/medium-res.png",
+      "order": {
+        "customer": "Tom Becker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "200 dpi prints"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 200 dpi at the ordered 3x3 in size, which is above the 150 dpi minimum for recreation.",
+        "Comment is empty, so there are no conflicting instructions, missing files, or requests for a different size, shape or material.",
+        "Artwork is a simple orange circle with HIVE text on a white background, which suits a die-cut sticker."
+      ],
+      "designer_note": "Remove the white background. Die cut around the orange circle and the HIVE text. Keep all art inside the safe margin. Keep the size at 3x3 in. Sharpen edges where possible, since the file is 200 dpi against a 300 dpi target.",
+      "customer_note": "Hi Tom, your artwork is good to go. We will remove the white background and cut the sticker around your orange circle and HIVE lettering at 3x3 in. Your proof will follow shortly for your review.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006782,
+      "latency_ns": 5683801162
+    }
+  },
+  {
+    "case": {
+      "id": "hairlines",
+      "file": "testdata/cases/hairlines.png",
+      "order": {
+        "customer": "Sofia Rossi",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer thickens hairlines"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which gives 300 dpi and meets the 150 dpi minimum.",
+        "Comment is empty, so there is no conflicting request for size, shape, material or a missing file.",
+        "Preflight flags thin lines (0.02 sq in under 1/32 in), which a designer can thicken.",
+        "The artwork sits on a white background, and the order is a die-cut sticker."
+      ],
+      "designer_note": "Thicken the thin vertical lines above the circle to at least 1/32 in. Remove the white background and set the die-cut line around the art, including the lines and the WAVE text. Keep all art inside the safe margin at 3x3 in.",
+      "customer_note": "Hi Sofia, your artwork is sharp at 300 dpi and ready for your 3x3 in die-cut sticker. Our designer will thicken the thin vertical lines so they print cleanly, then send your proof for approval.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007608,
+      "latency_ns": 5105426228
+    }
+  },
+  {
+    "case": {
+      "id": "near-edge-rectangle",
+      "file": "testdata/cases/near-edge-rectangle.png",
+      "order": {
+        "customer": "Luca Bianchi",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer moves the bar inside the safe margin"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which is 300 dpi, so resolution is fine.",
+        "Comment is empty, so there are no conflicting instructions, missing files or change requests.",
+        "Preflight reports 17136 px of artwork inside the 19 px safe margin. The red bar along the bottom runs to the edge, and a designer can fix this alone."
+      ],
+      "designer_note": "Move the red bar and any other art inside the 19 px safe margin, or trim the bar so it sits within the margin. Keep the 3x2 in rectangle size. Keep the circle and PIZZA text as they are.",
+      "customer_note": "Hi Luca, your artwork is sharp at 300 dpi for the 3 x 2 in rectangle sticker. Our designer will pull the red bar at the bottom inside the safe margin so nothing gets trimmed, then send you a proof to review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "17136 px of artwork inside the 19 px safe margin"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006978,
+      "latency_ns": 5547731788
+    }
+  },
+  {
+    "case": {
+      "id": "empty-file",
+      "file": "testdata/cases/empty-file.png",
+      "order": {
+        "customer": "Emma Wilson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ask_customer",
+      "why": "no artwork"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Preflight flagged empty_artwork: the file has no printable pixels",
+        "The image is blank white and the comment is empty, so there is no artwork or instructions to work from"
+      ],
+      "designer_note": "Hold the proof. The uploaded file is blank (no printable pixels) and there is no comment. Wait for the customer to send real artwork before starting.",
+      "customer_note": "Hi Emma, the file we received for your 3x3 inch die cut sticker came through blank, so there is nothing to print yet. Please upload your artwork, or describe the design you have in mind, and we will get your proof started right away.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "empty_artwork",
+            "message": "no printable pixels"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006454,
+      "latency_ns": 4940307060
+    }
+  },
+  {
+    "case": {
+      "id": "wrong-file-attached",
+      "file": "testdata/cases/wrong-file-attached.png",
+      "order": {
+        "customer": "Noah Davis",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+      },
+      "want": "ask_customer",
+      "why": "the right file is not attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer says the attached file is the wrong one and will email the correct logo tonight.",
+        "The attached artwork reads 'OLD LOGO' and should not be used for the proof."
+      ],
+      "designer_note": "Hold the proof. Do not use the attached file. Wait for the corrected logo from the customer by email, then check it against the 3 x 3 in die cut order.",
+      "customer_note": "Hi Noah, thanks for letting us know. We will hold your proof until your new logo arrives by email tonight. Once we have it, we will prepare your 3 x 3 in die cut sticker proof right away. Please reply with the file attached to the order email.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006568,
+      "latency_ns": 4746182454
+    }
+  },
+  {
+    "case": {
+      "id": "size-change",
+      "file": "testdata/cases/size-change.png",
+      "order": {
+        "customer": "Mia Johnson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches instead of 3?"
+      },
+      "want": "ask_customer",
+      "why": "size differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for 5 inches, but the order is 3 x 3 inches.",
+        "A size change differs from the order and needs customer confirmation before a proof.",
+        "Artwork is 900 px, which gives 180 dpi at 5 inches, so quality is acceptable at the new size.",
+        "order change: a 5x5 in size instead of 3x3 in"
+      ],
+      "designer_note": "Hold the proof until Mia confirms the 5 x 5 inch size. Once confirmed, resize the art to 5 x 5 in (about 180 dpi) and keep the die-cut outline around the red circle and GYM text.",
+      "customer_note": "Thanks Mia. Your comment asks for a 5x5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a 5x5 in size instead of 3x3 in"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.010172,
+      "latency_ns": 7187225404
+    }
+  },
+  {
+    "case": {
+      "id": "text-edit",
+      "file": "testdata/cases/text-edit.png",
+      "order": {
+        "customer": "Liam Garcia",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please change the text to say OPEN LATE."
+      },
+      "want": "ready_for_proof",
+      "why": "designer edits text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 4x2 in, which is 300 dpi, so resolution is sufficient.",
+        "Customer wrote out the exact new text (OPEN LATE), so a designer can edit it without further input.",
+        "No conflicting instructions, missing file, or change to size, shape or material requested."
+      ],
+      "designer_note": "Change the text from OPEN to OPEN LATE, matching the existing teal color and bold font. Keep the text inside the safe margin and resize it to fit if needed. Keep the circle graphic and the 4x2 in rectangle size.",
+      "customer_note": "Hi Liam, your artwork is in good shape at 300 dpi. We will update the text to read OPEN LATE, keeping the same teal color and bold style, and send you a proof to review shortly.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006306,
+      "latency_ns": 4934428469
+    }
+  },
+  {
+    "case": {
+      "id": "remove-white-bg",
+      "file": "testdata/cases/remove-white-bg.png",
+      "order": {
+        "customer": "Chloe Martin",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the white background please."
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi, so resolution is sufficient.",
+        "Customer asked to remove the white background, and the preflight shows a solid white border that would make the die cut follow the rectangle.",
+        "The orange circle and FOX text are clean, solid shapes, so the background can be removed by a designer alone.",
+        "Comment does not request a different size, shape or material, and nothing contradicts the order."
+      ],
+      "designer_note": "Remove the solid white background so only the orange circle and FOX text remain. Set the die cut line to follow the outer edge of the combined art. Keep the artwork at 3x3 in and check that the text sits inside the safe margin.",
+      "customer_note": "Hi Chloe, your artwork is sharp at 300 dpi. We will remove the white background so the die cut follows the orange circle and FOX text. Your proof will show the cut line for your review before anything is printed.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007634,
+      "latency_ns": 5293494229
+    }
+  },
+  {
+    "case": {
+      "id": "missing-blue-version",
+      "file": "testdata/cases/missing-blue-version.png",
+      "order": {
+        "customer": "Ethan Clark",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Use the blue version of the logo, not the red one."
+      },
+      "want": "ask_customer",
+      "why": "only the red version is attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for the blue version of the logo, but only the red version was attached.",
+        "The designer has no blue file to work from, so the proof cannot start."
+      ],
+      "designer_note": "Hold the proof. Do not recolor the red logo. Wait for the customer to send the blue logo file, then proof at 3 x 3 in die cut.",
+      "customer_note": "Hi Ethan, the file we received has the red version of the logo (circle with SKATE). Please send the blue version and we will build your 3 x 3 in die cut proof right away. If you would like us to recolor the red logo to blue instead, tell us the exact shade.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00802,
+      "latency_ns": 5556505664
+    }
+  },
+  {
+    "case": {
+      "id": "conflicting-background",
+      "file": "testdata/cases/conflicting-background.png",
+      "order": {
+        "customer": "Grace Kim",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the background transparent but keep the white box around the logo."
+      },
+      "want": "ask_customer",
+      "why": "two instructions contradict each other"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for a transparent background but also asks to keep a white box around the logo.",
+        "The file has only one white area, a solid white rectangle behind the orange circle and DONUT text, so both instructions point to the same area.",
+        "The die cut would follow the white rectangle, so the customer needs to choose the outcome before a proof can be made.",
+        "Resolution is fine: 300 dpi at 3x3 in."
+      ],
+      "designer_note": "Hold the proof until Grace confirms which she wants: (a) transparent background with a die cut around the circle and text, or (b) a white rectangle kept as part of the sticker. Artwork is 900x900 px at 3x3 in (300 dpi), so no recreation is needed.",
+      "customer_note": "Hi Grace, your artwork looks sharp at 3x3 in. Your note asks for a transparent background and a white box around the logo, and the file has just one white area. Which would you like: (1) the white removed, with the sticker cut around the orange circle and DONUT text, or (2) a white box kept behind the logo?",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.010362,
+      "latency_ns": 7356410270
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-sending-hires",
+      "file": "testdata/cases/lowres-sending-hires.png",
+      "order": {
+        "customer": "Jack Turner",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "the customer is sending a better file; wait for it"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer says a high-res file will be uploaded tomorrow, so the file they mean is not attached yet.",
+        "Current artwork is 110 dpi at 3x3 in, below the 150 dpi minimum, but the pending file takes priority over recreating."
+      ],
+      "designer_note": "Hold the proof until the customer uploads the high-res file. If they ask to proceed with the current art instead, recreate the navy circle and BAND text as clean vector at 3x3 in die cut.",
+      "customer_note": "Hi Jack, thank you for the heads-up. Please upload your high-res file when it's ready and we'll build your 3x3 in die-cut proof right away. If you'd rather not wait, tell us and we'll recreate your current artwork (navy circle with BAND text) in sharp, print-ready quality.",
+      "preflight": {
+        "width_px": 330,
+        "height_px": 330,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007472,
+      "latency_ns": 6875561129
+    }
+  },
+  {
+    "case": {
+      "id": "tiny-tagline",
+      "file": "testdata/cases/tiny-tagline.png",
+      "order": {
+        "customer": "Hannah Scott",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make sure the small text is readable."
+      },
+      "want": "ready_for_proof",
+      "why": "designer enlarges or thickens the tagline"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi, so resolution is sufficient.",
+        "Preflight found a small amount of thin lines (0.01 sq in under 1/32 in), likely the small tagline text, which a designer can thicken.",
+        "The customer's comment asks for readable small text, which a designer can handle without further input.",
+        "No missing file, size, shape or material change, and no contradictory instructions."
+      ],
+      "designer_note": "Thicken the thin strokes in the small 'est. 2019 – small batch roasters' text so it prints clearly at 3x3 in. Make the text bolder or slightly larger if needed, keeping it inside the safe margin. Remove the white background and set up the die cut around the circle and CAFE text.",
+      "customer_note": "Hi Hannah, your artwork looks sharp at 3x3 in. We will thicken the small 'est. 2019 – small batch roasters' line so it stays easy to read when printed. Your proof will show the die cut shape and the adjusted text for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007976,
+      "latency_ns": 5453953749
+    }
+  },
+  {
+    "case": {
+      "id": "rush-request",
+      "file": "testdata/cases/rush-request.png",
+      "order": {
+        "customer": "Owen Hughes",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love you guys! Rush please, need them for Saturday."
+      },
+      "want": "ready_for_proof",
+      "why": "turnaround request does not block the proof"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 600x600 px at 2x2 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "Comment asks only for rush turnaround and does not change size, shape or material.",
+        "Design is a red circle with the text YAY on a white background, with no preflight findings."
+      ],
+      "designer_note": "Rush order, needed by Saturday. Remove the white background and die cut around the red circle and YAY text. Keep the art inside the safe margin at 2x2 in.",
+      "customer_note": "Hi Owen, thanks for the kind words! Your artwork is sharp and ready to go. We have flagged your order as a rush, and your proof is coming right up so we can aim for your Saturday date.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006216,
+      "latency_ns": 5419270031
+    }
+  },
+  {
+    "case": {
+      "id": "add-phone-number",
+      "file": "testdata/cases/add-phone-number.png",
+      "order": {
+        "customer": "Daniel Young",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Can you add my phone number 555-0100 under the logo?"
+      },
+      "want": "ready_for_proof",
+      "why": "designer adds text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 4x2 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "Customer wrote out the phone number 555-0100 to add under the logo, so a designer can add it without further input.",
+        "No size, shape or material change is requested and no file is missing."
+      ],
+      "designer_note": "Add the text 555-0100 under the logo, matching the navy color and font style of PLUMBING. Keep all text inside the safe margin and check that it fits the 4x2 in rectangle without crowding the existing text.",
+      "customer_note": "Hi Daniel, your artwork is a great fit at 4x2 inches. We will add 555-0100 beneath your logo in a matching style and include it in your proof for review.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006144,
+      "latency_ns": 4842758907
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-please-vectorize",
+      "file": "testdata/cases/lowres-please-vectorize.png",
+      "order": {
+        "customer": "Ava Walker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please recreate this as a vector if needed."
+      },
+      "want": "recreate_artwork",
+      "why": "140 dpi and the customer asks for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 140 dpi at the ordered 3x3 in size, under the 150 dpi minimum.",
+        "Customer's comment explicitly allows recreating the artwork as a vector.",
+        "No conflicting size, shape, material, or missing-file requests in the comment."
+      ],
+      "designer_note": "Recreate the artwork as a vector: navy circle above bold sans-serif text reading WOLF. Match the navy color and layout of the original. Size to 3x3 in at 300 dpi with a die-cut outline and keep everything inside the safe margin.",
+      "customer_note": "Hi Ava, thanks for sending your WOLF design. The file is a bit low in resolution for a 3x3 in sticker, so our designer will recreate it as a crisp vector, keeping the navy circle and bold lettering. You will see the proof shortly.",
+      "preflight": {
+        "width_px": 420,
+        "height_px": 420,
+        "effective_dpi": 140,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "140 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0062,
+      "latency_ns": 4341337785
+    }
+  },
+  {
+    "case": {
+      "id": "fullbleed-photo",
+      "file": "testdata/cases/fullbleed-photo.png",
+      "order": {
+        "customer": "Lucas Allen",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "full-bleed rectangle at 300 dpi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is attached and the comment is empty, so there are no conflicting or missing instructions.",
+        "Effective resolution is 300 dpi at the ordered 3x2 in size, which is above the 150 dpi minimum.",
+        "Aspect ratio 900x600 matches the 3x2 in rectangle order.",
+        "The artwork is a full-bleed gradient with no text, thin lines or background to fix."
+      ],
+      "designer_note": "Build the proof at 3x2 in rectangle using the gradient as full bleed. Add standard bleed if needed. No other edits required.",
+      "customer_note": "Hi Lucas, your gradient artwork is sharp at 300 dpi and fits your 3 x 2 in rectangle sticker. We are preparing your proof now and will send it over shortly for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006546,
+      "latency_ns": 4300934924
+    }
+  },
+  {
+    "case": {
+      "id": "medium-thin-whitebox",
+      "file": "testdata/cases/medium-thin-whitebox.png",
+      "order": {
+        "customer": "Ella King",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "every finding is a designer fix"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 160 dpi at 3x3 in, which is above the 150 dpi minimum, so no recreation is needed.",
+        "Solid white background would make the die cut follow the rectangle, so the designer can remove it.",
+        "Thin vertical lines above the circle are under 1/32 in and the designer can thicken them.",
+        "Comment is empty, so there are no conflicting or missing-file requests."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the teal circle, the ZEN text and the lines. Thicken the thin vertical lines above the circle to at least 1/32 in. Confirm all art sits inside the safe margin. Keep size at 3x3 in.",
+      "customer_note": "Hi Ella, your artwork is good to go for a proof. Our designer will remove the white background so the die cut follows your circle and ZEN lettering, and will thicken the thin lines above the circle so they print cleanly. You will receive your proof shortly.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 160,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "160 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006988,
+      "latency_ns": 3850707128
+    }
+  },
+  {
+    "case": {
+      "id": "holographic",
+      "file": "testdata/cases/holographic.png",
+      "order": {
+        "customer": "Leo Wright",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "material differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "Comment asks for holographic vinyl, and the order lists no conflicting material, size or shape.",
+        "White background needs removal for the die cut, which a designer can do alone.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Remove the white background. Set the die-cut line around the navy circle and the STAR text. Keep all art inside the safe margin at 3x3 in. Mark the proof as holographic vinyl.",
+      "customer_note": "Thanks Leo. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.010292,
+      "latency_ns": 5418645645
+    }
+  },
+  {
+    "case": {
+      "id": "same-size-confirmation",
+      "file": "testdata/cases/same-size-confirmation.png",
+      "order": {
+        "customer": "Zoe Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print it at 2x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "the size matches the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 600x600 px at 2x2 inches, which gives 300 dpi and meets the resolution requirement.",
+        "The requested size of 2x2 inches matches the order.",
+        "The comment asks for no shape or material change, and preflight reports no findings.",
+        "The art is a solid orange circle with the text BEE, on a white background."
+      ],
+      "designer_note": "Build the proof at 2x2 inches as a die cut. Remove the white background and cut around the orange circle and the BEE text. Check that the art sits inside the safe margin.",
+      "customer_note": "Hi Zoe, your artwork is sharp at 300 dpi and matches the 2x2 inch size you asked for. Our designer will prepare your die-cut proof at 2x2 inches and send it to you for review.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006404,
+      "latency_ns": 3706702381
+    }
+  },
+  {
+    "case": {
+      "id": "spanish-remove-bg",
+      "file": "testdata/cases/spanish-remove-bg.png",
+      "order": {
+        "customer": "Diego Ramirez",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Por favor quiten el fondo blanco."
+      },
+      "want": "ready_for_proof",
+      "why": "asks, in Spanish, to remove the white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Customer asks to remove the white background; a designer can do this alone.",
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi, so resolution is fine.",
+        "Solid white border would make the die cut follow the rectangle, so the background must be removed for a true die cut."
+      ],
+      "designer_note": "Remove the solid white background. Keep the orange circle and the SOL text. Set the die cut line to follow the circle and text with a small offset. Confirm the artwork stays at 3x3 in.",
+      "customer_note": "Hola Diego, we will remove the white background so your die cut follows the orange circle and the SOL text. Your artwork is high resolution at 3x3 in, so it will look sharp. Your proof will be ready for your review soon.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00708,
+      "latency_ns": 3448577878
+    }
+  },
+  {
+    "case": {
+      "id": "gen-001-none",
+      "file": "testdata/cases/gen-001-none.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 4x2 in, which gives 300 dpi and meets the 150 dpi minimum.",
+        "The solid white background would make the die cut follow the rectangle, but a designer can remove it without the customer.",
+        "The comment is empty, so there are no conflicting instructions or requests for a different size, shape or material."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the blue circle and NOVA text. Keep the art at 4x2 in. Confirm all art sits inside the safe margin and set the cut line around the artwork.",
+      "customer_note": "Hi Chloé, your artwork is sharp at 4x2 inches. We will remove the white background so your die cut follows the blue circle and NOVA lettering, then send you a proof to review.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00636,
+      "latency_ns": 3654670844
+    }
+  },
+  {
+    "case": {
+      "id": "gen-002-rush",
+      "file": "testdata/cases/gen-002-rush.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 750x750 px at 2.5x2.5 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "Preflight has no findings.",
+        "Comment only mentions a Friday deadline and does not request any change to size, shape or material, and refers to no missing file.",
+        "Purple circle with MULE text sits on a white background, which a designer can handle for the die cut."
+      ],
+      "designer_note": "Remove the white background and set the die cut line around the circle and MULE text. Confirm all art sits inside the safe margin at 2.5 x 2.5 in. Flag the Friday deadline to production.",
+      "customer_note": "Hi Aisha, your artwork looks sharp at 2.5 x 2.5 in. Our designer is preparing your die-cut proof now. We have noted your Friday deadline and will pass it along to production. You will receive the proof shortly for your approval.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007308,
+      "latency_ns": 4054469112
+    }
+  },
+  {
+    "case": {
+      "id": "gen-003-praise",
+      "file": "testdata/cases/gen-003-praise.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 200 dpi at 2x2 in, above the 150 dpi minimum, so the artwork does not need to be recreated.",
+        "The comment is only praise and has no conflicting instructions, no missing file, and no change to size, shape or material.",
+        "Thin lines are a fix the designer can make alone."
+      ],
+      "designer_note": "Thicken the thin vertical lines above the circle to at least 1/32 in. Keep the die-cut at 2x2 in around the circle, lines and DASH text. Confirm all art sits inside the safe margin.",
+      "customer_note": "Hi Nguyễn, thank you for ordering with us again! Your artwork suits a 2x2 in die-cut sticker. We will thicken the thin lines at the top so they print crisply, then send your proof for approval.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 2,
+      "cost_usd": 0.01474,
+      "latency_ns": 8717008585
+    }
+  },
+  {
+    "case": {
+      "id": "gen-004-same-size",
+      "file": "testdata/cases/gen-004-same-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment asks for 4x2 inches, which matches the ordered size of 4x2 inches.",
+        "Effective resolution is 300 dpi at the ordered size, so the artwork is sharp enough.",
+        "The solid white background would make the die cut follow the rectangle; a designer can remove it.",
+        "The artwork is a simple blue circle with the text TACO, with no unreadable or missing elements."
+      ],
+      "designer_note": "Remove the solid white background. Set the die cut line around the blue circle and TACO text. Keep the artwork at 4x2 inches and confirm all art sits inside the safe margin.",
+      "customer_note": "Hi Zoë, your artwork is sharp at 4x2 inches. We will remove the white background so the die cut follows your blue circle and TACO text. Your proof will be ready for review shortly.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00648,
+      "latency_ns": 3636716381
+    }
+  },
+  {
+    "case": {
+      "id": "gen-005-vibrant",
+      "file": "testdata/cases/gen-005-vibrant.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi, so resolution is sufficient.",
+        "The comment asks for bright colors, which a designer can handle alone.",
+        "The comment names no size, shape or material that differs from the order.",
+        "Artwork is a red circle with the text MULE, and everything sits inside the safe margin."
+      ],
+      "designer_note": "Boost color vibrancy and saturation on the red circle and MULE text while keeping the red clean. Keep the artwork at 3x3 in on the rectangle sticker. Confirm everything stays inside the safe margin.",
+      "customer_note": "Hi José, your artwork is sharp at 3x3 in, so we're moving it to proof. Our designer will boost the saturation so the red looks as vivid as possible. You'll see the result in your proof for review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007162,
+      "latency_ns": 3385594888
+    }
+  },
+  {
+    "case": {
+      "id": "gen-006-remove-bg",
+      "file": "testdata/cases/gen-006-remove-bg.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Comment asks only to remove the white background, which a designer can do alone.",
+        "Artwork is 200 dpi at 2x2 in, above the 150 dpi minimum for recreation.",
+        "Artwork is attached and no size, shape or material change is requested."
+      ],
+      "designer_note": "Remove the white background around the purple circle and the TACO text. Keep edges clean and sharp. Keep all art inside the safe margin. Keep the 2x2 in rectangle size and build the proof.",
+      "customer_note": "Hi Łukasz, your artwork is in good shape. We will remove the white background and keep your purple circle and TACO text crisp. Your proof will follow shortly for your review at the 2x2 in size you ordered.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007914,
+      "latency_ns": 4879526633
+    }
+  },
+  {
+    "case": {
+      "id": "gen-007-remove-bg-fr",
+      "file": "testdata/cases/gen-007-remove-bg-fr.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 4x2 in, which is 300 dpi, so resolution is sufficient.",
+        "Customer asked in French to remove the white background.",
+        "Preflight found a solid white border that a die cut would follow as a rectangle, so removing it fixes the cut line.",
+        "Order is a die cut and the comment does not ask for a different size, shape or material."
+      ],
+      "designer_note": "Remove the solid white background so only the purple circle and BREW text remain. Set the die cut line to follow the outside edge of the circle and text. Keep the size at 4x2 in and check that edges are clean with no white halo.",
+      "customer_note": "Hi Sam, we will remove the white background as you asked. Your die cut sticker will follow the shape of the purple circle and the BREW text. Your proof will be ready for review shortly.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006504,
+      "latency_ns": 3872432317
+    }
+  },
+  {
+    "case": {
+      "id": "gen-008-remove-bg-de",
+      "file": "testdata/cases/gen-008-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 240 dpi at 3x2 in, which is above the 150 dpi minimum, so recreation is not needed.",
+        "Customer asks to remove the white background (German: 'Bitte den weißen Hintergrund entfernen'), which a designer can do alone.",
+        "Artwork is a flat blue circle with the text KIWI, so the background is easy to remove and the die cut can follow the art.",
+        "No size, shape or material change is requested and no file is missing."
+      ],
+      "designer_note": "Remove the solid white background. Set the die cut to follow the blue circle and KIWI text as one shape. Keep the size at 3x2 in. Check that the art stays inside the safe margin and that the cut line looks clean around the text.",
+      "customer_note": "Hi Raj, we will remove the white background and cut the sticker around your blue circle and KIWI text. Your artwork has good resolution for 3x2 in, so your proof will be ready for review shortly.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00717,
+      "latency_ns": 3771249278
+    }
+  },
+  {
+    "case": {
+      "id": "gen-009-remove-bg-vi",
+      "file": "testdata/cases/gen-009-remove-bg-vi.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Customer asks in Vietnamese to remove the white background; a designer can do this alone.",
+        "Effective resolution is 240 dpi at 4x2 in, above the 150 dpi threshold, so no recreation is needed.",
+        "Solid white border would make the die cut follow the rectangle, so removing it is required for a true die cut.",
+        "Thin lines above the circle are under 1/32 in and can be thickened by the designer.",
+        "No size, shape or material change is requested and the artwork is attached."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the art. Thicken the thin vertical lines above the circle to at least 1/32 in. Keep the art at 4x2 in and inside the safe margin. Check the cut line includes the lines, circle and SURF text.",
+      "customer_note": "Hi Mei, we will remove the white background and cut the sticker around your design. We will also thicken the thin lines above the circle so they print crisply. Your proof will show the 4x2 in die cut sticker for your approval.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007306,
+      "latency_ns": 3924741534
+    }
+  },
+  {
+    "case": {
+      "id": "gen-010-add-text",
+      "file": "testdata/cases/gen-010-add-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 4x2 in, which is 300 dpi, so resolution is sufficient.",
+        "Customer wrote out the website text (example.com), so the designer can add it under the logo.",
+        "Thin lines at the top are a fix the designer can make alone by thickening them.",
+        "No size, shape or material change is requested and no file is missing."
+      ],
+      "designer_note": "Add 'example.com' under the BOLT logo text, in a matching purple and a legible font. Thicken the thin vertical lines above the circle to at least 1/32 in. Keep all art inside the safe margin. Die cut around the final art at 4x2 in.",
+      "customer_note": "Hi Łukasz, thanks for your order. We will add example.com under your BOLT logo and thicken the thin lines at the top so they print cleanly. Your artwork is at a good resolution for 4 x 2 in. Your proof will follow shortly for your review.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006844,
+      "latency_ns": 3944862481
+    }
+  },
+  {
+    "case": {
+      "id": "gen-011-change-text",
+      "file": "testdata/cases/gen-011-change-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 240 dpi at 3x3 in, which is above the 150 dpi recreate threshold.",
+        "The comment asks only for a text edit: change BOLT to lowercase. A designer can do this alone.",
+        "The solid white background must be removed so the die cut follows the red circle and text instead of the rectangle.",
+        "The comment asks for no size, shape or material change and refers to no missing file."
+      ],
+      "designer_note": "Change the word BOLT to lowercase 'bolt', matching the current font, color and placement. Remove the solid white background so the die cut follows the circle and text. Keep the art at 3x3 in and inside the safe margin.",
+      "customer_note": "Hi Aisha, we will change BOLT to lowercase 'bolt' and keep the same font and color. We will also remove the white background so your die cut follows the red circle and text. Your proof will be ready for review shortly.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007362,
+      "latency_ns": 3812128640
+    }
+  },
+  {
+    "case": {
+      "id": "gen-012-thicker",
+      "file": "testdata/cases/gen-012-thicker.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 750x750 px at 2.5x2.5 in, which is 300 dpi, so resolution is fine.",
+        "The customer asks for bolder thin lines, which a designer can do alone.",
+        "No size, shape or material change is requested and no missing file is mentioned.",
+        "The comment does not contradict itself."
+      ],
+      "designer_note": "Thicken the thin lines and strokes so they print boldly, including the KIWI lettering if the strokes look light. Keep the circle and text inside the safe margin. Set up the die-cut outline at 2.5 x 2.5 in and send the proof.",
+      "customer_note": "Hi Łukasz, thank you for the note. Our designer will thicken the thin lines so they look bolder and stand out on your 2.5 x 2.5 in die-cut sticker. Your artwork is high resolution, so it will print sharp. You will see the change in your proof shortly.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007336,
+      "latency_ns": 3871391094
+    }
+  },
+  {
+    "case": {
+      "id": "gen-013-center",
+      "file": "testdata/cases/gen-013-center.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Center the logo please."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 130 dpi at 3x3 in, under the 150 dpi minimum, so it needs to be recreated.",
+        "The comment only asks to center the logo, which does not change the size, shape or material and does not reference a missing file.",
+        "Solid white background would make the die cut follow the rectangle, so it must be removed.",
+        "The circle and MULE text appear slightly off-center and low in the frame."
+      ],
+      "designer_note": "Recreate the circle and MULE text as crisp vector or 300 dpi artwork at 3x3 in. Remove the white background so the die cut follows the logo outline. Center the full logo (circle plus MULE text) horizontally and vertically on the artboard, keeping it inside the safe margin.",
+      "customer_note": "Hi Nguyễn, thanks for your file. Your artwork is lower resolution than a sharp 3x3 in print needs, so our designers will recreate it in high quality. We will also remove the white background so the die cut follows your logo, and center the logo as you asked. You will see this in your proof.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006878,
+      "latency_ns": 3558143693
+    }
+  },
+  {
+    "case": {
+      "id": "gen-014-bigger-text",
+      "file": "testdata/cases/gen-014-bigger-text.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which gives 300 dpi, so resolution is sufficient.",
+        "Preflight shows no findings.",
+        "The comment asks for slightly larger text, which a designer can do alone.",
+        "The comment gives no size, shape or material change and no missing file, so nothing needs customer input."
+      ],
+      "designer_note": "Enlarge the NOVA text slightly, about 15-20%. Keep it centered and inside the safe margin. Leave the red circle and the white rectangle layout as they are. Keep the 3x2 in rectangle size.",
+      "customer_note": "Hi Łukasz, your artwork is sharp and ready to go. We will make the NOVA text a bit larger on your 3x2 in rectangle sticker and keep it inside the safe margin. Your proof will show the update for you to review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006708,
+      "latency_ns": 3275349174
+    }
+  },
+  {
+    "case": {
+      "id": "gen-015-redraw-ok",
+      "file": "testdata/cases/gen-015-redraw-ok.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which is 300 dpi and above the 150 dpi minimum.",
+        "The white background is solid, so a designer can remove it and the die cut will follow the art.",
+        "The comment offers to let us redraw the file but asks for no change in size, shape or material, so nothing is blocking the proof.",
+        "The art is simple: a teal circle with the text SURF."
+      ],
+      "designer_note": "Remove the solid white background. Set the die cut line around the circle and SURF text together. Keep the art inside the safe margin at 3 x 2 in. No redraw is needed because the file is 300 dpi.",
+      "customer_note": "Hi Fatima, your artwork is sharp at 300 dpi, so there is no need to redraw it. Our designer will remove the white background so the die cut follows the teal circle and SURF text. Your proof will follow shortly for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007,
+      "latency_ns": 3880190740
+    }
+  },
+  {
+    "case": {
+      "id": "gen-016-size-up",
+      "file": "testdata/cases/gen-016-size-up.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for 5 inches wide, which differs from the 3x3 in order size",
+        "Size change needs customer confirmation, and this takes priority over low resolution",
+        "Artwork is 100 dpi at 3x3 in and would be about 60 dpi at 5 in wide, so it needs recreation once the size is settled",
+        "order change: a 5 in size instead of 3x3 in"
+      ],
+      "designer_note": "Hold the proof until Mei confirms the size. Once confirmed, recreate the artwork (orange circle with NOVA text) at 300 dpi at the final size. Keep it die cut around the art.",
+      "customer_note": "Thanks Mei. Your comment asks for a 5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 5 in size instead of 3x3 in"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.005936,
+      "latency_ns": 3657267110
+    }
+  },
+  {
+    "case": {
+      "id": "gen-017-size-down",
+      "file": "testdata/cases/gen-017-size-down.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Actually I need them 1x1 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer's comment asks for 1x1 in, but the order is 2x2 in.",
+        "Size change needs customer confirmation before a proof can be made.",
+        "Artwork would be 480 dpi at 1x1 in, so resolution is not a concern.",
+        "order change: a 1x1 in size instead of 2x2 in"
+      ],
+      "designer_note": "Hold the proof until the customer confirms the size. If 1x1 in is confirmed, resize the art to 1x1 in, keep the die cut around the circle and TACO text, and check the text stays legible at that size.",
+      "customer_note": "Thanks Jonas. Your comment asks for a 1x1 in size instead of 2x2 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 2x2 in; target 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1x1 in size instead of 2x2 in"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00844,
+      "latency_ns": 4933586296
+    }
+  },
+  {
+    "case": {
+      "id": "gen-018-to-square",
+      "file": "testdata/cases/gen-018-to-square.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for a square sticker with the background kept and no cut around the shape, but the order is a die cut.",
+        "The requested shape differs from the ordered product, so the customer must confirm the change before a proof.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof until the customer confirms the switch from die cut to a square/rectangle sticker. Once confirmed, keep the white background, set a straight square cut at 2.5 x 2.5 in, and check the art and KIWI text sit inside the safe margin. Artwork is 750 px at 300 dpi, so resolution is fine.",
+      "customer_note": "Thanks Chloé. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.010264,
+      "latency_ns": 5619388887
+    }
+  },
+  {
+    "case": {
+      "id": "gen-019-to-diecut",
+      "file": "testdata/cases/gen-019-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Order is for a rectangle sticker but the comment asks for a die-cut shape around the logo, which differs from the order.",
+        "Artwork is 600x600 px at 2x2 in (300 dpi), so resolution is fine.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Hold the proof until the customer confirms the change to die-cut. Once confirmed, remove the white background and build a cut line around the circle and the OWL text as one shape at 2x2 in.",
+      "customer_note": "Thanks Jonas. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009222,
+      "latency_ns": 5627749040
+    }
+  },
+  {
+    "case": {
+      "id": "gen-020-holo",
+      "file": "testdata/cases/gen-020-holo.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is 200 dpi at 2x2 in, above the 150 dpi minimum, so no recreation is needed.",
+        "Solid white background would make the die cut follow a rectangle; a designer can remove it.",
+        "Holographic vinyl is a stock request that does not conflict with the order.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Remove the white background and set the die cut line around the purple circle and TACO text. Keep the art at 2x2 in. Mark the proof for holographic vinyl.",
+      "customer_note": "Thanks Nguyễn. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.008728,
+      "latency_ns": 5197245189
+    }
+  },
+  {
+    "case": {
+      "id": "gen-021-clear",
+      "file": "testdata/cases/gen-021-clear.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is 600x600 px at 2x2 in, which is 300 dpi and meets the print minimum.",
+        "Comment asks for clear vinyl, and the order lists no other material, so there is no conflict.",
+        "The white background must be removed so the laptop shows through, and a designer can do this alone.",
+        "order change: clear instead of standard white vinyl"
+      ],
+      "designer_note": "Remove the white background so only the teal circle and FORGE text remain. Set up the proof on clear vinyl at 2x2 in with a die cut around the art. Check that the teal reads well on clear stock and consider a white underprint only if the customer wants opaque color.",
+      "customer_note": "Thanks Jonas. Your comment asks for clear instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.008936,
+      "latency_ns": 6816477810
+    }
+  },
+  {
+    "case": {
+      "id": "gen-022-glitter",
+      "file": "testdata/cases/gen-022-glitter.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for glitter, a material that differs from the original die-cut order, so the change needs confirmation before a proof.",
+        "Artwork is 900x600 px at 300 dpi for 3x2 in, so resolution is fine.",
+        "Artwork has a white background that a designer can remove.",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until Kate confirms glitter. After that, remove the white background, cut around the blue circle and NOVA text as one die-cut shape, and keep the size at 3x2 in.",
+      "customer_note": "Thanks Kate. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.01074,
+      "latency_ns": 7106244382
+    }
+  },
+  {
+    "case": {
+      "id": "gen-023-other-file",
+      "file": "testdata/cases/gen-023-other-file.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for a green version of the logo that the customer says they will send, but no such file is attached.",
+        "The attached navy logo is not the version the customer wants, so a proof would use the wrong artwork."
+      ],
+      "designer_note": "Hold the proof. Wait for the green logo file from the customer. The attached navy BLOOM logo is 1200x600 px, which is 300 dpi at 4x2 in, so the resolution is fine if the new file matches. Check that the green file meets the same standard when it arrives.",
+      "customer_note": "Hi Łukasz, thanks for your note. The file we have is the navy BLOOM logo, and the green version has not arrived yet. Please send it and we will build your 4x2 inch rectangle sticker proof right away. For best print quality, a file at 1200x600 px or larger works well.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006366,
+      "latency_ns": 5085598780
+    }
+  },
+  {
+    "case": {
+      "id": "gen-024-email-later",
+      "file": "testdata/cases/gen-024-email-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment says the attached art is a placeholder and the final art will arrive by email tomorrow, so the real file is not attached yet.",
+        "The proof should wait for the final file rather than be built from placeholder art.",
+        "The placeholder is 1200x600 px at 4x2 in (300 dpi) with a solid white background, so resolution is fine, but this does not matter until the final art arrives."
+      ],
+      "designer_note": "Hold the proof. Do not build it from the placeholder. When the final art arrives by email, check resolution at 4x2 in, remove the white background so the die cut follows the art, and then make the proof.",
+      "customer_note": "Hi Chloé, thank you for the placeholder. We will hold your 4x2 in die cut sticker until your final art arrives by email tomorrow. Once it is here, we will prepare your proof right away. Please reply to this order with the file so we can match it to your order.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006708,
+      "latency_ns": 4763866011
+    }
+  },
+  {
+    "case": {
+      "id": "gen-025-hires-later",
+      "file": "testdata/cases/gen-025-hires-later.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer says they will upload a better file tonight, so the file they mean is not attached yet.",
+        "Current artwork is 220x220 px, which is 110 dpi at 2x2 in and below the 150 dpi minimum.",
+        "The pending upload decides which file gets proofed, so the proof waits for the customer."
+      ],
+      "designer_note": "Hold the proof until Zoë uploads the new file. If no file arrives, recreate the current artwork (teal circle with DASH text) at 300 dpi for a 2x2 in die cut.",
+      "customer_note": "Hi Zoë, thank you for the heads-up. Please send your higher-resolution file when it is ready, ideally at least 600x600 px for your 2x2 in sticker, and we will build your proof from it. If you would rather skip the wait, reply and we will recreate your current design for you.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00795,
+      "latency_ns": 6062312058
+    }
+  },
+  {
+    "case": {
+      "id": "gen-026-contradict",
+      "file": "testdata/cases/gen-026-contradict.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment says to remove the background but keep the white box around it, and the white box is the background, so the instructions contradict each other.",
+        "Resolution is 200 dpi at 2x2 in, above the 150 dpi minimum, so recreation is not needed.",
+        "The solid white border would make a die cut follow the rectangle, so the intended cut shape needs confirming."
+      ],
+      "designer_note": "Hold the proof until Fatima confirms. Option A: remove the white background and die cut around the purple circle and TACO text. Option B: keep the white box and cut as a rectangle. Artwork is 200 dpi at 2x2 in and acceptable.",
+      "customer_note": "Hi Fatima, your note asks to remove the background and keep the white box, which point in different directions. Would you like (A) a die cut following the purple circle and TACO text with no white, or (B) a square sticker with the white box kept? Reply with A or B and we will build your proof.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.008294,
+      "latency_ns": 5803281495
+    }
+  },
+  {
+    "case": {
+      "id": "gen-027-contradict-size",
+      "file": "testdata/cases/gen-027-contradict-size.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment contradicts itself: it asks for the art to be bigger and also to stay the same size as the order (3x2 in).",
+        "Artwork is 100 dpi at 3x2 in, which is low resolution, but the contradictory instructions take priority over recreating it."
+      ],
+      "designer_note": "Hold the proof until the customer clarifies the size. Once confirmed, recreate the artwork (navy circle with MULE text) at 300 dpi at the confirmed size.",
+      "customer_note": "Hi Zoë, your comment asks for a bigger sticker and also the same size as your order (3 x 2 in). Which would you like: keep 3 x 2 in, or a larger size? If larger, please share the exact width and height. We will rebuild your artwork sharp for print either way.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007154,
+      "latency_ns": 5226895291
+    }
+  },
+  {
+    "case": {
+      "id": "gen-028-none",
+      "file": "testdata/cases/gen-028-none.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 750x750 px at 2.5x2.5 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "The comment is empty, so there are no conflicting instructions, missing files, or requests that differ from the order.",
+        "The art is a clean teal circle with the text TACO, and all of it sits well inside the safe margin."
+      ],
+      "designer_note": "Build the proof as a 2.5 x 2.5 in rectangle sticker using the supplied art as is. Keep the circle and TACO text inside the safe margin. Leave the white background in place, since the order is a rectangle.",
+      "customer_note": "Hi Nguyễn, your artwork is sharp at 300 dpi and fits your 2.5 x 2.5 inch rectangle sticker. Our designer is preparing your proof now, and you will see it shortly for review.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "repaired": [
+        {
+          "rule": "no_name",
+          "detail": "Nguyễn"
+        }
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 2,
+      "cost_usd": 0.016718,
+      "latency_ns": 8772609766
+    }
+  },
+  {
+    "case": {
+      "id": "gen-029-rush",
+      "file": "testdata/cases/gen-029-rush.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 100 dpi at the ordered 3x2 in size, below the 150 dpi minimum, so it should be recreated rather than replaced by the customer.",
+        "The comment only mentions a Friday deadline and does not ask for a different size, shape or material, so nothing blocks the proof.",
+        "Solid white background would make the die cut follow the rectangle and needs to be removed.",
+        "Thin lines above the circle are under 1/32 in and need thickening."
+      ],
+      "designer_note": "Recreate the artwork as clean vector or high-res art at 3x2 in, 300 dpi: purple circle, thin vertical lines above it, and the text NOVA in bold purple. Remove the white background so the die cut follows the art. Thicken the thin vertical lines to at least 1/32 in. Keep everything inside the safe margin. Flag the Friday deadline to production.",
+      "customer_note": "Hi Łukasz, thanks for your order. Your file is a little low in resolution for a 3x2 in sticker, so our designers will rebuild it crisp and sharp, remove the white background for a true die cut, and thicken the fine lines. You will get a proof soon, and we will keep your Friday deadline in mind.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007346,
+      "latency_ns": 4344369887
+    }
+  },
+  {
+    "case": {
+      "id": "gen-030-praise",
+      "file": "testdata/cases/gen-030-praise.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi, so resolution is sufficient.",
+        "Solid white background would make the die cut follow the rectangle; a designer can remove it alone.",
+        "Comment is only praise and has no conflicting instructions, missing files, or changes to size, shape or material."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the teal circle and KIWI text together. Keep the art at 3x3 in. Check that the circle and text sit inside the safe margin and make a die cut proof.",
+      "customer_note": "Hi Łukasz, thanks for ordering again! Your artwork is sharp at 3x3 in. We will remove the white background so the die cut follows your teal circle and KIWI text, then send you a proof to review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007194,
+      "latency_ns": 3567493516
+    }
+  },
+  {
+    "case": {
+      "id": "gen-031-same-size",
+      "file": "testdata/cases/gen-031-same-size.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print at 3x3 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 720x720 px, which is 240 dpi at 3x3 in. That is above the 150 dpi recreate threshold.",
+        "The comment asks for 3x3 inches, which matches the order size.",
+        "The art is a solid navy circle with the text BLOOM. It is clean, has a white background and has no thin lines.",
+        "The comment has no contradictions and does not refer to a missing file."
+      ],
+      "designer_note": "Resize art to 3x3 in. Remove the white background and die cut around the circle and BLOOM text. Keep all art inside the safe margin. Resolution is 240 dpi, so check that edges stay sharp.",
+      "customer_note": "Hi José, your BLOOM artwork works well at 3x3 inches. Our designer will remove the white background, cut around the shape and send you a proof to review shortly.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00704,
+      "latency_ns": 3512242640
+    }
+  },
+  {
+    "case": {
+      "id": "gen-032-vibrant",
+      "file": "testdata/cases/gen-032-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "Preflight reported no findings.",
+        "The comment asks for bright colors. This does not change the size, shape or material and does not conflict with anything else.",
+        "The red circle and MULE text sit well inside the margins."
+      ],
+      "designer_note": "Make the proof at 3x2 in as a die cut around the red circle and MULE text. Boost color vibrancy and saturation so the red looks as bright as possible while staying clean. Remove the white background if it is not already transparent.",
+      "customer_note": "Hi Kate, your artwork is sharp at 3x2 inches, so we are ready to build your proof. We will make the reds as vivid and bright as we can and cut the sticker around your design. You will see the proof soon for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0067,
+      "latency_ns": 3763204744
+    }
+  },
+  {
+    "case": {
+      "id": "gen-033-remove-bg",
+      "file": "testdata/cases/gen-033-remove-bg.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 130 dpi at the 2x2 in order size, below the 150 dpi minimum, so it should be recreated.",
+        "Customer asked to remove the white background, and the solid white border would make the die cut follow the rectangle.",
+        "No conflicting size, shape or material request, and the artwork is attached."
+      ],
+      "designer_note": "Recreate the artwork at 300 dpi at 2x2 in: navy circle with the PIXEL text beneath it, matching the original colors and lettering. Remove the white background so the die cut follows the circle and text. Keep everything inside the safe margin.",
+      "customer_note": "Hi Aisha, your file is a bit low in resolution for a 2x2 in sticker, so our designers will rebuild it as sharp, print-ready artwork. We will also remove the white background so the die cut follows your circle and PIXEL text. You will see a proof shortly.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007832,
+      "latency_ns": 4773286956
+    }
+  },
+  {
+    "case": {
+      "id": "gen-034-remove-bg-fr",
+      "file": "testdata/cases/gen-034-remove-bg-fr.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 130 dpi at 3x2 in, below the 150 dpi minimum, so the artwork needs to be recreated.",
+        "The customer asked for the white background to be removed, and the preflight shows a solid white border that would make the die cut follow the rectangle.",
+        "The comment does not conflict with the order and does not ask for a different size, shape or material."
+      ],
+      "designer_note": "Recreate the artwork as clean, high-resolution vector or 300 dpi art at 3x2 in. Rebuild the orange circle and the orange 'PIXEL' text. Remove the white background so it is transparent. Set the die-cut line around the circle and text. Keep everything inside the safe margin.",
+      "customer_note": "Hi José, we will remove the white background so your sticker is cut around the orange circle and the PIXEL text. Your file is a bit low in resolution for 3x2 in, so our designer will recreate it sharp and clean. You will see it in your proof.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009206,
+      "latency_ns": 5622464406
+    }
+  },
+  {
+    "case": {
+      "id": "gen-035-remove-bg-de",
+      "file": "testdata/cases/gen-035-remove-bg-de.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "recreate_artwork",
+      "why": "130 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 130 dpi at 2.5x2.5 in, below the 150 dpi minimum, so it must be recreated.",
+        "Customer asks to remove the white background, which a designer can do alone.",
+        "No size, shape or material change is requested and no file is missing."
+      ],
+      "designer_note": "Recreate the purple circle and the DASH text as sharp vector or 300 dpi artwork at 2.5x2.5 in, matching the purple and the font. Remove the solid white background so the die cut follows the circle and the text. Keep all art inside the safe margin.",
+      "customer_note": "Hallo Raj, wir bauen Ihr Motiv in hoher Auflösung (300 dpi) neu auf, damit es gestochen scharf gedruckt wird. Den weißen Hintergrund entfernen wir dabei, sodass die Kontur dem Kreis und dem Schriftzug DASH folgt. Sie erhalten von uns in Kürze den Korrekturabzug zur Freigabe.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.010218,
+      "latency_ns": 5989267160
+    }
+  },
+  {
+    "case": {
+      "id": "gen-036-remove-bg-vi",
+      "file": "testdata/cases/gen-036-remove-bg-vi.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Customer asks (in Vietnamese) to remove the white background; a designer can do this alone.",
+        "Effective resolution is 200 dpi at 2x2 in, which is above the 150 dpi threshold, so recreation is not needed.",
+        "Solid white border would make the die cut follow the rectangle, so the background must be removed for a proper contour cut.",
+        "No conflicting instructions, missing files, or changes to size, shape or material."
+      ],
+      "designer_note": "Remove the solid white background around the orange circle and the BLOOM text. Set the die-cut line to follow the art outline. Keep the size at 2x2 in. Check that the circle and text edges stay clean after removal.",
+      "customer_note": "Hi Łukasz, we will remove the white background so your sticker is cut neatly around the orange circle and BLOOM text. Your proof will keep the 2x2 in die-cut size. You can review it as soon as it is ready.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2x2 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00658,
+      "latency_ns": 3718132024
+    }
+  },
+  {
+    "case": {
+      "id": "gen-037-add-text",
+      "file": "testdata/cases/gen-037-add-text.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: add-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which is 300 dpi and meets the resolution requirement.",
+        "The customer wrote out the website text, so the designer can add it without further input.",
+        "No conflicting size, shape or material request, and no missing file."
+      ],
+      "designer_note": "Add \"example.com\" in the logo's red below the BREW text, centered. Match the BREW font style, keep it legible at 3x2 in, and keep all art inside the safe margin. Proof as a 3x2 in rectangle.",
+      "customer_note": "Hi Fatima, your artwork is sharp at 300 dpi. We will add example.com under the BREW logo, matching the red and style, and send you a proof of your 3 x 2 in rectangle sticker to review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006462,
+      "latency_ns": 3266218562
+    }
+  },
+  {
+    "case": {
+      "id": "gen-038-change-text",
+      "file": "testdata/cases/gen-038-change-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 240 dpi at the ordered 4x2 in size, which is above the 150 dpi minimum, so no recreation is needed.",
+        "The comment asks only for the word to be changed to lowercase, which a designer can do alone.",
+        "The comment does not request a different size, shape or material, and it does not refer to a missing file."
+      ],
+      "designer_note": "Change the text \"KIWI\" to lowercase \"kiwi\", keeping the purple color and a similar bold weight. Keep the text and circle centered inside the safe margin. Set up the die-cut outline around the circle and text at 4x2 in.",
+      "customer_note": "Hi Mei, we will change the word to lowercase \"kiwi\" and include it in your proof. Your artwork is a good size for a 4x2 in die-cut sticker, so you can review the proof shortly.",
+      "preflight": {
+        "width_px": 960,
+        "height_px": 480,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 4x2 in; target 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00655,
+      "latency_ns": 3653734105
+    }
+  },
+  {
+    "case": {
+      "id": "gen-039-thicker",
+      "file": "testdata/cases/gen-039-thicker.png",
+      "order": {
+        "customer": "Nguyễn Văn An",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 200 dpi at 2.5x2.5 in, above the 150 dpi minimum, so the artwork does not need recreating.",
+        "The customer asks only for bolder thin lines, which a designer can do alone.",
+        "No missing file, no size, shape or material change, and no conflicting instructions.",
+        "The order is a rectangle sticker and the artwork is a red circle with the text FORGE on a white background."
+      ],
+      "designer_note": "Thicken the thin lines and strokes as the customer asked. The art is a red circle with FORGE text, so check that the letter strokes are bold enough for print. Keep all art inside the safe margin. Size the art to 2.5x2.5 in for a rectangle sticker. Resolution is 200 dpi, which is acceptable.",
+      "customer_note": "Hi Nguyễn, thank you for your artwork. Our designer will make the thin lines bolder so they print strong and clear on your 2.5 x 2.5 in rectangle sticker. You will receive a proof to review before anything goes to print.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0071,
+      "latency_ns": 4892598011
+    }
+  },
+  {
+    "case": {
+      "id": "gen-040-center",
+      "file": "testdata/cases/gen-040-center.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 750x750 px at 2.5 in, which gives 300 dpi, so resolution is sufficient.",
+        "The comment asks only to center the logo, which a designer can do alone.",
+        "No preflight issues, and the comment has no size, shape or material change or missing file."
+      ],
+      "designer_note": "Center the circle and BLOOM text as one group on the 2.5 x 2.5 in canvas, horizontally and vertically. Content currently sits about 9 px above center vertically. Remove the white background and build the die-cut line around the art, keeping it inside the safe margin.",
+      "customer_note": "Hi Mei, your artwork is high resolution and ready to go. We will center the logo, circle and BLOOM text together, on your 2.5 x 2.5 in die-cut sticker and send you a proof to review shortly.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009418,
+      "latency_ns": 5727966257
+    }
+  },
+  {
+    "case": {
+      "id": "gen-041-bigger-text",
+      "file": "testdata/cases/gen-041-bigger-text.png",
+      "order": {
+        "customer": "Raj Mehta",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 750x750 px at 2.5x2.5 in, which is 300 dpi, so resolution is fine.",
+        "The comment asks only for larger text, which a designer can do alone.",
+        "The text 'BREW' is already in the artwork and no size, shape or material change is requested.",
+        "No preflight findings."
+      ],
+      "designer_note": "Enlarge the 'BREW' text a bit, keeping it centered under the circle and inside the safe margin. Keep the artwork at 2.5x2.5 in and set up the die cut around the circle and text.",
+      "customer_note": "Hi Raj, your artwork is sharp at 300 dpi. We will make the BREW text a bit larger and keep it inside the safe margin. Your proof will show the updated text at 2.5 x 2.5 inches for your review.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006996,
+      "latency_ns": 4203036786
+    }
+  },
+  {
+    "case": {
+      "id": "gen-042-redraw-ok",
+      "file": "testdata/cases/gen-042-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 600x600 px at 2x2 in, which gives an effective 300 dpi, above the 150 dpi minimum.",
+        "Preflight reports no findings.",
+        "The comment only offers permission to redraw if needed. It does not ask for a different size, shape or material, and the file is good enough, so no redraw is needed.",
+        "The design is a flat teal circle with the text BREW, with a clean white background and enough margin."
+      ],
+      "designer_note": "Build the die-cut proof at 2x2 in from the supplied file. Remove the white background and cut around the circle and BREW text. Keep the artwork inside the safe margin. No redraw is needed.",
+      "customer_note": "Hi José, your artwork is sharp at 300 dpi for the 2x2 in size, so we will use it as is and no redraw is needed. Our designer will prepare your die-cut proof around the circle and BREW lettering and send it for your review.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006864,
+      "latency_ns": 4317796827
+    }
+  },
+  {
+    "case": {
+      "id": "gen-043-size-up",
+      "file": "testdata/cases/gen-043-size-up.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Can you make these 4.5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for 4.5 in wide instead of the ordered 2.5 x 2.5 in, so the size differs from the order and needs confirmation.",
+        "Artwork is 130 dpi at 2.5 in and would be about 72 dpi at 4.5 in, so it will need recreating once the size is confirmed.",
+        "order change: a 4.5 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Hold the proof until Chloé confirms the size. Once confirmed, recreate the artwork (navy circle with BREW text) as clean vector at the confirmed size, keeping the die-cut shape around the art.",
+      "customer_note": "Thanks Chloé. Your comment asks for a 4.5 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 325,
+        "height_px": 325,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2.5x2.5 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 4.5 in size instead of 2.5x2.5 in"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.010256,
+      "latency_ns": 6751653915
+    }
+  },
+  {
+    "case": {
+      "id": "gen-044-size-down",
+      "file": "testdata/cases/gen-044-size-down.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for 1.25x1.25 in, but the order is 2.5x2.5 in; the size change needs customer confirmation before the proof.",
+        "Artwork is 200 dpi at the ordered size, but at 1.25 in it would be 400 dpi, so resolution is not the blocker.",
+        "order change: a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Hold the proof until Aisha confirms the size. If she confirms 1.25x1.25 in, resize the art to that size and keep the die cut around the orange circle and MULE text. If she keeps 2.5x2.5 in, recreate the artwork, since it is only 200 dpi at that size.",
+      "customer_note": "Thanks Aisha. Your comment asks for a 1.25x1.25 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.008864,
+      "latency_ns": 5541838428
+    }
+  },
+  {
+    "case": {
+      "id": "gen-045-to-square",
+      "file": "testdata/cases/gen-045-to-square.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Order is a die cut, but the comment asks for a square/rectangle sticker with no cut around the shape.",
+        "The requested shape differs from the ordered product, so the customer must confirm the change before the proof.",
+        "Artwork is 300 dpi at 4x2 in, so quality is fine.",
+        "The comment says 'square', but the artwork and order are 4x2 in, so the final size needs confirming.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof until Kate confirms the change. Once confirmed, keep the white background and set up a straight-cut rectangle instead of a die cut. Keep the art at 4x2 in unless she picks a different size.",
+      "customer_note": "Thanks Kate. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009914,
+      "latency_ns": 6515151580
+    }
+  },
+  {
+    "case": {
+      "id": "gen-046-to-diecut",
+      "file": "testdata/cases/gen-046-to-diecut.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for a die-cut shape, but the order is for a rectangle sticker, so the order must be changed before a proof.",
+        "Artwork is 300 dpi at 4 x 2 in, so resolution is fine.",
+        "Safe margin and thin line issues are fixable by the designer once the shape is confirmed.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Hold the proof until Jonas confirms the switch to die-cut. Then add a cut contour around the logo (circle, lines and OWL text), move the art inside the safe margin, and thicken the thin lines above the circle to at least 1/32 in.",
+      "customer_note": "Thanks Jonas. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009526,
+      "latency_ns": 5882445375
+    }
+  },
+  {
+    "case": {
+      "id": "gen-047-holo",
+      "file": "testdata/cases/gen-047-holo.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is 300 dpi at the ordered 4x2 in size, so resolution is fine.",
+        "Customer asks for holographic vinyl, which is a material request the designer can note on the proof; no size or shape change is requested.",
+        "Art sits partly inside the safe margin and thin lines are below 1/32 in, both fixable by a designer.",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Set up proof on holographic vinyl as a 4 x 2 in rectangle. Move the top lines and any art inside the safe margin. Thicken the thin orange lines to at least 1/32 in. Keep the KIWI text and orange circle as is.",
+      "customer_note": "Thanks Sam. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006946,
+      "latency_ns": 3703367285
+    }
+  },
+  {
+    "case": {
+      "id": "gen-048-clear",
+      "file": "testdata/cases/gen-048-clear.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is 900x600 px at 300 dpi at the ordered 3x2 in size, so resolution is sufficient.",
+        "Customer requests clear vinyl so the laptop shows through, and no conflict with the order is stated.",
+        "The white background must be removed so the clear material shows through; a designer can do this alone.",
+        "order change: clear vinyl instead of standard white vinyl"
+      ],
+      "designer_note": "Proof on clear vinyl. Remove the white background so only the orange circle and KIWI text remain. Keep the die cut around the art and keep everything inside the safe margin. Check that the text stays crisp once the background is removed.",
+      "customer_note": "Thanks Zoë. Your comment asks for clear vinyl instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear vinyl instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009522,
+      "latency_ns": 5690963140
+    }
+  },
+  {
+    "case": {
+      "id": "gen-049-glitter",
+      "file": "testdata/cases/gen-049-glitter.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for glitter material, which is not part of the current order and needs customer confirmation",
+        "Artwork is 600x600 px at 2x2 in (300 dpi), so resolution is fine",
+        "Flat teal circle with SURF text on a white background; die cut around the art is straightforward",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Hold the proof until Aisha confirms glitter. Once confirmed, make a 2x2 in die-cut proof with a glitter material note, cutting around the circle and SURF text, and remove the white background.",
+      "customer_note": "Thanks Aisha. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.011082,
+      "latency_ns": 7119285453
+    }
+  },
+  {
+    "case": {
+      "id": "gen-050-other-file",
+      "file": "testdata/cases/gen-050-other-file.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for the green version of the logo, which Sam says will be sent but is not attached.",
+        "The attached artwork is the red version, so it does not match the request.",
+        "Resolution is fine at 300 dpi, but the proof must wait for the green file."
+      ],
+      "designer_note": "Hold the proof. Do not use the attached red logo. Wait for Sam's green logo file, then check it at 4 x 2 in die cut, remove the background if needed, and keep the art inside the safe margin.",
+      "customer_note": "Hi Sam, the file attached to your order is the red FORGE logo. Please send the green version whenever you are ready. Once it arrives, we will prepare your 4 x 2 inch die-cut proof with it right away.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00605,
+      "latency_ns": 3282222033
+    }
+  },
+  {
+    "case": {
+      "id": "gen-051-email-later",
+      "file": "testdata/cases/gen-051-email-later.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer says the attached file is a placeholder and final art will arrive by email tomorrow, so the real file is not attached.",
+        "The placeholder is 130 dpi at 3x3 in, but the missing-file rule takes priority over recreating the artwork."
+      ],
+      "designer_note": "Hold the proof. Do not recreate or proof the placeholder (orange circle with SURF text). Wait for the final art from the customer's email, then run preflight again on the new file at 3x3 in rectangle.",
+      "customer_note": "Hi Aisha, thanks for the placeholder. We'll hold your 3x3 in rectangle sticker proof until your final art arrives by email tomorrow. Please send it as a high-resolution file, and we'll start your proof as soon as we receive it.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.005916,
+      "latency_ns": 3420865892
+    }
+  },
+  {
+    "case": {
+      "id": "gen-052-hires-later",
+      "file": "testdata/cases/gen-052-hires-later.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer says they will upload a better file tonight, so the file to use is not attached yet.",
+        "Current file is 110 dpi at 2x2 in, below the 150 dpi minimum, but the pending replacement file takes priority."
+      ],
+      "designer_note": "Hold the proof until the customer's new file arrives. Check that the new file is at least 300 dpi at 2x2 in. If no new file comes, recreate the current artwork (purple circle with the text PIXEL) at 2x2 in rectangle.",
+      "customer_note": "Hi Chloé, thank you for the heads-up. We will hold your proof until your new file arrives tonight. For a sharp 2x2 in sticker, aim for about 600x600 px or larger. If you would rather not wait, reply and we will recreate your current design for you.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007392,
+      "latency_ns": 4341678443
+    }
+  },
+  {
+    "case": {
+      "id": "gen-053-contradict",
+      "file": "testdata/cases/gen-053-contradict.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment contradicts itself: it asks to remove the background but keep the white box, and the white box is the solid background.",
+        "Resolution is 200 dpi at 3x3 in, which is above 150, so recreation is not needed.",
+        "No size, shape or material change is requested."
+      ],
+      "designer_note": "Hold the proof until Jonas confirms which option he wants. Option A: remove the white background and die cut around the circle and KIWI text. Option B: keep the white box and cut as a 3x3 in rectangle.",
+      "customer_note": "Hi Jonas, your note asks to remove the background and also keep the white box, and the white box is the background. Which would you like? A) a die cut following the circle and KIWI text with no white, or B) a 3x3 in rectangle sticker with the white box kept.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009582,
+      "latency_ns": 5160329476
+    }
+  },
+  {
+    "case": {
+      "id": "gen-054-contradict-size",
+      "file": "testdata/cases/gen-054-contradict-size.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Make it bigger but keep it the same size as the order."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict-size"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment contradicts itself: it asks for a bigger sticker and also for the same size as the order.",
+        "The artwork is 600x600 px at 2x2 in (300 dpi), so resolution is fine, but the intended size is unclear."
+      ],
+      "designer_note": "Hold the proof until the customer confirms the size. Artwork is 300 dpi at 2x2 in, so no recreation is needed. If they confirm 2x2 in, keep the art on the white background as a rectangle. If they pick a larger size, check dpi at that size.",
+      "customer_note": "Hi Jonas, your comment asks for a bigger sticker and also the same size as your order (2 x 2 in). Which would you like: keep 2 x 2 in, or a larger size? If larger, please share the width and height in inches, and we will prepare your proof right away.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007452,
+      "latency_ns": 4008107136
+    }
+  },
+  {
+    "case": {
+      "id": "gen-055-none",
+      "file": "testdata/cases/gen-055-none.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "comment: none"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 750x750 px at 2.5x2.5 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "Comment is empty, so there are no conflicting instructions, missing files, or requests for a different size, shape or material.",
+        "Artwork is a clean teal circle with bold 'BOLT' text on a white background, suitable for a die cut."
+      ],
+      "designer_note": "Remove the white background. Set up a die-cut line around the circle and BOLT text. Keep the art at 2.5 x 2.5 in and check that all elements sit inside the safe margin.",
+      "customer_note": "Hi Aisha, your artwork is sharp and ready to go at 2.5 x 2.5 in. Our designer will prepare your die-cut sticker proof, cutting around the teal circle and BOLT text. You will receive the proof shortly to review and approve.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007228,
+      "latency_ns": 3463055051
+    }
+  },
+  {
+    "case": {
+      "id": "gen-056-rush",
+      "file": "testdata/cases/gen-056-rush.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Need these by Friday if possible, thanks!"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: rush"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 4x2 in, which gives 300 dpi and meets the 150 dpi minimum.",
+        "Preflight shows no findings.",
+        "The comment only mentions a Friday deadline and does not request a different size, shape or material, or refer to a missing file.",
+        "The art is an orange circle with the text BREW on a white background, which suits a die-cut sticker."
+      ],
+      "designer_note": "Make the die-cut proof at 4x2 in. Cut around the circle and BREW text. Check that the art sits inside the safe margin. Flag the Friday deadline to production.",
+      "customer_note": "Hi Fatima, your artwork looks great and is the right resolution for your 4x2 in die-cut stickers. Our designer is preparing your proof now. We have noted your Friday deadline and will share the proof as soon as it is ready.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006488,
+      "latency_ns": 3162566503
+    }
+  },
+  {
+    "case": {
+      "id": "gen-057-praise",
+      "file": "testdata/cases/gen-057-praise.png",
+      "order": {
+        "customer": "Sam Carter",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Love your stickers, ordered from you three times now."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: praise"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which gives 300 dpi and meets the 150 dpi minimum.",
+        "Comment is only praise and has no change requests, missing files or conflicting instructions.",
+        "Artwork is a clean purple circle with the text BREW, with no problems found in preflight."
+      ],
+      "designer_note": "Build the die-cut proof at 3x2 in using the supplied artwork. Cut around the circle and BREW text. Check that all art sits inside the safe margin.",
+      "customer_note": "Hi Sam, thank you for being a repeat customer! Your artwork is sharp and ready to go. Our designer is preparing your 3x2 in die-cut proof now, and you will see it shortly for review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006384,
+      "latency_ns": 3266579667
+    }
+  },
+  {
+    "case": {
+      "id": "gen-058-same-size",
+      "file": "testdata/cases/gen-058-same-size.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please print at 4x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: same-size"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 4x2 in, giving 300 dpi, which is above the 150 dpi minimum.",
+        "The comment asks for 4x2 inches, which matches the ordered size.",
+        "Thin lines flagged by preflight (0.02 sq in under 1/32 in) are a fix the designer can make alone.",
+        "Artwork is attached and the comment has no conflicting instructions."
+      ],
+      "designer_note": "Thicken the thin vertical lines above the circle to at least 1/32 in. Set up the die cut around the art at 4x2 in. Check that all art sits inside the safe margin.",
+      "customer_note": "Hi Chloé, your artwork is sharp at 4x2 inches, so we are moving ahead with your die-cut proof. We will thicken the thin lines at the top so they print cleanly. You will receive your proof shortly to review.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006658,
+      "latency_ns": 3209599621
+    }
+  },
+  {
+    "case": {
+      "id": "gen-059-vibrant",
+      "file": "testdata/cases/gen-059-vibrant.png",
+      "order": {
+        "customer": "Kate O'Brien",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the colors as bright as you can."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: vibrant"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi and meets the resolution requirement.",
+        "Preflight shows no findings.",
+        "The comment asks for bright colors, which a designer can handle alone with no change to size, shape or material.",
+        "The artwork is present and the instructions do not contradict each other."
+      ],
+      "designer_note": "Boost color vibrancy and saturation on the purple circle and SURF text so the colors print as bright as possible. Keep the 3x3 in rectangle size and leave the layout as is.",
+      "customer_note": "Hi Kate, your artwork is at full print resolution for the 3x3 in rectangle sticker. Our designer will make the purple circle and SURF text as bright and vivid as possible in your proof. Please review it when it arrives.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007044,
+      "latency_ns": 3201891494
+    }
+  },
+  {
+    "case": {
+      "id": "gen-060-remove-bg",
+      "file": "testdata/cases/gen-060-remove-bg.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Please remove the white background."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which is 300 dpi, so resolution is sufficient.",
+        "Customer asked to remove the white background, which a designer can do alone.",
+        "Die cut should follow the red circle and SURF text, not the rectangle."
+      ],
+      "designer_note": "Remove the solid white background. Set the die cut line around the red circle and the SURF text so it follows the art, not the rectangle. Check the cut line keeps the text inside the safe margin. Size at 3 x 2 in.",
+      "customer_note": "Hi José, your artwork is sharp enough to print at 3 x 2 in. We will remove the white background and cut the sticker around the red circle and the SURF text. You will see the proof soon to review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00648,
+      "latency_ns": 3443685336
+    }
+  },
+  {
+    "case": {
+      "id": "gen-061-remove-bg-fr",
+      "file": "testdata/cases/gen-061-remove-bg-fr.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Merci d'enlever le fond blanc."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-fr"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Customer asks to remove the white background; a designer can do this alone.",
+        "Effective resolution is 200 dpi at 2.5x2.5 in, which is above the 150 dpi minimum, so no recreation is needed.",
+        "Comment does not request a different size, shape or material, and no file is missing."
+      ],
+      "designer_note": "Remove the solid white background. Keep the purple circle and KIWI text. Set up the die cut to follow the circle and text outline. Keep the art inside the safe margin at 2.5x2.5 in.",
+      "customer_note": "Hi Zoë, we will remove the white background and cut the sticker around your purple circle and KIWI text. Your proof will follow the shape of the artwork at 2.5 x 2.5 in. You will see it shortly for approval.",
+      "preflight": {
+        "width_px": 500,
+        "height_px": 500,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 2.5x2.5 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00635,
+      "latency_ns": 3303731730
+    }
+  },
+  {
+    "case": {
+      "id": "gen-062-remove-bg-de",
+      "file": "testdata/cases/gen-062-remove-bg-de.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Bitte den weißen Hintergrund entfernen."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-de"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Customer asks to remove the white background; a designer can do this alone so the die cut follows the art.",
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi, so resolution is fine.",
+        "Thin lines (0.02 sq in under 1/32 in) are the vertical lines above the circle and can be thickened by the designer.",
+        "No conflicting instructions, missing files, or size, shape or material changes requested."
+      ],
+      "designer_note": "Remove the solid white background. Set the die cut to follow the circle, the OWL text and the vertical lines. Thicken the thin vertical lines to at least 1/32 in so they print cleanly. Keep the art at 3x3 in and check everything sits inside the safe margin.",
+      "customer_note": "Hi Jonas, thank you for your order. We will remove the white background so the die cut follows your design. We will also thicken the thin vertical lines above the circle so they print crisply. Your proof will show the result for your approval.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007904,
+      "latency_ns": 4324933919
+    }
+  },
+  {
+    "case": {
+      "id": "gen-063-remove-bg-vi",
+      "file": "testdata/cases/gen-063-remove-bg-vi.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Vui lòng xoá nền trắng giúp mình."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: remove-bg-vi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The customer asks in Vietnamese to remove the white background, which a designer can do alone and which suits a die cut.",
+        "Effective resolution is 240 dpi at 3x3 in, above the 150 dpi threshold, so recreation is not needed.",
+        "Thin lines under 1/32 in are a designer fix.",
+        "The comment does not ask for a different size, shape or material, and the artwork is attached."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the blue circle, the vertical lines and the DASH text. Thicken the thin vertical lines to at least 1/32 in. Check that all art sits inside the safe margin at 3x3 in. Keep the artwork at 3x3 in.",
+      "customer_note": "Hi Jonas, we will remove the white background and cut the sticker around your design. We will also thicken the thin lines at the top so they print cleanly. You will see a proof soon to review before printing.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007586,
+      "latency_ns": 4132456577
+    }
+  },
+  {
+    "case": {
+      "id": "gen-064-add-text",
+      "file": "testdata/cases/gen-064-add-text.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Add our website, example.com, under the logo."
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 100 dpi at the ordered 4x2 in size, below the 150 dpi minimum, so it should be recreated.",
+        "Customer's comment is clear: add example.com under the logo. A designer can do this alone.",
+        "No missing file, size, shape or material change, and no conflicting instructions."
+      ],
+      "designer_note": "Recreate the purple circle and BREW wordmark as clean high-resolution artwork at 4x2 in, 300 dpi. Match the original colors and font style. Add example.com in matching purple text centered under BREW, inside the safe margin. Keep the die-cut shape and a transparent background.",
+      "customer_note": "Hi Mei, your logo is a lower resolution than print needs, so our designers will rebuild it crisp and sharp at 4x2 in. We will also add example.com under the logo as you asked. You will see everything in your proof shortly, and there is nothing you need to send.",
+      "preflight": {
+        "width_px": 400,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00781,
+      "latency_ns": 5375350767
+    }
+  },
+  {
+    "case": {
+      "id": "gen-065-change-text",
+      "file": "testdata/cases/gen-065-change-text.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Change the word to all lowercase please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: change-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 200 dpi at the ordered 3x2 in size, which is above the 150 dpi threshold, so no recreation is needed.",
+        "The comment asks for the word to be changed to lowercase, which the designer can do alone: SURF becomes surf.",
+        "Thin lines flagged by preflight (the vertical lines above the circle) can be thickened by the designer.",
+        "The comment asks for no size, shape or material change and refers to no missing file."
+      ],
+      "designer_note": "Change the text SURF to lowercase 'surf', keeping the font, color and centered placement under the circle. Thicken the thin vertical lines above the circle to at least 1/32 in. Keep all art inside the safe margin and set up the die-cut around the art at 3x2 in.",
+      "customer_note": "Hi Chloé, your artwork is good to go. We will change SURF to lowercase 'surf' and thicken a few thin lines above the circle so they print cleanly. Your proof will follow shortly for your review.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006998,
+      "latency_ns": 5355039325
+    }
+  },
+  {
+    "case": {
+      "id": "gen-066-thicker",
+      "file": "testdata/cases/gen-066-thicker.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "The thin lines look weak, can you make them bolder?"
+      },
+      "want": "ready_for_proof",
+      "why": "comment: thicker"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 750x750 px at 2.5x2.5 in, which gives 300 dpi, so resolution is sufficient.",
+        "Customer asks to make thin lines bolder, which a designer can do alone.",
+        "The comment names no different size, shape or material, and no file is missing.",
+        "The image shows a red circle with the text PIXEL on a white background and no obvious thin lines, so the designer should check the text strokes."
+      ],
+      "designer_note": "Thicken thin lines and strokes, including the PIXEL lettering if it looks light. Keep the art inside the safe margin. Keep the 2.5 x 2.5 in rectangle size. Make the proof.",
+      "customer_note": "Hi Aisha, thanks for your note. Our designer will thicken the thin lines so they look bolder and keep your 2.5 x 2.5 in rectangle sticker as ordered. You will see the change in your proof shortly.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007362,
+      "latency_ns": 3438629298
+    }
+  },
+  {
+    "case": {
+      "id": "gen-067-center",
+      "file": "testdata/cases/gen-067-center.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Center the logo please."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: center"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which is 300 dpi, so resolution is sufficient.",
+        "The comment asks to center the logo, which a designer can do alone.",
+        "No missing file, size, shape or material change, and no contradictory instructions.",
+        "Preflight has no findings."
+      ],
+      "designer_note": "Center the logo (blue circle and BREW text) horizontally and vertically on the 3x2 in rectangle. Keep all art inside the safe margin. The white background can stay as the rectangle sticker background.",
+      "customer_note": "Hi Aisha, your artwork is sharp at 300 dpi for the 3x2 in rectangle sticker. We will center the logo and keep it inside the safe margin, then send you a proof to review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006428,
+      "latency_ns": 3168479901
+    }
+  },
+  {
+    "case": {
+      "id": "gen-068-bigger-text",
+      "file": "testdata/cases/gen-068-bigger-text.png",
+      "order": {
+        "customer": "Aisha Bello",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the text a bit larger."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: bigger-text"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 240 dpi at 3x3 in, which is above the 150 dpi recreate threshold.",
+        "The comment asks only for larger text, which a designer can do alone.",
+        "The solid white background would make the die cut follow the rectangle, so the designer can remove it.",
+        "No missing file, no size, shape or material change, and no contradictory instructions."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the teal circle and BREW text. Enlarge the BREW text a bit, keeping it inside the safe margin and balanced with the circle. Keep the art at 3x3 in.",
+      "customer_note": "Hi Aisha, we will make the BREW text a bit larger on your proof. We will also remove the white background so your die-cut sticker follows the shape of your design. You can review everything on the proof before it goes to print.",
+      "preflight": {
+        "width_px": 720,
+        "height_px": 720,
+        "effective_dpi": 240,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "240 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007178,
+      "latency_ns": 3192142889
+    }
+  },
+  {
+    "case": {
+      "id": "gen-069-redraw-ok",
+      "file": "testdata/cases/gen-069-redraw-ok.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Feel free to redraw it if the file is not good enough."
+      },
+      "want": "ready_for_proof",
+      "why": "comment: redraw-ok"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 200 dpi at the 3x2 in ordered size, above the 150 dpi minimum, so no recreation is needed.",
+        "Comment gives permission to redraw but asks for no change to size, shape or material.",
+        "The white background needs removing for the die cut, which a designer can do alone."
+      ],
+      "designer_note": "Remove the white background. Set the die cut line around the navy circle and BLOOM text. Keep the art at 3x2 in and inside the safe margin. Use the supplied file as is, since 200 dpi is sufficient; redraw only if edges look soft.",
+      "customer_note": "Hi José, your artwork is sharp enough for a 3x2 in die-cut sticker. We will remove the white background, cut around the circle and BLOOM text, and send you a proof to review shortly.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 400,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x2 in; target 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00791,
+      "latency_ns": 4576090767
+    }
+  },
+  {
+    "case": {
+      "id": "gen-070-size-up",
+      "file": "testdata/cases/gen-070-size-up.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches wide instead?"
+      },
+      "want": "ask_customer",
+      "why": "comment: size-up"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for 5 inches wide, but the order is 3x3 in, so the size differs from the order and needs confirmation.",
+        "Artwork is low resolution (100 dpi at 3x3 in, about 60 dpi at 5x5 in), but the size question takes priority.",
+        "order change: a 5 in size instead of 3x3 in"
+      ],
+      "designer_note": "Hold the proof until Fatima confirms the new size. Once confirmed, recreate the low-resolution artwork (navy circle with TACO text) at the confirmed size, 300 dpi, with a die-cut outline.",
+      "customer_note": "Thanks Fatima. Your comment asks for a 5 in size instead of 3x3 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 5 in size instead of 3x3 in"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009048,
+      "latency_ns": 5703355311
+    }
+  },
+  {
+    "case": {
+      "id": "gen-071-size-down",
+      "file": "testdata/cases/gen-071-size-down.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "die_cut",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Actually I need them 1.25x1.25 inches."
+      },
+      "want": "ask_customer",
+      "why": "comment: size-down"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer comment asks for 1.25 x 1.25 in, but the order is 2.5 x 2.5 in; the size change needs customer confirmation before the proof.",
+        "Artwork resolution is fine (300 dpi at 2.5 in, higher at 1.25 in).",
+        "Thin lines flagged at the top of the art will be thinner still at half size.",
+        "order change: a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "designer_note": "Hold the proof until the customer confirms the size. If 1.25 x 1.25 in is confirmed, resize the art to that size, keep the die cut, and thicken the thin vertical lines at the top to at least 1/32 in. Check that the PIXEL text stays legible at the smaller size.",
+      "customer_note": "Thanks Łukasz. Your comment asks for a 1.25x1.25 in size instead of 2.5x2.5 in, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "a 1.25x1.25 in size instead of 2.5x2.5 in"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.010512,
+      "latency_ns": 5386456234
+    }
+  },
+  {
+    "case": {
+      "id": "gen-072-to-square",
+      "file": "testdata/cases/gen-072-to-square.png",
+      "order": {
+        "customer": "Zoë Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-square"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for a square sticker and no die cut, but the order is a die_cut product, so the shape differs from the order.",
+        "Artwork is 130 dpi at 2x2 in, under 150 dpi, so it will need recreating once the shape is confirmed.",
+        "Customer wants to keep the solid white background, so no background removal is needed.",
+        "order change: a rectangle shape instead of die cut"
+      ],
+      "designer_note": "Hold the proof until the customer confirms the switch from die cut to a square/rectangle sticker. After confirmation, recreate the blue circle and BLOOM text at 300 dpi for 2x2 in, keep the white background, and set a straight square cut with art inside the safe margin.",
+      "customer_note": "Thanks Zoë. Your comment asks for a rectangle shape instead of die cut, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 260,
+        "height_px": 260,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "order_changes": [
+        "a rectangle shape instead of die cut"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009652,
+      "latency_ns": 5488336095
+    }
+  },
+  {
+    "case": {
+      "id": "gen-073-to-diecut",
+      "file": "testdata/cases/gen-073-to-diecut.png",
+      "order": {
+        "customer": "Fatima Khan",
+        "product": "rectangle",
+        "width_in": 2.5,
+        "height_in": 2.5,
+        "comment": "Please cut around the logo instead of a rectangle."
+      },
+      "want": "ask_customer",
+      "why": "comment: to-diecut"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Comment asks for a die-cut shape, but the order is a rectangle product.",
+        "Shape change differs from the order, so the customer must confirm before the proof.",
+        "Artwork is 750x750 px at 2.5x2.5 in (300 dpi) and is otherwise fine.",
+        "order change: a die cut shape instead of rectangle"
+      ],
+      "designer_note": "Hold the proof until the customer confirms the switch from rectangle to die-cut. Once confirmed, build a cut line around the orange circle and BOLT text as one shape, keeping the 2.5 x 2.5 in size. The background is white, so remove it.",
+      "customer_note": "Thanks Fatima. Your comment asks for a die cut shape instead of rectangle, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 750,
+        "height_px": 750,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "a die cut shape instead of rectangle"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00959,
+      "latency_ns": 4657560301
+    }
+  },
+  {
+    "case": {
+      "id": "gen-074-holo",
+      "file": "testdata/cases/gen-074-holo.png",
+      "order": {
+        "customer": "Chloé Dubois",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "comment: holo"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is 600 px at 2 in, which gives 300 dpi and meets the 150 dpi minimum",
+        "Comment asks for holographic vinyl, and the order does not name a different material",
+        "Content near the top edge sits inside the 19 px safe margin, which a designer can fix",
+        "Thin lines (0.02 sq in) can be thickened by the designer",
+        "order change: holographic instead of standard white vinyl"
+      ],
+      "designer_note": "Set material to holographic vinyl. Move the top vertical lines inward so all artwork sits inside the 19 px safe margin. Thicken the thin vertical lines to at least 1/32 in. Keep the 2 x 2 in rectangle size.",
+      "customer_note": "Thanks Chloé. Your comment asks for holographic instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "112 px of artwork inside the 19 px safe margin"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "holographic instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009612,
+      "latency_ns": 5483882341
+    }
+  },
+  {
+    "case": {
+      "id": "gen-075-clear",
+      "file": "testdata/cases/gen-075-clear.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "I want these on clear vinyl so the laptop shows through."
+      },
+      "want": "ask_customer",
+      "why": "comment: clear"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Artwork is 600x600 px at 2x2 in, which is 300 dpi, so resolution is fine.",
+        "Customer wants clear vinyl so the laptop shows through, which means the white background must be removed.",
+        "Background removal is a fix the designer can do alone.",
+        "order change: clear instead of standard white vinyl"
+      ],
+      "designer_note": "Remove the white background so only the navy circle and FORGE text remain. Set up the proof on clear vinyl at 2x2 in, rectangle cut. Check that the navy stays solid and legible, and consider a white underprint only if it is needed for opacity, noting it on the proof.",
+      "customer_note": "Thanks Mei. Your comment asks for clear instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "order_changes": [
+        "clear instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.009934,
+      "latency_ns": 5968818272
+    }
+  },
+  {
+    "case": {
+      "id": "gen-076-glitter",
+      "file": "testdata/cases/gen-076-glitter.png",
+      "order": {
+        "customer": "José García",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can we do glitter for this one?"
+      },
+      "want": "ask_customer",
+      "why": "comment: glitter"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks about glitter material, which differs from the order and needs confirmation before proofing",
+        "Artwork is 130 dpi at 3x3 in, under the 150 dpi minimum, so it will need recreating once material is confirmed",
+        "Solid white background would make the die cut follow the rectangle",
+        "Thin lines under 1/32 in in the top tick marks",
+        "order change: glitter instead of standard white vinyl"
+      ],
+      "designer_note": "Hold proof until the customer confirms glitter material. Then recreate the artwork at 300 dpi at 3x3 in, remove the white background so the die cut follows the circle and SURF text, and thicken the thin tick lines above the circle to at least 1/32 in. Keep all art inside the safe margin.",
+      "customer_note": "Thanks José. Your comment asks for glitter instead of standard white vinyl, which changes your order. Reply to confirm and we'll update the order and send your proof.",
+      "preflight": {
+        "width_px": 390,
+        "height_px": 390,
+        "effective_dpi": 130,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "130 dpi at 3x3 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "order_changes": [
+        "glitter instead of standard white vinyl"
+      ],
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.01012,
+      "latency_ns": 5758739767
+    }
+  },
+  {
+    "case": {
+      "id": "gen-077-other-file",
+      "file": "testdata/cases/gen-077-other-file.png",
+      "order": {
+        "customer": "José García",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": "Use the green version of the logo instead, I'll send it."
+      },
+      "want": "ask_customer",
+      "why": "comment: other-file"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for a green version of the logo that the customer says they will send, but it is not attached.",
+        "The attached artwork is the purple version, so the proof would use the wrong file.",
+        "The artwork itself is fine: 300 dpi at 3x2 in, with no size, shape or material change requested."
+      ],
+      "designer_note": "Hold the proof. Wait for the customer's green logo file. When it arrives, check that it is at least 150 dpi at 3x2 in, then build the rectangle proof from it. Do not use the purple file.",
+      "customer_note": "Hi José, the file we have is the purple version of your logo. Please send the green version and we will build your 3 x 2 in rectangle sticker proof from it as soon as it arrives.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.00632,
+      "latency_ns": 3036725741
+    }
+  },
+  {
+    "case": {
+      "id": "gen-078-email-later",
+      "file": "testdata/cases/gen-078-email-later.png",
+      "order": {
+        "customer": "Łukasz Nowak",
+        "product": "rectangle",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "This is a placeholder, final art coming by email tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "comment: email-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment says the attached image is a placeholder and the final art will arrive by email tomorrow.",
+        "The final file is not attached yet, so a proof made from this placeholder would be wasted work.",
+        "The placeholder itself is fine at 300 dpi at 2x2 in, but the customer's comment takes priority."
+      ],
+      "designer_note": "Hold the proof. Do not build it from the placeholder (teal circle with 'OWL' text). Wait for the final art from the customer by email, then run preflight on it.",
+      "customer_note": "Hi Łukasz, thanks for the placeholder. We will hold your 2 x 2 in rectangle sticker until your final art arrives by email tomorrow. Once we receive it, we will check it and prepare your proof right away.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.006342,
+      "latency_ns": 3140495438
+    }
+  },
+  {
+    "case": {
+      "id": "gen-079-hires-later",
+      "file": "testdata/cases/gen-079-hires-later.png",
+      "order": {
+        "customer": "Jonas Müller",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "The file is low quality, I'll upload a better one tonight."
+      },
+      "want": "ask_customer",
+      "why": "comment: hires-later"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer says they will upload a better file tonight, so the file they intend to use is not attached yet.",
+        "Current artwork is 110 dpi at 2x2 in, below the 150 dpi minimum, but the pending replacement file takes priority.",
+        "Thin lines flagged on the vertical lines above the circle."
+      ],
+      "designer_note": "Hold the proof until Jonas uploads the new file. If it does not arrive, recreate the current artwork (purple circle, DASH text, thin vertical lines) at 2x2 in and thicken the thin lines.",
+      "customer_note": "Hi Jonas, thank you for letting us know. Your current file is 110 dpi at 2x2 in, so the new upload will help. Please send it tonight at 300 dpi if you can, and we will start your proof right away. If you prefer, we can recreate the current design for you instead.",
+      "preflight": {
+        "width_px": 220,
+        "height_px": 220,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.008178,
+      "latency_ns": 4832929419
+    }
+  },
+  {
+    "case": {
+      "id": "gen-080-contradict",
+      "file": "testdata/cases/gen-080-contradict.png",
+      "order": {
+        "customer": "Mei Chen",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Remove the background but keep the white box around it."
+      },
+      "want": "ask_customer",
+      "why": "comment: contradict"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment contradicts itself: it asks to remove the background but keep the white box around the art, and the white box is the solid background.",
+        "Customer clarification is needed before the proof; this takes priority over the low resolution (100 dpi at 2x2 in)."
+      ],
+      "designer_note": "Hold the proof until Mei replies. Once clarified, recreate the artwork at 300 dpi for 2x2 in and thicken the thin lines (the vertical lines above the circle). Then cut either around the art (background removed) or as a white-backed rectangle.",
+      "customer_note": "Hi Mei, your comment asks to remove the background and also keep the white box, and the white box is the background. Which would you like: a die cut following the purple circle and KIWI text with no white, or a square sticker with the white box kept? We will rebuild the art in high resolution either way.",
+      "preflight": {
+        "width_px": 200,
+        "height_px": 200,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 2x2 in; needs 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-sonnet-5.5",
+      "attempts": 1,
+      "cost_usd": 0.007738,
+      "latency_ns": 4787302186
+    }
+  }
+]
