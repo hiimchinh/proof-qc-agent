@@ -72,9 +72,7 @@ type chatResponse struct {
 		CompletionTokens int     `json:"completion_tokens"`
 		Cost             float64 `json:"cost"`
 	} `json:"usage"`
-	Error *struct {
-		Message string `json:"message"`
-	} `json:"error"`
+	Error *providerError `json:"error"`
 }
 
 // Complete sends the request and returns the model's JSON answer.
@@ -97,7 +95,7 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 		"model":    req.Model,
 		"messages": msgs,
 		"usage":    map[string]bool{"include": true},
-		// Route only to providers that honour the schema instead of silently dropping it.
+		// Require support for all parameters, including tools and JSON schemas.
 		"provider": map[string]bool{"require_parameters": true},
 	}
 	if len(req.Tools) > 0 {
@@ -147,7 +145,7 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 
 	var cr chatResponse
 	if err := json.Unmarshal(data, &cr); err != nil {
-		return Response{}, fmt.Errorf("%s: status %d: %.200s", req.Model, resp.StatusCode, data)
+		return Response{}, fmt.Errorf("%s: status %d: %s", req.Model, resp.StatusCode, safeErrorText(string(data), c.APIKey, 200))
 	}
 	out := Response{
 		CostUSD: cr.Usage.Cost, InputTokens: cr.Usage.PromptTokens,
@@ -156,7 +154,7 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 	if resp.StatusCode != http.StatusOK || cr.Error != nil {
 		msg := fmt.Sprintf("status %d", resp.StatusCode)
 		if cr.Error != nil {
-			msg = cr.Error.Message
+			msg = cr.Error.detail(c.APIKey)
 		}
 		return out, fmt.Errorf("%s: %s", req.Model, msg)
 	}
