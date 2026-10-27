@@ -3,19 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Proof QC agent: live demo</title>
+<title>Proof desk · Autonomous artwork review</title>
 <meta name="description" content="An agent that does the first pass on sticker artwork before a designer makes the proof.">
 <link rel="stylesheet" href="/style.css">
 <script type="module" src="/app.js"></script>
 </head>
 <body>
 <header class="wrap">
-  <h1>Proof QC agent</h1>
-  <p class="lede">Pick a sample order or upload artwork. The agent measures the file, reads the comment and decides: ready for proof, recreate the artwork, or ask the customer. A person still approves every proof.</p>
+  <p class="eyebrow">Proof QC agent / Operations</p>
+  <h1>Autonomous proof desk</h1>
+  <p class="lede">An agent measures incoming artwork, reads the customer’s instructions and routes the order. A challenger tests the same work in shadow. Code enforces the rules; a person still approves every proof.</p>
   <p class="meta"><a href="https://github.com/hiimchinh/proof-qc-agent">Source and eval on GitHub</a> · <span id="spent">Today's model spend: …</span></p>
 </header>
 
 <main class="wrap">
+  <section id="live-desk" aria-labelledby="desk-title">
+    <div class="desk-title">
+      <div><p class="eyebrow">Simulated order stream</p><h2 id="desk-title">Live desk</h2></div>
+      <p id="desk-state" class="hint">Loading fleet state…</p>
+    </div>
+    <p class="hint">Orders come from 106 labelled synthetic cases, not customer traffic. Scheduled ticks run the agents; this page only reads their results.</p>
+    <div class="desk-layout">
+      <section class="card" aria-labelledby="incoming-title">
+        <div class="order-heading"><h3 id="incoming-title">Incoming orders</h3><span class="badge">Simulation</span></div>
+        <p id="desk-updated" class="hint" role="status">Connecting to the desk…</p>
+        <ol id="desk-orders" class="recent"><li class="empty-state">Loading orders…</li></ol>
+      </section>
+      <aside>
+        <section class="card" aria-labelledby="fleet-title">
+          <h3 id="fleet-title">Champion / challenger</h3>
+          <p id="desk-budget" class="hint">Reading today’s spend…</p>
+          <div id="fleet-scoreboard"></div>
+          <details><summary>Promotion and retirement policy</summary>
+            <p class="hint">After 30 orders: accuracy ≥90%, gain over rules ≥10 points, notes pass ≥95%, cost ≤$0.01/order, p50 ≤30 s. Promote a passing challenger for higher accuracy, then lower cost. Retire failing models. Failed calls count as misses and costs.</p>
+          </details>
+        </section>
+        <section class="card" aria-labelledby="events-title"><h3 id="events-title">Fleet events</h3><ol id="fleet-events" class="recent"><li class="hint">Loading events…</li></ol></section>
+      </aside>
+    </div>
+  </section>
+  <h2 class="try-title">Try your own artwork</h2>
+  <p class="hint">Review a sample or upload a file. These manual reviews use the existing single-review flow.</p>
   <section class="grid" aria-label="Review an order">
     <form id="review" class="card" novalidate>
       <h2>1. The order</h2>

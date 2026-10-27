@@ -53,3 +53,30 @@ tr.keep td:first-child { font-weight: 600; }
 .recent { list-style: none; padding: 0; margin: 0; }
 .recent li { border-bottom: 1px solid var(--line); padding: 8px 0; }
 .recent .tag { font-weight: 600; }
+.eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: .72rem; font-weight: 700; color: var(--muted); margin: 0 0 4px; }
+header.wrap { padding-top: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.desk-title { display: flex; justify-content: space-between; gap: 16px; align-items: end; margin-top: 24px; }
+.desk-title h2 { font-size: 1.5rem; margin-bottom: 0; }
+.desk-layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.desk-layout > *, aside { min-width: 0; }
+.order-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.order-heading h3 { margin: 0; }
+.badge { background: var(--bg); color: var(--muted); font-size: .75rem; padding: 2px 7px; border: 1px solid var(--line); border-radius: 4px; white-space: nowrap; }
+.badge.match { color: var(--ok); border-color: var(--ok); }
+.desk-order { overflow-wrap: anywhere; }
+.desk-order > p { margin: 6px 0; }
+.order-comment { font-size: .9rem; }
+.empty-state { color: var(--muted); padding: 32px 4px !important; }
+.fleet-model { border-bottom: 1px solid var(--line); padding: 12px 0; }
+.fleet-model h3 { margin: 0 0 8px; font-size: .92rem; overflow-wrap: anywhere; }
+.score-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 12px; margin: 0; font-size: .85rem; }
+.score-metrics dt { color: var(--muted); }
+.score-metrics dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+details { margin: 10px 0; font-size: .88rem; }
+summary { cursor: pointer; font-weight: 600; padding: 4px 0; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .78rem; padding: 8px; background: var(--bg); border-radius: 4px; }
+.tool-trace { padding-left: 22px; }
+.tool-trace li { padding: 6px 0; }
+.tool-trace p { margin: 4px 0; }
+.try-title { margin-top: 32px; }
+@media (max-width: 760px) { .desk-layout { grid-template-columns: 1fr; gap: 0; } .desk-title { display: block; } }

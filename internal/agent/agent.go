@@ -30,19 +30,21 @@ func (d Decision) valid() bool {
 
 // Result is the agent's answer for one order.
 type Result struct {
-	Decision     Decision             `json:"decision"`
-	Reasons      []string             `json:"reasons"`
-	DesignerNote string               `json:"designer_note"`
-	CustomerNote string               `json:"customer_note"`
-	Preflight    artwork.Report       `json:"preflight"`
-	Lint         []notelint.Violation `json:"lint,omitempty"`          // rules the final note still breaks
-	Repaired     []notelint.Violation `json:"repaired,omitempty"`      // rules the first draft broke
-	RepairError  string               `json:"repair_error,omitempty"`  // the repair call failed; the first answer stands
-	OrderChanges []string             `json:"order_changes,omitempty"` // set by code, not the model
-	Model        string               `json:"model"`
-	Attempts     int                  `json:"attempts"`
-	CostUSD      float64              `json:"cost_usd"`
-	Latency      time.Duration        `json:"latency_ns"`
+	Trace             []TraceStep          `json:"trace,omitempty"`
+	OverriddenByRules bool                 `json:"overridden_by_rules"`
+	Decision          Decision             `json:"decision"`
+	Reasons           []string             `json:"reasons"`
+	DesignerNote      string               `json:"designer_note"`
+	CustomerNote      string               `json:"customer_note"`
+	Preflight         artwork.Report       `json:"preflight"`
+	Lint              []notelint.Violation `json:"lint,omitempty"`          // rules the final note still breaks
+	Repaired          []notelint.Violation `json:"repaired,omitempty"`      // rules the first draft broke
+	RepairError       string               `json:"repair_error,omitempty"`  // the repair call failed; the first answer stands
+	OrderChanges      []string             `json:"order_changes,omitempty"` // set by code, not the model
+	Model             string               `json:"model"`
+	Attempts          int                  `json:"attempts"`
+	CostUSD           float64              `json:"cost_usd"`
+	Latency           time.Duration        `json:"latency_ns"`
 }
 
 // Completer is the one model call the agent needs.

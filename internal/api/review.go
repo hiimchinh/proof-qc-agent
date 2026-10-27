@@ -74,6 +74,23 @@ func (r *resolver) ReviewArtwork(ctx context.Context, args struct{ Input reviewI
 	if !r.limiter.allow(ip) {
 		return nil, &apiError{codeRateLimited, fmt.Sprintf("at most %d reviews an hour from one address; try again later", reviewsPerHour)}
 	}
+
+	var view *reviewView
+	locked, err := r.store.WithTickLock(ctx, func(ctx context.Context) error {
+		var callErr error
+		view, callErr = r.review(ctx, model, ip, img, o)
+		return callErr
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !locked {
+		return nil, &apiError{codeRateLimited, "the desk is processing another order; try again shortly"}
+	}
+	return view, nil
+}
+
+func (r *resolver) review(ctx context.Context, model, ip string, img image.Image, o artwork.Order) (*reviewView, error) {
 	spent, err := r.store.SpentSince(ctx, utcMidnight(r.now()))
 	if err != nil {
 		r.log.ErrorContext(ctx, "daily spend", "err", err)
@@ -85,7 +102,7 @@ func (r *resolver) ReviewArtwork(ctx context.Context, args struct{ Input reviewI
 
 	callCtx, cancel := context.WithTimeout(ctx, modelTimeout)
 	defer cancel()
-	res, callErr := agent.Agent{Model: model, LLM: r.llm}.Review(callCtx, img, o)
+	res, callErr := agent.Agent{Model: model, LLM: &reviewBudget{resolver: r}}.Review(callCtx, img, o)
 	saved := store.Review{ClientIP: ip, Model: model, Order: o, Result: res, CostUSD: res.CostUSD, CreatedAt: r.now()}
 	if callErr == nil || res.CostUSD > 0 {
 		// Record the spend even if the visitor has gone, so the cap stays honest.

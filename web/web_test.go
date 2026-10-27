@@ -57,3 +57,11 @@ func TestOnlyReadsAreAllowed(t *testing.T) {
 		t.Fatalf("POST /: status %d, want 405", rec.Code)
 	}
 }
+
+func TestLiveDeskPrecedesTheManualReview(t *testing.T) {
+	body := get(t, "/").Body.String()
+	desk, form := strings.Index(body, `id="desk-orders"`), strings.Index(body, `id="review"`)
+	if desk < 0 || form < desk || !strings.Contains(body, "Simulated order stream") || !strings.Contains(body, `id="fleet-scoreboard"`) || !strings.Contains(body, `id="fleet-events"`) {
+		t.Fatal("page must lead with a labelled simulated desk, scoreboard and fleet events, before the manual form")
+	}
+}

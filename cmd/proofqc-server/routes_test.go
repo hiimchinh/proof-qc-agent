@@ -9,7 +9,7 @@ import (
 )
 
 func TestRoutes(t *testing.T) {
-	mux, err := newMux(storetest.Open(t), "unused-key", 3)
+	mux, err := newMux(storetest.Open(t), config{apiKey: "unused-key", dailyCapUSD: 3})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -19,6 +19,7 @@ func TestRoutes(t *testing.T) {
 		contentType  string
 	}{
 		{"GET", "/healthz", 200, "text/plain"},
+		{"POST", "/internal/tick", 404, ""},
 		{"GET", "/", 200, "text/html"},
 		{"GET", "/app.js", 200, "text/javascript"},
 		{"GET", "/samples/clean-diecut.png", 200, "image/png"},

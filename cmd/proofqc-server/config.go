@@ -6,19 +6,29 @@ import (
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/hiimchinh/proof-qc-agent/internal/desk"
 )
 
 type config struct {
-	addr        string
-	databaseURL string
-	apiKey      string
-	dailyCapUSD float64
+	addr                            string
+	databaseURL                     string
+	apiKey                          string
+	dailyCapUSD                     float64
+	tickToken, champion, challenger string
 }
 
 // loadConfig reads the environment once at startup and fails on anything
 // missing or malformed, so a bad deploy stops before it serves traffic.
 func loadConfig(getenv func(string) string) (config, error) {
-	c := config{addr: ":8080", dailyCapUSD: 3}
+	c := config{addr: ":8080", dailyCapUSD: 3, champion: desk.DefaultChampion, challenger: desk.DefaultChallenger}
+	c.tickToken = getenv("TICK_TOKEN")
+	if model := strings.TrimSpace(getenv("CHAMPION_MODEL")); model != "" {
+		c.champion = model
+	}
+	if model := strings.TrimSpace(getenv("CHALLENGER_MODEL")); model != "" {
+		c.challenger = model
+	}
 	var errs []error
 	if p := strings.TrimSpace(getenv("PORT")); p != "" {
 		if n, err := strconv.Atoi(p); err != nil || n < 1 || n > 65535 {

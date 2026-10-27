@@ -4,6 +4,8 @@ schema {
 }
 
 type Query {
+  "Simulated order desk, scored from persisted runs. limit is 1 to 50."
+  desk(limit: Int = 20): Desk!
   "Every saved eval run, scored against today's labels."
   leaderboard: [ModelScore!]!
   "The newest answered reviews, newest first. limit is 1 to 50."
@@ -99,4 +101,71 @@ type Sample {
   "The hand-written label for this order."
   want: String!
   why: String!
+}
+
+
+type Desk {
+  simulated: Boolean!
+  champion: String!
+  challenger: String!
+  spentToday: Float!
+  dailyCapUsd: Float!
+  orders: [DeskOrder!]!
+  scoreboard: [FleetScore!]!
+  events: [FleetEvent!]!
+}
+
+type DeskOrder {
+  id: ID!
+  caseId: String!
+  customer: String!
+  product: String!
+  widthIn: Float!
+  heightIn: Float!
+  comment: String!
+  expected: String!
+  status: String!
+  createdAt: String!
+  runs: [AgentRun!]!
+}
+
+type AgentRun {
+  role: String!
+  model: String!
+  decision: String!
+  designerNote: String!
+  customerNote: String!
+  correct: Boolean!
+  notesPass: Boolean!
+  costUsd: Float!
+  latencyMs: Int!
+  overriddenByRules: Boolean!
+  error: String!
+  trace: [ToolStep!]!
+}
+
+type ToolStep {
+  tool: String!
+  args: String!
+  result: String!
+  overridden: Boolean!
+}
+
+type FleetScore {
+  model: String!
+  role: String!
+  n: Int!
+  accuracy: Float!
+  notesPassRate: Float!
+  costPerOrder: Float!
+  p50Ms: Int!
+}
+
+type FleetEvent {
+  id: ID!
+  kind: String!
+  model: String!
+  reason: String!
+  numbers: String!
+  createdAt: String!
 }
