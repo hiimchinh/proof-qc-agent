@@ -61,6 +61,9 @@ func firstName(full string) string {
 	return ""
 }
 
+// containsWord matches a whole word in any script; RE2's \b only knows ASCII,
+// so it would never find "José" or "Zoë".
 func containsWord(text, word string) bool {
-	return regexp.MustCompile(`(?i)\b` + regexp.QuoteMeta(word) + `\b`).MatchString(text)
+	re := regexp.MustCompile(`(?i)(?:^|[^\p{L}\p{N}])` + regexp.QuoteMeta(word) + `(?:$|[^\p{L}\p{N}])`)
+	return re.MatchString(text)
 }

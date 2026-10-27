@@ -3,6 +3,7 @@ package agent
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"image"
 	"image/color"
 	"strings"
@@ -14,7 +15,7 @@ import (
 
 // scripted answers each call with the next canned JSON and records the prompts it saw.
 type scripted struct {
-	answers []string
+	answers []string // "ERR" makes that call fail
 	prompts []string
 }
 
@@ -22,6 +23,9 @@ func (s *scripted) Complete(_ context.Context, r llm.Request) (llm.Response, err
 	s.prompts = append(s.prompts, r.Text)
 	a := s.answers[0]
 	s.answers = s.answers[1:]
+	if a == "ERR" {
+		return llm.Response{}, errors.New("502 upstream")
+	}
 	return llm.Response{JSON: json.RawMessage(a), CostUSD: 0.001}, nil
 }
 
@@ -111,5 +115,30 @@ func TestBaselineFollowsOnlyThePreflight(t *testing.T) {
 		if vs := res.Lint; len(vs) != 0 {
 			t.Errorf("%d dpi: baseline note breaks %v", c.dpi, vs)
 		}
+	}
+}
+
+func TestAFailedRepairKeepsTheFirstAnswer(t *testing.T) {
+	m := &scripted{answers: []string{cannedAnswer("ask_customer", "Sorry, send the blue version."), "ERR"}}
+	res, err := Agent{Model: "m", LLM: m}.Review(context.Background(), artworkImage(300), order)
+	if err != nil {
+		t.Fatalf("err = %v; a valid decision must survive a failed note repair", err)
+	}
+	if res.Decision != AskCustomer || len(res.Lint) == 0 || res.RepairError == "" {
+		t.Fatalf("result = %+v", res)
+	}
+}
+
+func TestARepairCannotChangeTheDecision(t *testing.T) {
+	m := &scripted{answers: []string{
+		cannedAnswer("ask_customer", "Sorry, send the blue version."),
+		cannedAnswer("ready_for_proof", "Thanks Brian. Your proof is on the way."),
+	}}
+	res, err := Agent{Model: "m", LLM: m}.Review(context.Background(), artworkImage(300), order)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Decision != AskCustomer || res.CustomerNote != "Thanks Brian. Your proof is on the way." {
+		t.Fatalf("result = %+v; only the note may change on repair", res)
 	}
 }

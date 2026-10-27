@@ -34,8 +34,9 @@ type Result struct {
 	DesignerNote string               `json:"designer_note"`
 	CustomerNote string               `json:"customer_note"`
 	Preflight    artwork.Report       `json:"preflight"`
-	Lint         []notelint.Violation `json:"lint,omitempty"`     // rules the final note still breaks
-	Repaired     []notelint.Violation `json:"repaired,omitempty"` // rules earlier drafts broke
+	Lint         []notelint.Violation `json:"lint,omitempty"`         // rules the final note still breaks
+	Repaired     []notelint.Violation `json:"repaired,omitempty"`     // rules the first draft broke
+	RepairError  string               `json:"repair_error,omitempty"` // the repair call failed; the first answer stands
 	Model        string               `json:"model"`
 	Attempts     int                  `json:"attempts"`
 	CostUSD      float64              `json:"cost_usd"`
@@ -52,9 +53,6 @@ type Agent struct {
 	Model string
 	LLM   Completer
 }
-
-// maxAttempts allows one repair when the customer note breaks a support principle.
-const maxAttempts = 2
 
 type answer struct {
 	Decision     Decision `json:"decision"`
@@ -76,35 +74,47 @@ func (a Agent) Review(ctx context.Context, img image.Image, o artwork.Order) (Re
 	}
 
 	res := Result{Preflight: report, Model: a.Model}
-	for res.Attempts < maxAttempts {
+	call := func(text string) (answer, error) {
 		res.Attempts++
 		resp, err := a.LLM.Complete(ctx, llm.Request{
-			Model: a.Model, System: systemPrompt, Text: prompt, ImagePNG: png,
+			Model: a.Model, System: systemPrompt, Text: text, ImagePNG: png,
 			Schema: answerSchema, SchemaName: "proof_decision", MaxTokens: 2000,
 		})
 		res.CostUSD += resp.CostUSD
 		res.Latency += resp.Latency
 		if err != nil {
-			return res, err
+			return answer{}, err
 		}
 		var ans answer
 		if err := json.Unmarshal(resp.JSON, &ans); err != nil {
-			return res, fmt.Errorf("%s: %w", a.Model, err)
+			return answer{}, fmt.Errorf("%s: %w", a.Model, err)
 		}
 		if !ans.Decision.valid() {
-			return res, fmt.Errorf("%s: unknown decision %q", a.Model, ans.Decision)
+			return answer{}, fmt.Errorf("%s: unknown decision %q", a.Model, ans.Decision)
 		}
-		res.Decision, res.Reasons = ans.Decision, ans.Reasons
-		res.DesignerNote, res.CustomerNote = ans.DesignerNote, ans.CustomerNote
-		res.Lint = notelint.Check(ans.CustomerNote, o.Customer)
-		if len(res.Lint) == 0 {
-			break
-		}
-		if res.Attempts < maxAttempts {
-			res.Repaired = append(res.Repaired, res.Lint...)
-		}
-		prompt += repairPrompt(ans.CustomerNote, res.Lint)
+		return ans, nil
 	}
+
+	ans, err := call(prompt)
+	if err != nil {
+		return res, err
+	}
+	res.Decision, res.Reasons = ans.Decision, ans.Reasons
+	res.DesignerNote, res.CustomerNote = ans.DesignerNote, ans.CustomerNote
+	res.Lint = notelint.Check(ans.CustomerNote, o.Customer)
+	if len(res.Lint) == 0 {
+		return res, nil
+	}
+
+	// One repair, for the note only: the decision was already valid and stays.
+	res.Repaired = res.Lint
+	fixed, err := call(prompt + repairPrompt(ans.CustomerNote, res.Lint))
+	if err != nil {
+		res.RepairError = err.Error()
+		return res, nil
+	}
+	res.CustomerNote = fixed.CustomerNote
+	res.Lint = notelint.Check(fixed.CustomerNote, o.Customer)
 	return res, nil
 }
 

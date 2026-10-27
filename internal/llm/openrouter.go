@@ -62,7 +62,8 @@ type message struct {
 
 type chatResponse struct {
 	Choices []struct {
-		Message struct {
+		FinishReason string `json:"finish_reason"`
+		Message      struct {
 			Content string `json:"content"`
 		} `json:"message"`
 	} `json:"choices"`
@@ -158,6 +159,9 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 		InputTokens:  cr.Usage.PromptTokens,
 		OutputTokens: cr.Usage.CompletionTokens,
 		Latency:      latency,
+	}
+	if cr.Choices[0].FinishReason == "length" {
+		return out, fmt.Errorf("%s: answer cut off at the token limit", req.Model)
 	}
 	content := stripFences(cr.Choices[0].Message.Content)
 	if len(req.Schema) > 0 {

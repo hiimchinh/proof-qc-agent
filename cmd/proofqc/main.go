@@ -59,11 +59,14 @@ func runCheck(args []string) error {
 	if fs.NArg() != 1 {
 		return errors.New("check needs one artwork file")
 	}
+	o := artwork.Order{Customer: *customer, Product: artwork.Product(*product), WidthIn: *w, HeightIn: *h, Comment: *comment}
+	if err := o.Validate(); err != nil {
+		return err
+	}
 	img, err := loadImage(fs.Arg(0))
 	if err != nil {
 		return err
 	}
-	o := artwork.Order{Customer: *customer, Product: artwork.Product(*product), WidthIn: *w, HeightIn: *h, Comment: *comment}
 
 	var res agent.Result
 	if *model == "baseline" {

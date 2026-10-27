@@ -2,6 +2,7 @@ package notelint
 
 import (
 	"slices"
+	"strings"
 	"testing"
 )
 
@@ -50,8 +51,21 @@ func TestTooLong(t *testing.T) {
 }
 
 func TestWordBoundaries(t *testing.T) {
-	// "sorry" inside another word and "cannot" style words must match whole words only.
-	if vs := Check("Thanks Brian, your proof is ready for the cantina sign.", "Brian"); len(vs) != 0 {
+	// Banned words inside a longer word are fine: "Cannotti" is a bakery, not "cannot".
+	if vs := Check("Thanks Brian, your Cannotti Bakery proof is ready.", "Brian"); len(vs) != 0 {
 		t.Fatalf("violations = %v, want none", vs)
+	}
+	// A first name inside a longer word does not count as using it.
+	if got := rules(Check("Thanks! The Briana design is ready.", "Brian")); !slices.Equal(got, []Rule{NoName}) {
+		t.Fatalf("rules = %v, want no_name", got)
+	}
+}
+
+func TestNonASCIINames(t *testing.T) {
+	for _, name := range []string{"José García", "Łukasz Nowak", "Zoë Hill", "Özil", "Nguyễn Văn An"} {
+		first := strings.Fields(name)[0]
+		if vs := Check("Thanks "+first+". Your proof is ready.", name); len(vs) != 0 {
+			t.Errorf("%s: violations = %v, want none", name, vs)
+		}
 	}
 }

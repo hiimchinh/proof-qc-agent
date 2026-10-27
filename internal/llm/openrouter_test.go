@@ -80,3 +80,12 @@ func TestCompleteFailsOnProseAnswer(t *testing.T) {
 		t.Fatal("want an error for a non-JSON answer")
 	}
 }
+
+func TestCompleteFailsOnATruncatedAnswer(t *testing.T) {
+	body := `{"choices":[{"finish_reason":"length","message":{"content":"{\"a\":1}"}}],"usage":{"cost":0.01}}`
+	c := fakeServer(t, 200, body, nil)
+	res, err := c.Complete(context.Background(), Request{Model: "m", Text: "hi", Schema: json.RawMessage(`{}`), SchemaName: "s"})
+	if err == nil || res.CostUSD != 0.01 {
+		t.Fatalf("err = %v cost = %v; want a truncation error that still reports the cost", err, res.CostUSD)
+	}
+}

@@ -26,7 +26,7 @@ Read the customer's comment thoroughly; it overrides what the image alone sugges
 The preflight measurements are exact; trust them over your view of the image.
 
 designer_note: short imperative steps for the designer.
-customer_note: what the customer reads. Use their first name. Be concise (under 40 words) and comprehensive. Never say sorry, unfortunately, can't, cannot, won't or unable; offer the solution instead. Avoid "appreciate". At most one exclamation point.`
+customer_note: what the customer reads. Use their first name. Be concise (under 60 words) and comprehensive. Never say sorry, unfortunately, can't, cannot, won't or unable; offer the solution instead. Avoid "appreciate". At most one exclamation point.`
 
 var answerSchema = json.RawMessage(`{
   "type": "object",
@@ -58,7 +58,7 @@ func repairPrompt(note string, vs []notelint.Violation) string {
 	for _, v := range vs {
 		fmt.Fprintf(&b, "- %s (%s)\n", v.Rule, v.Detail)
 	}
-	b.WriteString("Answer again with a customer_note that follows every rule.")
+	b.WriteString("Answer again with the same decision and a customer_note that follows every rule.")
 	return b.String()
 }
 

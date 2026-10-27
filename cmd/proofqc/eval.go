@@ -8,31 +8,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/hiimchinh/proof-qc-agent/internal/agent"
 	"github.com/hiimchinh/proof-qc-agent/internal/eval"
 )
-
-// budget stops new calls once the spend so far passes the cap.
-type budget struct {
-	mu    sync.Mutex
-	spent float64
-	max   float64
-}
-
-func (b *budget) add(usd float64) {
-	b.mu.Lock()
-	b.spent += usd
-	b.mu.Unlock()
-}
-
-func (b *budget) exhausted() bool {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-	return b.spent >= b.max
-}
 
 func runEval(args []string) error {
 	fs := flag.NewFlagSet("eval", flag.ExitOnError)
@@ -66,30 +46,48 @@ func runEval(args []string) error {
 	}
 
 	var cards []eval.Scorecard
-	if *models != "" {
-		b := &budget{max: *maxUSD}
-		for _, model := range strings.Split(*models, ",") {
-			model = strings.TrimSpace(model)
-			path := filepath.Join(*outDir, strings.ReplaceAll(model, "/", "__")+".json")
-			if *reuse {
-				outs, err := readOutcomes(path)
-				if err != nil {
-					return err
-				}
-				cards = append(cards, eval.Score(model, outs))
-				continue
+	b := &eval.Budget{Max: *maxUSD}
+	for _, model := range splitModels(*models) {
+		path := filepath.Join(*outDir, strings.ReplaceAll(model, "/", "__")+".json")
+		var outs []eval.Outcome
+		if *reuse {
+			if outs, err = readOutcomes(path); err != nil {
+				return err
 			}
+			if err := eval.Relabel(outs, cases); err != nil {
+				return fmt.Errorf("%s: %w", path, err)
+			}
+		} else {
 			client, err := newClient()
 			if err != nil {
 				return err
 			}
-			outs := reviewAll(agent.Agent{Model: model, LLM: client}, cases, *workers, b)
-			s := eval.Score(model, outs)
-			cards = append(cards, s)
-			fmt.Fprintf(os.Stderr, "%-36s %2d/%d  $%.4f/proof  spent $%.2f\n", model, s.Correct, s.Cases, s.CostPerProof(), b.spent)
-			if err := writeJSON(path, outs); err != nil {
+			a := agent.Agent{Model: model, LLM: client}
+			review := func(c eval.Case) (agent.Result, error) {
+				img, err := loadImage(c.File)
+				if err != nil {
+					return agent.Result{}, err
+				}
+				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
+				defer cancel()
+				return a.Review(ctx, img, c.Order)
+			}
+			if outs, err = eval.Run(cases, review, *workers, b); err != nil {
 				return err
 			}
+		}
+		s := eval.Score(model, outs)
+		cards = append(cards, s)
+		fmt.Fprintf(os.Stderr, "%-36s %2d/%d  $%.4f/proof  run spend $%.2f\n", model, s.Correct, s.Cases, s.CostPerProof(), b.Spent())
+		if *reuse {
+			continue
+		}
+		if s.Skipped > 0 {
+			// Never replace a complete run with a partial one.
+			path = strings.TrimSuffix(path, ".json") + ".partial.json"
+		}
+		if err := writeJSON(path, outs); err != nil {
+			return err
 		}
 	}
 
@@ -98,38 +96,14 @@ func runEval(args []string) error {
 	return os.WriteFile(filepath.Join(*outDir, "leaderboard.md"), []byte(md), 0o644)
 }
 
-func reviewAll(a agent.Agent, cases []eval.Case, workers int, b *budget) []eval.Outcome {
-	outs := make([]eval.Outcome, len(cases))
-	sem := make(chan struct{}, workers)
-	var wg sync.WaitGroup
-	for i, c := range cases {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			sem <- struct{}{}
-			defer func() { <-sem }()
-			outs[i] = eval.Outcome{Case: c}
-			if b.exhausted() {
-				outs[i].Err = "budget exhausted"
-				return
-			}
-			img, err := loadImage(c.File)
-			if err != nil {
-				outs[i].Err = err.Error()
-				return
-			}
-			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
-			defer cancel()
-			res, err := a.Review(ctx, img, c.Order)
-			b.add(res.CostUSD)
-			outs[i].Result = res
-			if err != nil {
-				outs[i].Err = err.Error()
-			}
-		}()
+func splitModels(s string) []string {
+	var out []string
+	for _, m := range strings.Split(s, ",") {
+		if m = strings.TrimSpace(m); m != "" {
+			out = append(out, m)
+		}
 	}
-	wg.Wait()
-	return outs
+	return out
 }
 
 func writeJSON(path string, v any) error {

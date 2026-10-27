@@ -2,6 +2,7 @@ package eval
 
 import (
 	"errors"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -78,5 +79,37 @@ func TestVerdict(t *testing.T) {
 		if keep != c.keep || (c.why != "" && !strings.Contains(strings.Join(reasons, " "), c.why)) {
 			t.Errorf("%s: keep = %v reasons = %v", c.name, keep, reasons)
 		}
+	}
+}
+
+func TestSkippedCasesMakeTheRunIncomplete(t *testing.T) {
+	outs := []Outcome{
+		outcome(agent.ReadyForProof, agent.ReadyForProof, 0.004, time.Second, false, nil),
+		{Case: Case{ID: "s", Want: agent.AskCustomer}, Skipped: true},
+	}
+	s := Score("m", outs)
+	if s.Skipped != 1 || s.CostPerProof() != 0.004 {
+		t.Fatalf("score = %+v, cost per proof = %v; skipped cases are not proofs", s, s.CostPerProof())
+	}
+	keep, reasons := DefaultPolicy.Verdict(s, card(0.5, 1, 0, 0))
+	if keep || !strings.Contains(strings.Join(reasons, " "), "incomplete") {
+		t.Fatalf("keep = %v reasons = %v, want incomplete", keep, reasons)
+	}
+}
+
+func TestRelabelUsesTheCurrentCases(t *testing.T) {
+	outs := []Outcome{{Case: Case{ID: "a", Want: agent.ReadyForProof}}}
+	if err := Relabel(outs, []Case{{ID: "a", Want: agent.AskCustomer}}); err != nil || outs[0].Case.Want != agent.AskCustomer {
+		t.Fatalf("err = %v want = %s", err, outs[0].Case.Want)
+	}
+	if err := Relabel(outs, []Case{{ID: "b"}}); err == nil {
+		t.Fatal("want an error when saved outcomes and cases.json disagree")
+	}
+}
+
+func writeFile(t *testing.T, path, body string) {
+	t.Helper()
+	if err := os.WriteFile(path, []byte(body), 0o644); err != nil {
+		t.Fatal(err)
 	}
 }

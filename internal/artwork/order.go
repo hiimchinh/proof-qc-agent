@@ -1,6 +1,8 @@
 // Package artwork runs the deterministic preflight a designer does before making a proof.
 package artwork
 
+import "fmt"
+
 // Product is the sticker shape the customer ordered.
 type Product string
 
@@ -16,4 +18,15 @@ type Order struct {
 	WidthIn  float64 `json:"width_in"`
 	HeightIn float64 `json:"height_in"`
 	Comment  string  `json:"comment"`
+}
+
+// Validate rejects orders the preflight cannot measure against.
+func (o Order) Validate() error {
+	if o.Product != DieCut && o.Product != Rectangle {
+		return fmt.Errorf("product %q: want %q or %q", o.Product, DieCut, Rectangle)
+	}
+	if o.WidthIn <= 0 || o.HeightIn <= 0 {
+		return fmt.Errorf("size %gx%g in: both sides must be positive", o.WidthIn, o.HeightIn)
+	}
+	return nil
 }
