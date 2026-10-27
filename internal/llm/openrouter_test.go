@@ -24,7 +24,7 @@ func fakeServer(t *testing.T, status int, body string, seen *map[string]any) *Cl
 	return &Client{BaseURL: srv.URL, APIKey: "test", HTTP: srv.Client()}
 }
 
-const okBody = `{"choices":[{"message":{"content":"{\"decision\":\"ready_for_proof\"}"}}],
+const okBody = `{"choices":[{"finish_reason":"stop","message":{"content":"{\"decision\":\"ready_for_proof\"}"}}],
  "usage":{"prompt_tokens":1200,"completion_tokens":80,"cost":0.00042}}`
 
 func TestCompleteReturnsJSONAndCost(t *testing.T) {
@@ -55,7 +55,7 @@ func TestCompleteSendsTheImage(t *testing.T) {
 }
 
 func TestCompleteStripsCodeFences(t *testing.T) {
-	body := `{"choices":[{"message":{"content":"` + "```json\\n{\\\"a\\\":1}\\n```" + `"}}],"usage":{}}`
+	body := `{"choices":[{"finish_reason":"stop","message":{"content":"` + "```json\\n{\\\"a\\\":1}\\n```" + `"}}],"usage":{}}`
 	c := fakeServer(t, 200, body, nil)
 	res, err := c.Complete(context.Background(), Request{Model: "m", Text: "hi", Schema: json.RawMessage(`{}`), SchemaName: "s"})
 	if err != nil {
@@ -74,7 +74,7 @@ func TestCompleteFailsOnHTTPError(t *testing.T) {
 }
 
 func TestCompleteFailsOnProseAnswer(t *testing.T) {
-	body := `{"choices":[{"message":{"content":"Looks good to me."}}],"usage":{}}`
+	body := `{"choices":[{"finish_reason":"stop","message":{"content":"Looks good to me."}}],"usage":{}}`
 	c := fakeServer(t, 200, body, nil)
 	if _, err := c.Complete(context.Background(), Request{Model: "m", Text: "hi", Schema: json.RawMessage(`{}`), SchemaName: "s"}); err == nil {
 		t.Fatal("want an error for a non-JSON answer")

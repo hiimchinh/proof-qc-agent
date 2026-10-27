@@ -27,11 +27,15 @@ type Request struct {
 	Schema     json.RawMessage
 	SchemaName string
 	MaxTokens  int
+	Messages   []Message
+	Tools      []Tool
 }
 
 // Response is the JSON answer plus what it cost.
 type Response struct {
 	JSON         json.RawMessage
+	ToolCalls    []ToolCall
+	FinishReason string
 	CostUSD      float64
 	InputTokens  int
 	OutputTokens int
@@ -55,16 +59,12 @@ type imageURL struct {
 	URL string `json:"url"`
 }
 
-type message struct {
-	Role    string `json:"role"`
-	Content any    `json:"content"`
-}
-
 type chatResponse struct {
 	Choices []struct {
 		FinishReason string `json:"finish_reason"`
 		Message      struct {
-			Content string `json:"content"`
+			Content   string     `json:"content"`
+			ToolCalls []ToolCall `json:"tool_calls"`
 		} `json:"message"`
 	} `json:"choices"`
 	Usage struct {
@@ -84,11 +84,14 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 		url := "data:image/png;base64," + base64.StdEncoding.EncodeToString(req.ImagePNG)
 		user = append(user, part{Type: "image_url", ImageURL: &imageURL{URL: url}})
 	}
-	msgs := []message{}
+	msgs := []Message{}
 	if req.System != "" {
-		msgs = append(msgs, message{Role: "system", Content: req.System})
+		msgs = append(msgs, Message{Role: "system", Content: req.System})
 	}
-	msgs = append(msgs, message{Role: "user", Content: user})
+	if req.Text != "" || len(req.ImagePNG) > 0 || len(req.Messages) == 0 {
+		msgs = append(msgs, Message{Role: "user", Content: user})
+	}
+	msgs = append(msgs, req.Messages...)
 
 	body := map[string]any{
 		"model":    req.Model,
@@ -96,6 +99,9 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 		"usage":    map[string]bool{"include": true},
 		// Route only to providers that honour the schema instead of silently dropping it.
 		"provider": map[string]bool{"require_parameters": true},
+	}
+	if len(req.Tools) > 0 {
+		body["tools"] = req.Tools
 	}
 	if req.MaxTokens > 0 {
 		body["max_tokens"] = req.MaxTokens
@@ -143,22 +149,33 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 	if err := json.Unmarshal(data, &cr); err != nil {
 		return Response{}, fmt.Errorf("%s: status %d: %.200s", req.Model, resp.StatusCode, data)
 	}
+	out := Response{
+		CostUSD: cr.Usage.Cost, InputTokens: cr.Usage.PromptTokens,
+		OutputTokens: cr.Usage.CompletionTokens, Latency: latency,
+	}
 	if resp.StatusCode != http.StatusOK || cr.Error != nil {
 		msg := fmt.Sprintf("status %d", resp.StatusCode)
 		if cr.Error != nil {
 			msg = cr.Error.Message
 		}
-		return Response{}, fmt.Errorf("%s: %s", req.Model, msg)
+		return out, fmt.Errorf("%s: %s", req.Model, msg)
 	}
 	if len(cr.Choices) == 0 {
-		return Response{}, fmt.Errorf("%s: no choices", req.Model)
+		return out, fmt.Errorf("%s: no choices", req.Model)
 	}
-
-	out := Response{
-		CostUSD:      cr.Usage.Cost,
-		InputTokens:  cr.Usage.PromptTokens,
-		OutputTokens: cr.Usage.CompletionTokens,
-		Latency:      latency,
+	out.FinishReason = cr.Choices[0].FinishReason
+	out.ToolCalls = cr.Choices[0].Message.ToolCalls
+	if out.FinishReason == "tool_calls" {
+		if len(out.ToolCalls) == 0 {
+			return out, fmt.Errorf("%s: no tool calls", req.Model)
+		}
+		return out, validateToolCalls(out.ToolCalls, req.Tools)
+	}
+	if out.FinishReason != "stop" && out.FinishReason != "length" {
+		return out, fmt.Errorf("%s: unsupported finish_reason %q", req.Model, out.FinishReason)
+	}
+	if len(out.ToolCalls) > 0 {
+		return out, fmt.Errorf("%s: tool calls without tool_calls finish_reason", req.Model)
 	}
 	if cr.Choices[0].FinishReason == "length" {
 		return out, fmt.Errorf("%s: answer cut off at the token limit", req.Model)
