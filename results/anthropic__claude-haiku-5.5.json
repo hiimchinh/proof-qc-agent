@@ -1,0 +1,999 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 300 effective dpi, which meets the 150 dpi minimum for a 3x3 in order.",
+        "Order is a die cut at 3x3 in, matching the artwork's square format.",
+        "No preflight findings and no customer comment requesting changes."
+      ],
+      "designer_note": "Remove the white background so only the red circle and MULE text remain. Scale the art to 3x3 in. Create a die-cut outline that follows the circle and text with a safe margin inside the cut line. Check that the text is fully inside the cut path, then build the proof.",
+      "customer_note": "Hi Brian, your 3x3 inch die cut artwork is ready. We'll remove the white background, fit the red circle and MULE lettering to your size, and send your proof for review shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0004071,
+      "latency_ns": 3822695235
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, giving 300 dpi, well above the 150 dpi minimum.",
+        "No preflight findings.",
+        "Customer left no comment, so no conflicting instructions or missing files.",
+        "Image shows an orange circle with TACOS text on a white background, which a designer can proof directly."
+      ],
+      "designer_note": "Remove the white background so the sticker is cut around the orange circle and TACOS text. Confirm the art sits inside the safe margin on the 3x2 in rectangle and keep the 3x2 in size. Build the proof.",
+      "customer_note": "Hi Ana, your artwork looks great and is high resolution, so we are preparing your proof now. We will send it over shortly for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002695,
+      "latency_ns": 4723937064
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 3x3 in, which is 300 dpi and meets the 150 dpi minimum.",
+        "The solid white border would make the die cut follow a rectangle, but a designer can remove the background alone.",
+        "The customer left no comment, so there are no conflicting instructions or missing files."
+      ],
+      "designer_note": "Remove the solid rgb(255,255,255) background so only the navy circle and BREW lettering remain. Build the die cut contour around the artwork edges with a small bleed. Keep all art inside the safe margin. Confirm the output is 3x3 in at 300 dpi, then make the proof.",
+      "customer_note": "Hi Kenji, your BREW logo file looks great for a 3 inch die cut. We are removing the white background so the cut follows the circle and lettering. Your proof will be ready shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003867,
+      "latency_ns": 4321414246
+    }
+  },
+  {
+    "case": {
+      "id": "keep-square-on-diecut",
+      "file": "testdata/cases/keep-square-on-diecut.png",
+      "order": {
+        "customer": "Olivia Brown",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please keep the cream background as a square, don't cut around the logo."
+      },
+      "want": "ask_customer",
+      "why": "asks for a square sticker on a die-cut order: product change"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Customer wants the cream background kept as a square, which matches the solid-background flag and the 3x3 in order",
+        "Preflight resolution is 300 effective dpi at 3x3 in, which meets the threshold",
+        "No missing file, size, or material conflict"
+      ],
+      "designer_note": "Build a 3x3 in square die line that follows the cream rectangle edge, not the logo. Keep the bakery logo and text inside the safe margin. Confirm the cut line sits outside the cream fill so no white edge shows.",
+      "customer_note": "Olivia, your 3x3 inch sticker will keep the cream background as a square, with the cut following the outer edge. We're preparing your proof now and will send it shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003967,
+      "latency_ns": 4193974493
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-diecut",
+      "file": "testdata/cases/lowres-diecut.png",
+      "order": {
+        "customer": "Marcus Lee",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 100 dpi at the 3x3 in order size, below the 150 dpi minimum.",
+        "Customer left no comment asking for a different file, so the artwork should be recreated rather than requested again."
+      ],
+      "designer_note": "Recreate the teal circle and ROCK text as vector art at 3x3 in. Match the teal color and bold sans-serif lettering, keep the text inside the die-cut safe margin, then build the die-cut proof.",
+      "customer_note": "Hi Marcus, your artwork is low resolution for a 3x3 in sticker, so our design team will recreate it as crisp vector art and send you a proof to approve.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002206,
+      "latency_ns": 4591270414
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-rectangle-sharp",
+      "file": "testdata/cases/lowres-rectangle-sharp.png",
+      "order": {
+        "customer": "Priya Patel",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Make sure it looks sharp please"
+      },
+      "want": "recreate_artwork",
+      "why": "120 dpi; the comment asks for what recreating gives"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Preflight shows 120 dpi at the ordered 4x2 in size, below the 150 dpi minimum",
+        "Customer comment asks for a sharp look, which a low-resolution file cannot deliver as supplied",
+        "Artwork is a simple navy circle above SURF CO text, which a designer can rebuild as vector at the ordered size"
+      ],
+      "designer_note": "Recreate the artwork as a vector file at 4x2 in: navy circle above bold SURF CO wordmark, matching the attached layout and colour. Keep all elements inside the safe margin and export a 300 dpi proof-ready file.",
+      "customer_note": "Hi Priya, we will rebuild your SURF CO logo as a crisp vector design at your 4x2 inch size so it looks sharp on your stickers. Your proof will follow soon.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 240,
+        "effective_dpi": 120,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "120 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002532,
+      "latency_ns": 4666910785
+    }
+  },
+  {
+    "case": {
+      "id": "medium-res",
+      "file": "testdata/cases/medium-res.png",
+      "order": {
+        "customer": "Tom Becker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "200 dpi prints"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 200 dpi at 3x3 in, which is above the 150 dpi recreate threshold, so the artwork is usable.",
+        "The comment is empty, so there are no conflicting instructions or missing-file issues.",
+        "The white background can be removed by the designer, and the order is a standard 3x3 in die cut."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the orange circle and HIVE text. Keep all art inside the safe margin, scale to 3x3 in, and note the 200 dpi (below the 300 target) in the proof file.",
+      "customer_note": "Hi Tom, your HIVE die cut sticker artwork is approved for proof. We'll remove the white background, size it to 3x3 inches, and send your proof shortly.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003793,
+      "latency_ns": 3830133386
+    }
+  },
+  {
+    "case": {
+      "id": "hairlines",
+      "file": "testdata/cases/hairlines.png",
+      "order": {
+        "customer": "Sofia Rossi",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer thickens hairlines"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 300 effective dpi, which is well above the 150 dpi minimum for the 3x3 in die cut.",
+        "The only finding is thin lines covering 0.02 sq in, which a designer can thicken alone.",
+        "The customer left no comment, so there is no conflicting instruction or missing file."
+      ],
+      "designer_note": "Thicken the thin vertical lines above the circle so none are thinner than 1/32 in. Confirm the 3x3 in size and that all art sits inside the die cut safe margin. Then build the die-cut proof.",
+      "customer_note": "Hi Sofia, your WAVE sticker artwork looks great and is ready for proof. We're thickening the fine lines above the circle so they cut cleanly. Your proof will follow shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003691,
+      "latency_ns": 4725275750
+    }
+  },
+  {
+    "case": {
+      "id": "near-edge-rectangle",
+      "file": "testdata/cases/near-edge-rectangle.png",
+      "order": {
+        "customer": "Luca Bianchi",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer moves the bar inside the safe margin"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x600 px at 3x2 in, which is 300 dpi and meets the resolution requirement.",
+        "Preflight flags 17136 px of artwork inside the 19 px safe margin, which the designer can fix alone.",
+        "The customer left no comment, so there is no conflicting instruction or missing file."
+      ],
+      "designer_note": "Scale the artwork slightly or shift it inward so the red bottom bar and the left and right bar edges sit at least 19 px inside the trim. Keep the circle and PIZZA text centered. Confirm the artwork is inside the safe margin, then make the proof at 3x2 in.",
+      "customer_note": "Hi Luca, your pizza sticker design is ready. We're making a proof now with the bottom bar and edges moved slightly inward so nothing gets trimmed. We'll send it over shortly for your approval.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "17136 px of artwork inside the 19 px safe margin"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003781,
+      "latency_ns": 4385532864
+    }
+  },
+  {
+    "case": {
+      "id": "empty-file",
+      "file": "testdata/cases/empty-file.png",
+      "order": {
+        "customer": "Emma Wilson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ask_customer",
+      "why": "no artwork"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Preflight flags empty_artwork: no printable pixels in the file",
+        "The attached image appears blank white with no visible design",
+        "Customer comment is empty, so there is no explanation or instructions for the missing art",
+        "Only the customer can supply the correct artwork file"
+      ],
+      "designer_note": "Do not start proof. Confirm the file is blank, check whether the upload was a wrong or empty export, and hold the order until the customer sends a new file.",
+      "customer_note": "Hi Emma, your uploaded file appears blank with no printable design. Please re-upload your sticker artwork as a PNG or PDF at 300 dpi, and we'll get your 3x3 inch die cut proof started right away.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "empty_artwork",
+            "message": "no printable pixels"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002894,
+      "latency_ns": 4225702224
+    }
+  },
+  {
+    "case": {
+      "id": "wrong-file-attached",
+      "file": "testdata/cases/wrong-file-attached.png",
+      "order": {
+        "customer": "Noah Davis",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+      },
+      "want": "ask_customer",
+      "why": "the right file is not attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer says they attached the wrong file and will email the right logo later.",
+        "The attached image reads OLD LOGO, which confirms it is not the intended artwork.",
+        "Only the customer can supply the correct logo file, so the proof cannot proceed yet."
+      ],
+      "designer_note": "Hold the order. Do not build a proof from the attached OLD LOGO file. Wait for the customer's emailed logo, then run preflight on it at 3 x 3 in die cut.",
+      "customer_note": "Noah, thanks for flagging that. The attached file shows OLD LOGO, so please email the correct logo tonight. Once it arrives, we will start your 3 x 3 in die cut proof right away.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002891,
+      "latency_ns": 2412283997
+    }
+  },
+  {
+    "case": {
+      "id": "size-change",
+      "file": "testdata/cases/size-change.png",
+      "order": {
+        "customer": "Mia Johnson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches instead of 3?"
+      },
+      "want": "ask_customer",
+      "why": "size differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer asks for 5 inch stickers, but the order is 3x3 inches, so the size change needs the customer's confirmation.",
+        "Preflight is 900x900 px at 300 dpi, and the artwork still reaches 180 dpi at 5 inches, so resolution is not a blocker.",
+        "No preflight findings were reported."
+      ],
+      "designer_note": "Hold the proof until the customer confirms the 5x5 inch size. If confirmed, scale the die cut artwork to 5x5 inches, keep it within the safe margin, and confirm the new 180 dpi effective resolution before proofing.",
+      "customer_note": "Hi Mia, your artwork works at 5 inches. Please confirm you'd like your order updated from 3x3 to 5x5 inches, and we'll prepare your proof right away.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0004808,
+      "latency_ns": 5259597777
+    }
+  },
+  {
+    "case": {
+      "id": "text-edit",
+      "file": "testdata/cases/text-edit.png",
+      "order": {
+        "customer": "Liam Garcia",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please change the text to say OPEN LATE."
+      },
+      "want": "ready_for_proof",
+      "why": "designer edits text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 300 effective dpi, which meets the 4x2 in order size.",
+        "Customer asked to change the text to OPEN LATE, and a designer can edit customer-supplied text alone.",
+        "Preflight reports no findings."
+      ],
+      "designer_note": "Change the text from OPEN to OPEN LATE, keeping the teal font style and centering it below the teal dot. Keep all art inside the safe margin and confirm the artboard is 4 x 2 in at 300 dpi. Build the proof.",
+      "customer_note": "Hi Liam, we'll change the text to OPEN LATE and keep your teal dot design on the 4 x 2 in rectangle. Your proof will be ready for review shortly.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.000335,
+      "latency_ns": 3527920015
+    }
+  },
+  {
+    "case": {
+      "id": "remove-white-bg",
+      "file": "testdata/cases/remove-white-bg.png",
+      "order": {
+        "customer": "Chloe Martin",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the white background please."
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Customer asks to remove the white background, which a designer can do alone",
+        "Artwork is 900x900 px at 300 dpi, enough resolution for a 3 inch die cut",
+        "Solid white border flagged; die cut would otherwise follow the rectangle"
+      ],
+      "designer_note": "Remove the solid white background so only the orange circle and FOX text remain. Check the edges for leftover white fringe. Fit the art to 3x3 in and keep it inside the die cut safe margin. Build the die cut contour around the circle and text.",
+      "customer_note": "Hi Chloe, we removed the white background from your FOX design so it will cut cleanly to shape. Your proof will be ready for review soon.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002944,
+      "latency_ns": 5832678113
+    }
+  },
+  {
+    "case": {
+      "id": "missing-blue-version",
+      "file": "testdata/cases/missing-blue-version.png",
+      "order": {
+        "customer": "Ethan Clark",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Use the blue version of the logo, not the red one."
+      },
+      "want": "ask_customer",
+      "why": "only the red version is attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for the blue version of the logo, but only the red version is attached.",
+        "The preflight resolution is 300 dpi at 3 x 3 in, so resolution is not the blocker.",
+        "Only the customer can supply the blue logo file needed to unblock the proof."
+      ],
+      "designer_note": "Hold the proof. Do not build from the red logo. Once the blue logo file arrives, check it at 3 x 3 in, confirm it is 150 dpi or higher, and keep the art inside the die-cut safe margin.",
+      "customer_note": "Hi Ethan, the file you attached is the red logo. Please upload the blue version of the logo so we can prepare your proof. Thanks for sending it over!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003367,
+      "latency_ns": 3357852196
+    }
+  },
+  {
+    "case": {
+      "id": "conflicting-background",
+      "file": "testdata/cases/conflicting-background.png",
+      "order": {
+        "customer": "Grace Kim",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the background transparent but keep the white box around the logo."
+      },
+      "want": "ask_customer",
+      "why": "two instructions contradict each other"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "The comment asks for a transparent background but also to keep the white box, which contradicts itself.",
+        "Preflight flags a solid white border that a die cut would follow as a rectangle.",
+        "The file resolution is 300 dpi at 3 x 3 in, so resolution is not the blocker."
+      ],
+      "designer_note": "Hold the proof. Once the customer confirms, either remove the white background and cut around the orange logo, or keep the white rectangle and cut to its outline. Do not change the 3 x 3 in size.",
+      "customer_note": "Hi Grace, your comment asks for both a transparent background and a white box around the logo, and those conflict. Should the sticker be cut around the orange logo only, or should it keep the white rectangle as the cut shape? Reply with your choice and we will prepare your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003858,
+      "latency_ns": 3719955778
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-sending-hires",
+      "file": "testdata/cases/lowres-sending-hires.png",
+      "order": {
+        "customer": "Jack Turner",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "the customer is sending a better file; wait for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Effective resolution is 110 dpi at 3x3 in, below the 150 dpi minimum",
+        "Customer plans to upload a higher-resolution file, but the proof can be built now by recreating the artwork"
+      ],
+      "designer_note": "Recreate the navy circle and BAND wordmark as vector shapes at 3x3 in. Match the navy color and the bold sans-serif lettering, center the text under the circle, keep all art inside the safe margin, and build the die cut outline around the full artwork.",
+      "customer_note": "Jack, we're recreating your BAND logo as a crisp vector design at 3x3 in so it prints sharply. You can skip uploading a new file, and we'll send you a proof to approve shortly.",
+      "preflight": {
+        "width_px": 330,
+        "height_px": 330,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002908,
+      "latency_ns": 3759470325
+    }
+  },
+  {
+    "case": {
+      "id": "tiny-tagline",
+      "file": "testdata/cases/tiny-tagline.png",
+      "order": {
+        "customer": "Hannah Scott",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make sure the small text is readable."
+      },
+      "want": "ready_for_proof",
+      "why": "designer enlarges or thickens the tagline"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 300 dpi at the ordered 3x3 in size, so the artwork is not low-resolution.",
+        "Artwork is square and matches the ordered 3 in x 3 in die cut.",
+        "Thin-line finding (0.01 sq in under 1/32 in) is a fix the designer can make alone.",
+        "Customer asks that the small text be readable; the tagline line is very small and can be enlarged within the design."
+      ],
+      "designer_note": "Enlarge the 'est. 2019 – small batch roasters' tagline so its cap height is at least about 1/16 in at 3 in size, and keep it inside the safe margin. Thicken lines under 1/32 in, especially in the tagline and thin strokes of the lettering. Keep the die-cut outline around the circle and text with clear margin. Export proof at 3 x 3 in.",
+      "customer_note": "Hi Hannah, your CAFE design is ready for proof. We're making the small tagline larger and bolder so it reads clearly on the sticker, and we'll thicken the fine lines. Your proof will follow shortly for review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0004885,
+      "latency_ns": 4555119925
+    }
+  },
+  {
+    "case": {
+      "id": "rush-request",
+      "file": "testdata/cases/rush-request.png",
+      "order": {
+        "customer": "Owen Hughes",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love you guys! Rush please, need them for Saturday."
+      },
+      "want": "ready_for_proof",
+      "why": "turnaround request does not block the proof"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 600x600 px at 300 effective dpi, which is sharp at the ordered 2x2 in size.",
+        "No preflight findings were reported.",
+        "The customer's comment asks for a rush but does not change the size, shape, or material, and it gives no conflicting instructions.",
+        "The white background can be removed by the designer for the die cut, which is a fix the designer can make alone."
+      ],
+      "designer_note": "Remove the white background so only the red circle and YAY text remain. Scale art to 2x2 in. Place the die line around the circle and text with a safe margin inside the cut. Build the proof and flag it as rush for Saturday.",
+      "customer_note": "Hi Owen, your artwork is ready for the proof. We'll remove the white background, fit the red circle and YAY text to 2x2 inches, and rush it so your stickers are ready for Saturday.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.000359,
+      "latency_ns": 3628452001
+    }
+  },
+  {
+    "case": {
+      "id": "add-phone-number",
+      "file": "testdata/cases/add-phone-number.png",
+      "order": {
+        "customer": "Daniel Young",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Can you add my phone number 555-0100 under the logo?"
+      },
+      "want": "ready_for_proof",
+      "why": "designer adds text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 1200x600 px at 300 dpi, which matches the 4x2 inch rectangle order.",
+        "Preflight reports no findings.",
+        "The customer supplied the exact text to add (555-0100), so the designer can add it alone."
+      ],
+      "designer_note": "Add the text 555-0100 centered below the PLUMBING wordmark. Match the wordmark's navy color and a clean sans-serif or monospace style, sized smaller than PLUMBING. Keep all art inside the safe margin and make sure the stack fits the 4x2 inch rectangle.",
+      "customer_note": "Daniel, we're adding your phone number, 555-0100, centered under the PLUMBING logo in matching navy. We'll send your proof shortly for review.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003464,
+      "latency_ns": 3632465002
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-please-vectorize",
+      "file": "testdata/cases/lowres-please-vectorize.png",
+      "order": {
+        "customer": "Ava Walker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please recreate this as a vector if needed."
+      },
+      "want": "recreate_artwork",
+      "why": "140 dpi and the customer asks for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Preflight shows 140 effective dpi at 3x3 in, below the 150 dpi minimum",
+        "Customer offered a vector recreation, so the artwork can be rebuilt without asking for a new file"
+      ],
+      "designer_note": "Rebuild the circle and WOLF wordmark as clean vector shapes in the dark navy color, sized to fit 3x3 in with a safe margin for die cut, then prepare the proof.",
+      "customer_note": "Hi Ava, your WOLF logo is low resolution at this size, so we will recreate it as a crisp vector. Your proof will be ready for review soon.",
+      "preflight": {
+        "width_px": 420,
+        "height_px": 420,
+        "effective_dpi": 140,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "140 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002542,
+      "latency_ns": 3892894624
+    }
+  },
+  {
+    "case": {
+      "id": "fullbleed-photo",
+      "file": "testdata/cases/fullbleed-photo.png",
+      "order": {
+        "customer": "Lucas Allen",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "full-bleed rectangle at 300 dpi"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Preflight shows 900x600 px at 300 effective dpi for a 3x2 in order, which meets the 150 dpi minimum.",
+        "No preflight findings reported.",
+        "Customer comment is empty, so no conflicting instructions or missing file issues.",
+        "Image is a clean full-bleed gradient with no visible text or background issues."
+      ],
+      "designer_note": "Place the gradient artwork on the 3x2 in rectangle die line. Confirm it fills the cut area with bleed and keep any key visual elements inside the safe margin. Build the standard proof at 300 dpi.",
+      "customer_note": "Hi Lucas, your gradient artwork checks out at full quality for a 3 x 2 inch sticker. We are preparing your proof now and will send it over shortly for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002775,
+      "latency_ns": 2978920369
+    }
+  },
+  {
+    "case": {
+      "id": "medium-thin-whitebox",
+      "file": "testdata/cases/medium-thin-whitebox.png",
+      "order": {
+        "customer": "Ella King",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "every finding is a designer fix"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Effective resolution is 160 dpi, above the 150 dpi threshold for recreating artwork, so the proof can proceed.",
+        "The customer left no comment, so there are no conflicting instructions or missing files.",
+        "The solid white border would make the die cut follow a rectangle; a designer can remove it alone.",
+        "The thin tick lines fall below 1/32 in; a designer can thicken them alone."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the artwork edge. Thicken the vertical tick lines above the circle to at least 1/32 in. Keep all art inside the safe margin. Size to 3x3 in and build the die-cut path around the circle and ZEN text. Note the 160 dpi source in the proof file.",
+      "customer_note": "Hi Ella, your ZEN sticker design is ready for proof. We're removing the white background, so the die cut will follow the artwork's shape, and we're thickening the thin lines. We'll send your proof shortly.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 160,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "160 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0004141,
+      "latency_ns": 4423353318
+    }
+  },
+  {
+    "case": {
+      "id": "holographic",
+      "file": "testdata/cases/holographic.png",
+      "order": {
+        "customer": "Leo Wright",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "material differs from the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Preflight shows 900x900 px at 3x3 in, which is 300 effective dpi, well above the 150 dpi minimum.",
+        "The order has no material specified, so the holographic vinyl request is not a conflict with the order.",
+        "No preflight findings; the artwork is a simple navy logo that a designer can prepare alone."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the STAR logo edge. Set the die cut to 3x3 in. Set the material to holographic vinyl. Keep the artwork inside the safe margin and check that the STAR text stays legible.",
+      "customer_note": "Hi Leo, your 3x3 inch die cut sticker is ready for proof. We'll print it on holographic vinyl, with the white background removed so the cut follows the STAR logo. We'll send your proof shortly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0004758,
+      "latency_ns": 4842619939
+    }
+  },
+  {
+    "case": {
+      "id": "same-size-confirmation",
+      "file": "testdata/cases/same-size-confirmation.png",
+      "order": {
+        "customer": "Zoe Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print it at 2x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "the size matches the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 600x600 px at 300 effective dpi, which is above the 150 dpi minimum at the ordered 2x2 inch size.",
+        "Customer comment asks for 2x2 inches, which matches the order.",
+        "No preflight findings were reported.",
+        "Image shows an orange circle with the text BEE on a white background, which is a simple design a designer can proof directly."
+      ],
+      "designer_note": "Confirm the die_cut is 2 x 2 in. Remove the white background so the die cut follows the orange circle and BEE text. Check that the text sits inside the safe margin and the outer shape has clean edges. Build the proof at 2 x 2 in and send it for approval.",
+      "customer_note": "Hi Zoe, your 2x2 inch BEE die cut artwork checks out at 300 dpi and is ready for proof. We will remove the white background and send your proof shortly.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0002899,
+      "latency_ns": 3864046035
+    }
+  },
+  {
+    "case": {
+      "id": "spanish-remove-bg",
+      "file": "testdata/cases/spanish-remove-bg.png",
+      "order": {
+        "customer": "Diego Ramirez",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Por favor quiten el fondo blanco."
+      },
+      "want": "ready_for_proof",
+      "why": "asks, in Spanish, to remove the white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 900x900 px at 300 effective dpi, well above the 150 dpi minimum at the 3x3 in order size.",
+        "Customer asks in Spanish to remove the white background; this is a designer-fixable task.",
+        "Preflight flags a solid white border that a die cut would follow as a rectangle."
+      ],
+      "designer_note": "Remove the solid rgb(255,255,255) background so only the orange circle and SOL text remain. Trim the die-cut contour tightly around the circle and text, keeping it inside the safe margin. Resize to 3 x 3 in and build the proof.",
+      "customer_note": "Hola Diego, we will remove the white background so your orange SOL sticker die cuts cleanly around the circle and text. Your proof will be ready shortly for your review.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "anthropic/claude-haiku-5.5",
+      "attempts": 1,
+      "cost_usd": 0.0003102,
+      "latency_ns": 2816896728
+    }
+  }
+]

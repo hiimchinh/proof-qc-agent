@@ -1,0 +1,340 @@
+[
+  {
+    "id": "clean-diecut",
+    "file": "clean-diecut.png",
+    "order": {
+      "customer": "Brian Smith",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "300 dpi, transparent, no comment"
+  },
+  {
+    "id": "clean-rectangle",
+    "file": "clean-rectangle.png",
+    "order": {
+      "customer": "Ana Lopez",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "rectangle keeps its white background"
+  },
+  {
+    "id": "white-box-diecut",
+    "file": "white-box-diecut.png",
+    "order": {
+      "customer": "Kenji Sato",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "designer removes the white box so the cut follows the art"
+  },
+  {
+    "id": "keep-square-on-diecut",
+    "file": "keep-square-on-diecut.png",
+    "order": {
+      "customer": "Olivia Brown",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Please keep the cream background as a square, don't cut around the logo."
+    },
+    "want": "ask_customer",
+    "why": "asks for a square sticker on a die-cut order: product change"
+  },
+  {
+    "id": "lowres-diecut",
+    "file": "lowres-diecut.png",
+    "order": {
+      "customer": "Marcus Lee",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "recreate_artwork",
+    "why": "100 dpi"
+  },
+  {
+    "id": "lowres-rectangle-sharp",
+    "file": "lowres-rectangle-sharp.png",
+    "order": {
+      "customer": "Priya Patel",
+      "product": "rectangle",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Make sure it looks sharp please"
+    },
+    "want": "recreate_artwork",
+    "why": "120 dpi; the comment asks for what recreating gives"
+  },
+  {
+    "id": "medium-res",
+    "file": "medium-res.png",
+    "order": {
+      "customer": "Tom Becker",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "200 dpi prints"
+  },
+  {
+    "id": "hairlines",
+    "file": "hairlines.png",
+    "order": {
+      "customer": "Sofia Rossi",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "designer thickens hairlines"
+  },
+  {
+    "id": "near-edge-rectangle",
+    "file": "near-edge-rectangle.png",
+    "order": {
+      "customer": "Luca Bianchi",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "designer moves the bar inside the safe margin"
+  },
+  {
+    "id": "empty-file",
+    "file": "empty-file.png",
+    "order": {
+      "customer": "Emma Wilson",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "ask_customer",
+    "why": "no artwork"
+  },
+  {
+    "id": "wrong-file-attached",
+    "file": "wrong-file-attached.png",
+    "order": {
+      "customer": "Noah Davis",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+    },
+    "want": "ask_customer",
+    "why": "the right file is not attached"
+  },
+  {
+    "id": "size-change",
+    "file": "size-change.png",
+    "order": {
+      "customer": "Mia Johnson",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Can you make these 5 inches instead of 3?"
+    },
+    "want": "ask_customer",
+    "why": "size differs from the order"
+  },
+  {
+    "id": "text-edit",
+    "file": "text-edit.png",
+    "order": {
+      "customer": "Liam Garcia",
+      "product": "rectangle",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Please change the text to say OPEN LATE."
+    },
+    "want": "ready_for_proof",
+    "why": "designer edits text the customer wrote out"
+  },
+  {
+    "id": "remove-white-bg",
+    "file": "remove-white-bg.png",
+    "order": {
+      "customer": "Chloe Martin",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Remove the white background please."
+    },
+    "want": "ready_for_proof",
+    "why": "designer removes the background"
+  },
+  {
+    "id": "missing-blue-version",
+    "file": "missing-blue-version.png",
+    "order": {
+      "customer": "Ethan Clark",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Use the blue version of the logo, not the red one."
+    },
+    "want": "ask_customer",
+    "why": "only the red version is attached"
+  },
+  {
+    "id": "conflicting-background",
+    "file": "conflicting-background.png",
+    "order": {
+      "customer": "Grace Kim",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Make the background transparent but keep the white box around the logo."
+    },
+    "want": "ask_customer",
+    "why": "two instructions contradict each other"
+  },
+  {
+    "id": "lowres-sending-hires",
+    "file": "lowres-sending-hires.png",
+    "order": {
+      "customer": "Jack Turner",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+    },
+    "want": "ask_customer",
+    "why": "the customer is sending a better file; wait for it"
+  },
+  {
+    "id": "tiny-tagline",
+    "file": "tiny-tagline.png",
+    "order": {
+      "customer": "Hannah Scott",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Make sure the small text is readable."
+    },
+    "want": "ready_for_proof",
+    "why": "designer enlarges or thickens the tagline"
+  },
+  {
+    "id": "rush-request",
+    "file": "rush-request.png",
+    "order": {
+      "customer": "Owen Hughes",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Love you guys! Rush please, need them for Saturday."
+    },
+    "want": "ready_for_proof",
+    "why": "turnaround request does not block the proof"
+  },
+  {
+    "id": "add-phone-number",
+    "file": "add-phone-number.png",
+    "order": {
+      "customer": "Daniel Young",
+      "product": "rectangle",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Can you add my phone number 555-0100 under the logo?"
+    },
+    "want": "ready_for_proof",
+    "why": "designer adds text the customer wrote out"
+  },
+  {
+    "id": "lowres-please-vectorize",
+    "file": "lowres-please-vectorize.png",
+    "order": {
+      "customer": "Ava Walker",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Please recreate this as a vector if needed."
+    },
+    "want": "recreate_artwork",
+    "why": "140 dpi and the customer asks for it"
+  },
+  {
+    "id": "fullbleed-photo",
+    "file": "fullbleed-photo.png",
+    "order": {
+      "customer": "Lucas Allen",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "full-bleed rectangle at 300 dpi"
+  },
+  {
+    "id": "medium-thin-whitebox",
+    "file": "medium-thin-whitebox.png",
+    "order": {
+      "customer": "Ella King",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "every finding is a designer fix"
+  },
+  {
+    "id": "holographic",
+    "file": "holographic.png",
+    "order": {
+      "customer": "Leo Wright",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Please print these on holographic vinyl."
+    },
+    "want": "ask_customer",
+    "why": "material differs from the order"
+  },
+  {
+    "id": "same-size-confirmation",
+    "file": "same-size-confirmation.png",
+    "order": {
+      "customer": "Zoe Hill",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Please print it at 2x2 inches."
+    },
+    "want": "ready_for_proof",
+    "why": "the size matches the order"
+  },
+  {
+    "id": "spanish-remove-bg",
+    "file": "spanish-remove-bg.png",
+    "order": {
+      "customer": "Diego Ramirez",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Por favor quiten el fondo blanco."
+    },
+    "want": "ready_for_proof",
+    "why": "asks, in Spanish, to remove the white background"
+  }
+]

@@ -1,0 +1,965 @@
+[
+  {
+    "case": {
+      "id": "clean-diecut",
+      "file": "testdata/cases/clean-diecut.png",
+      "order": {
+        "customer": "Brian Smith",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "300 dpi, transparent, no comment"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 300 dpi at the ordered size.",
+        "No corrections needed."
+      ],
+      "designer_note": "Create die-cut proof with the red circle and 'MULE' text centered.",
+      "customer_note": "Brian, your proof is ready. I'll create a die-cut with the red circle and 'MULE' text centered.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002022,
+      "latency_ns": 4193737864
+    }
+  },
+  {
+    "case": {
+      "id": "clean-rectangle",
+      "file": "testdata/cases/clean-rectangle.png",
+      "order": {
+        "customer": "Ana Lopez",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "rectangle keeps its white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is at 300 DPI at the ordered size.",
+        "No issues with resolution or alignment."
+      ],
+      "designer_note": "Move the text and circle slightly lower to center vertically within the 3x2 inch rectangle. Ensure the artwork fits within the safe margin.",
+      "customer_note": "Ana, your artwork is ready for proof. I'll adjust the placement to fit your 3x2 inch rectangle perfectly.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00018165,
+      "latency_ns": 4465929081
+    }
+  },
+  {
+    "case": {
+      "id": "white-box-diecut",
+      "file": "testdata/cases/white-box-diecut.png",
+      "order": {
+        "customer": "Kenji Sato",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the white box so the cut follows the art"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 300 dpi at the ordered size.",
+        "Solid white background is acceptable for die cut; shape follows the rectangle."
+      ],
+      "designer_note": "Remove the solid white background, leaving only the dark blue circle and text. Ensure the artwork fits within the 3x3 inch die-cut area.",
+      "customer_note": "Kenji, your proof is ready! I'll remove the white background and keep the blue circle and text for your die-cut.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00022335,
+      "latency_ns": 4741808150
+    }
+  },
+  {
+    "case": {
+      "id": "keep-square-on-diecut",
+      "file": "testdata/cases/keep-square-on-diecut.png",
+      "order": {
+        "customer": "Olivia Brown",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please keep the cream background as a square, don't cut around the logo."
+      },
+      "want": "ask_customer",
+      "why": "asks for a square sticker on a die-cut order: product change"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The customer's request to keep the cream background as a square is satisfied by the solid background found in the preflight.",
+        "The instruction not to cut around the logo is met since the die cut will follow the outer rectangle, not the internal circle.",
+        "The artwork is at 300 dpi at the ordered size, so no recreation is needed."
+      ],
+      "designer_note": "Proceed with the proof using a die cut that follows the outer rectangle, preserving the cream background as a square.",
+      "customer_note": "Olivia, your request to keep the cream background as a square and not cut around the logo is confirmed. We'll proceed with the die cut following the outer rectangle.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(250,240,215); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002514,
+      "latency_ns": 15644378463
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-diecut",
+      "file": "testdata/cases/lowres-diecut.png",
+      "order": {
+        "customer": "Marcus Lee",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "recreate_artwork",
+      "why": "100 dpi"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "artwork is 100 dpi at 3x3 in, below the required 300 dpi"
+      ],
+      "designer_note": "recreate the artwork at 300 dpi or higher",
+      "customer_note": "Marcus, I'll recreate your sticker at the correct resolution for a crisp print.",
+      "preflight": {
+        "width_px": 300,
+        "height_px": 300,
+        "effective_dpi": 100,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "100 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0001284,
+      "latency_ns": 3291220339
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-rectangle-sharp",
+      "file": "testdata/cases/lowres-rectangle-sharp.png",
+      "order": {
+        "customer": "Priya Patel",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Make sure it looks sharp please"
+      },
+      "want": "recreate_artwork",
+      "why": "120 dpi; the comment asks for what recreating gives"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 120 dpi at 4x2 in; needs 300 dpi."
+      ],
+      "designer_note": "Recreate the artwork to 300 dpi at 4x2 in. Ensure the circle and text are sharp and clear.",
+      "customer_note": "Hi Priya, I'll recreate your artwork to ensure it looks sharp at the ordered size.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 240,
+        "effective_dpi": 120,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "120 dpi at 4x2 in; needs 300"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0001449,
+      "latency_ns": 10952914021
+    }
+  },
+  {
+    "case": {
+      "id": "medium-res",
+      "file": "testdata/cases/medium-res.png",
+      "order": {
+        "customer": "Tom Becker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "200 dpi prints"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "artwork is 200 dpi at 3x3 in, below the 300 dpi target"
+      ],
+      "designer_note": "recreate artwork to 300 dpi at 3x3 in",
+      "customer_note": "Tom, your artwork is 200 dpi at 3x3 in; I'll recreate it at 300 dpi for you.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 200,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "200 dpi at 3x3 in; target 300"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0003332,
+      "latency_ns": 7895930450
+    }
+  },
+  {
+    "case": {
+      "id": "hairlines",
+      "file": "testdata/cases/hairlines.png",
+      "order": {
+        "customer": "Sofia Rossi",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer thickens hairlines"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is at 300 dpi at the ordered size, meeting quality standards.",
+        "Only minor thin lines are present, which are acceptable for die-cut production."
+      ],
+      "designer_note": "Thicken the thin lines in the top border and the letter 'A' in WAVE to at least 1/32 in.",
+      "customer_note": "Hi Sofia, I'll make your proof with thicker lines for better cutting.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00021765,
+      "latency_ns": 4296893946
+    }
+  },
+  {
+    "case": {
+      "id": "near-edge-rectangle",
+      "file": "testdata/cases/near-edge-rectangle.png",
+      "order": {
+        "customer": "Luca Bianchi",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "designer moves the bar inside the safe margin"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is at 300 dpi, which meets the minimum requirement.",
+        "The artwork is within the safe margin, but there is a significant amount of content near the edge.",
+        "The content near the edge is within the safe margin, so it is acceptable."
+      ],
+      "designer_note": "Move the artwork 19 px inside the safe margin to ensure no content is cut off during production.",
+      "customer_note": "Luca, I've adjusted your design so the artwork is safely within the printable area. Your proof is ready!",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "content_near_edge",
+            "message": "17136 px of artwork inside the 19 px safe margin"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00020175,
+      "latency_ns": 5259324458
+    }
+  },
+  {
+    "case": {
+      "id": "empty-file",
+      "file": "testdata/cases/empty-file.png",
+      "order": {
+        "customer": "Emma Wilson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ask_customer",
+      "why": "no artwork"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "no artwork attached"
+      ],
+      "designer_note": "no artwork to process",
+      "customer_note": "Emma, please upload your artwork so I can create your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "empty_artwork",
+            "message": "no printable pixels"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00018525,
+      "latency_ns": 2786681946
+    }
+  },
+  {
+    "case": {
+      "id": "wrong-file-attached",
+      "file": "testdata/cases/wrong-file-attached.png",
+      "order": {
+        "customer": "Noah Davis",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Oops, I attached the wrong file. I'll email you the right logo tonight."
+      },
+      "want": "ask_customer",
+      "why": "the right file is not attached"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer mentioned attaching the wrong file and will email the correct logo."
+      ],
+      "designer_note": "",
+      "customer_note": "Noah, please send the correct logo file so we can proceed with your proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0001893,
+      "latency_ns": 2848376944
+    }
+  },
+  {
+    "case": {
+      "id": "size-change",
+      "file": "testdata/cases/size-change.png",
+      "order": {
+        "customer": "Mia Johnson",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Can you make these 5 inches instead of 3?"
+      },
+      "want": "ask_customer",
+      "why": "size differs from the order"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "Customer requested a size change from 3 inches to 5 inches, which contradicts the order."
+      ],
+      "designer_note": "",
+      "customer_note": "Mia, I'll update the size to 5 inches. Please confirm the new dimensions.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00018975,
+      "latency_ns": 3294516236
+    }
+  },
+  {
+    "case": {
+      "id": "text-edit",
+      "file": "testdata/cases/text-edit.png",
+      "order": {
+        "customer": "Liam Garcia",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Please change the text to say OPEN LATE."
+      },
+      "want": "ready_for_proof",
+      "why": "designer edits text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is at the correct resolution (300 dpi at the ordered size).",
+        "The text needs to be updated to 'OPEN LATE' as requested by the customer."
+      ],
+      "designer_note": "Change the text from 'OPEN' to 'OPEN LATE'.",
+      "customer_note": "Liam, I've updated the text to say 'OPEN LATE' for your sticker.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00016605,
+      "latency_ns": 4622200864
+    }
+  },
+  {
+    "case": {
+      "id": "remove-white-bg",
+      "file": "testdata/cases/remove-white-bg.png",
+      "order": {
+        "customer": "Chloe Martin",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Remove the white background please."
+      },
+      "want": "ready_for_proof",
+      "why": "designer removes the background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The customer requested removal of the white background, which is a solid background that can be removed by the designer."
+      ],
+      "designer_note": "Remove the solid white background so the die cut follows the orange circle and text.",
+      "customer_note": "Chloe, I'll remove the white background so your die cut follows the orange circle and text.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002073,
+      "latency_ns": 4277628800
+    }
+  },
+  {
+    "case": {
+      "id": "missing-blue-version",
+      "file": "testdata/cases/missing-blue-version.png",
+      "order": {
+        "customer": "Ethan Clark",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Use the blue version of the logo, not the red one."
+      },
+      "want": "ask_customer",
+      "why": "only the red version is attached"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is at 300 dpi at the ordered size, meeting quality standards.",
+        "The customer's request to use the blue version of the logo is actionable.",
+        "The current artwork shows a red logo, so the designer must change it to blue."
+      ],
+      "designer_note": "Change the red logo to the blue version.",
+      "customer_note": "Ethan, I'll use the blue version of your logo for the proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002145,
+      "latency_ns": 4677725625
+    }
+  },
+  {
+    "case": {
+      "id": "conflicting-background",
+      "file": "testdata/cases/conflicting-background.png",
+      "order": {
+        "customer": "Grace Kim",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make the background transparent but keep the white box around the logo."
+      },
+      "want": "ask_customer",
+      "why": "two instructions contradict each other"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is at 300 dpi at the ordered size.",
+        "The customer wants the background transparent but a white box around the logo.",
+        "The current white background is a solid border that must be kept."
+      ],
+      "designer_note": "Keep the white border around the logo. Make the background transparent outside the white border.",
+      "customer_note": "Grace, I'll make the background transparent while keeping the white box around your logo.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002208,
+      "latency_ns": 3950301899
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-sending-hires",
+      "file": "testdata/cases/lowres-sending-hires.png",
+      "order": {
+        "customer": "Jack Turner",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "This one is a bit blurry, I'll upload the high-res file tomorrow."
+      },
+      "want": "ask_customer",
+      "why": "the customer is sending a better file; wait for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "artwork is 110 dpi at 3x3 in, below the required 300 dpi"
+      ],
+      "designer_note": "recreate the artwork at 300 dpi for a 3x3 in die-cut",
+      "customer_note": "Jack, I'll recreate your artwork at the correct resolution for your 3x3 in die-cut.",
+      "preflight": {
+        "width_px": 330,
+        "height_px": 330,
+        "effective_dpi": 110,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "110 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00014085,
+      "latency_ns": 3994329027
+    }
+  },
+  {
+    "case": {
+      "id": "tiny-tagline",
+      "file": "testdata/cases/tiny-tagline.png",
+      "order": {
+        "customer": "Hannah Scott",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Make sure the small text is readable."
+      },
+      "want": "ready_for_proof",
+      "why": "designer enlarges or thickens the tagline"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is at 300 dpi, which is sufficient for the ordered size.",
+        "The customer's comment about small text readability can be addressed by the designer."
+      ],
+      "designer_note": "Thicken the thin lines in the artwork and ensure the small text 'est. 2019 – small batch roasters' is readable.",
+      "customer_note": "Hannah, I've thickened the thin lines and ensured the small text is readable in the proof.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "thin_lines",
+            "message": "0.01 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002235,
+      "latency_ns": 6380481279
+    }
+  },
+  {
+    "case": {
+      "id": "rush-request",
+      "file": "testdata/cases/rush-request.png",
+      "order": {
+        "customer": "Owen Hughes",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Love you guys! Rush please, need them for Saturday."
+      },
+      "want": "ready_for_proof",
+      "why": "turnaround request does not block the proof"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 300 DPI at ordered size (2x2 inches), meeting quality requirements.",
+        "No background to remove, no text edits needed, and no conflicting instructions.",
+        "Customer requested rush, but no action needed beyond standard proofing."
+      ],
+      "designer_note": "Resize artwork to 2x2 inches at 300 DPI. Ensure 'YAY' text and red circle are centered and within safe margin. Prepare die-cut proof.",
+      "customer_note": "Owen, your artwork is ready for proof. We’ll rush your 2x2 die-cut stickers. Expect your proof shortly!",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002587,
+      "latency_ns": 7348122018
+    }
+  },
+  {
+    "case": {
+      "id": "add-phone-number",
+      "file": "testdata/cases/add-phone-number.png",
+      "order": {
+        "customer": "Daniel Young",
+        "product": "rectangle",
+        "width_in": 4,
+        "height_in": 2,
+        "comment": "Can you add my phone number 555-0100 under the logo?"
+      },
+      "want": "ready_for_proof",
+      "why": "designer adds text the customer wrote out"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork is at the correct resolution (300 DPI) for the ordered size.",
+        "The customer's request to add a phone number is a simple text edit."
+      ],
+      "designer_note": "Add the phone number 555-0100 in a readable font below the logo, centered horizontally.",
+      "customer_note": "Daniel, I'll add your phone number 555-0100 below the logo for you.",
+      "preflight": {
+        "width_px": 1200,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00017385,
+      "latency_ns": 23012865132
+    }
+  },
+  {
+    "case": {
+      "id": "lowres-please-vectorize",
+      "file": "testdata/cases/lowres-please-vectorize.png",
+      "order": {
+        "customer": "Ava Walker",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please recreate this as a vector if needed."
+      },
+      "want": "recreate_artwork",
+      "why": "140 dpi and the customer asks for it"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "Artwork is 140 dpi at 3x3 in, below the required 300 dpi. Customer requested recreation as vector if needed."
+      ],
+      "designer_note": "Recreate the artwork as a vector. Ensure the circle and text are clean, scalable, and meet 300 dpi at 3x3 in.",
+      "customer_note": "Ava, I'll recreate your design as a vector to ensure high quality at the ordered size.",
+      "preflight": {
+        "width_px": 420,
+        "height_px": 420,
+        "effective_dpi": 140,
+        "findings": [
+          {
+            "flag": "low_resolution",
+            "message": "140 dpi at 3x3 in; needs 300"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0001629,
+      "latency_ns": 5127485333
+    }
+  },
+  {
+    "case": {
+      "id": "fullbleed-photo",
+      "file": "testdata/cases/fullbleed-photo.png",
+      "order": {
+        "customer": "Lucas Allen",
+        "product": "rectangle",
+        "width_in": 3,
+        "height_in": 2,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "full-bleed rectangle at 300 dpi"
+    },
+    "result": {
+      "decision": "ask_customer",
+      "reasons": [
+        "No artwork attached for the order."
+      ],
+      "designer_note": "",
+      "customer_note": "Lucas, please upload the artwork for your rectangle sticker.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.000147,
+      "latency_ns": 9732897592
+    }
+  },
+  {
+    "case": {
+      "id": "medium-thin-whitebox",
+      "file": "testdata/cases/medium-thin-whitebox.png",
+      "order": {
+        "customer": "Ella King",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": ""
+      },
+      "want": "ready_for_proof",
+      "why": "every finding is a designer fix"
+    },
+    "result": {
+      "decision": "recreate_artwork",
+      "reasons": [
+        "artwork is only 160 dpi at 3x3 in, below the 300 dpi target",
+        "the artwork has thin lines that need thickening"
+      ],
+      "designer_note": "recreate the artwork at 300 dpi, thicken lines thinner than 1/32 in, and ensure the die cut follows the circular shape of the logo.",
+      "customer_note": "Ella, I'll recreate your design at a higher resolution and adjust the lines for better quality.",
+      "preflight": {
+        "width_px": 480,
+        "height_px": 480,
+        "effective_dpi": 160,
+        "findings": [
+          {
+            "flag": "medium_resolution",
+            "message": "160 dpi at 3x3 in; target 300"
+          },
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          },
+          {
+            "flag": "thin_lines",
+            "message": "0.02 sq in of the artwork is thinner than 1/32 in"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.00018705,
+      "latency_ns": 4570508233
+    }
+  },
+  {
+    "case": {
+      "id": "holographic",
+      "file": "testdata/cases/holographic.png",
+      "order": {
+        "customer": "Leo Wright",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Please print these on holographic vinyl."
+      },
+      "want": "ask_customer",
+      "why": "material differs from the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is 300 dpi at 3x3 inches, meeting resolution requirements.",
+        "No design issues detected; art is within safe margin and properly scaled."
+      ],
+      "designer_note": "Print on holographic vinyl as requested. Ensure the circle and text are centered and scaled to 3x3 inches.",
+      "customer_note": "Leo, your proof will be ready soon with the design printed on holographic vinyl.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0002184,
+      "latency_ns": 23759785493
+    }
+  },
+  {
+    "case": {
+      "id": "same-size-confirmation",
+      "file": "testdata/cases/same-size-confirmation.png",
+      "order": {
+        "customer": "Zoe Hill",
+        "product": "die_cut",
+        "width_in": 2,
+        "height_in": 2,
+        "comment": "Please print it at 2x2 inches."
+      },
+      "want": "ready_for_proof",
+      "why": "the size matches the order"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "Artwork is at 300 dpi at the ordered size of 2x2 inches.",
+        "No corrections needed; design is ready for proof."
+      ],
+      "designer_note": "Print at 2x2 inches. No changes needed.",
+      "customer_note": "Zoe, your 2x2 inch die-cut proof is ready. We'll proceed with printing.",
+      "preflight": {
+        "width_px": 600,
+        "height_px": 600,
+        "effective_dpi": 300,
+        "findings": null
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.0001734,
+      "latency_ns": 3716177765
+    }
+  },
+  {
+    "case": {
+      "id": "spanish-remove-bg",
+      "file": "testdata/cases/spanish-remove-bg.png",
+      "order": {
+        "customer": "Diego Ramirez",
+        "product": "die_cut",
+        "width_in": 3,
+        "height_in": 3,
+        "comment": "Por favor quiten el fondo blanco."
+      },
+      "want": "ready_for_proof",
+      "why": "asks, in Spanish, to remove the white background"
+    },
+    "result": {
+      "decision": "ready_for_proof",
+      "reasons": [
+        "The artwork has a solid white background that needs to be removed for a proper die cut.",
+        "The image is at the correct resolution (300 DPI) and within the safe margin.",
+        "The customer's request is clear: remove the white background."
+      ],
+      "designer_note": "Remove the white background so the die cut follows the orange circle and text outline.",
+      "customer_note": "Diego, I'll remove the white background so your die cut follows the orange design.",
+      "preflight": {
+        "width_px": 900,
+        "height_px": 900,
+        "effective_dpi": 300,
+        "findings": [
+          {
+            "flag": "solid_background",
+            "message": "border is solid rgb(255,255,255); a die cut would follow the rectangle"
+          }
+        ]
+      },
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "attempts": 1,
+      "cost_usd": 0.000225,
+      "latency_ns": 5687629746
+    }
+  }
+]
