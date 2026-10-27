@@ -49,3 +49,21 @@ func safeErrorText(text, apiKey string, limit int) string {
 	}
 	return text
 }
+
+// ShortErrorCause summarizes persisted call errors for fleet events and the desk.
+// Provider errors are already key-redacted by Client; redact named credentials
+// again before truncation so older or externally supplied errors stay safe.
+func ShortErrorCause(text string) string {
+	lower := strings.ToLower(text)
+	if strings.Contains(lower, "rate-limited") || strings.Contains(lower, "rate limit") || strings.Contains(lower, "status 429") {
+		provider := ""
+		if _, rest, ok := strings.Cut(text, "; provider: "); ok {
+			provider, _, _ = strings.Cut(rest, ";")
+		}
+		if provider != "" {
+			return "provider " + safeErrorText(provider, "", 60) + " rate-limited upstream"
+		}
+		return "rate-limited upstream"
+	}
+	return safeErrorText(text, "", 160)
+}
