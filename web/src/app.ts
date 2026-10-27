@@ -1,3 +1,4 @@
+import { startDesk } from "./desk";
 import { byId, h } from "./dom";
 import { gql, GraphQLError, queries, type ModelScore, type Review, type ReviewInput, type Sample } from "./gql";
 import { renderLeaderboard, renderRecent, renderReview, usd } from "./render";
@@ -133,4 +134,5 @@ async function load(): Promise<void> {
   }
 }
 
+startDesk();
 void load();
