@@ -7,6 +7,7 @@ import (
 	"github.com/hiimchinh/proof-qc-agent/internal/agent"
 	"github.com/hiimchinh/proof-qc-agent/internal/eval"
 	"github.com/hiimchinh/proof-qc-agent/internal/fleet"
+	"github.com/hiimchinh/proof-qc-agent/internal/store"
 )
 
 // evaluate is called only while Tick owns the schema-scoped advisory lock.
@@ -42,11 +43,25 @@ func (s *Service) evaluate(ctx context.Context) error {
 		}
 		baseline = append(baseline, eval.Outcome{Case: c, Result: result})
 	}
+	next, events := fleet.Evaluate(state, runs, eval.Score("baseline-rules", baseline))
+	return s.saveFleet(ctx, next, events)
+}
+
+// fillChallenger admits candidates without evaluating partial model runs.
+// Promotion and retirement wait until the in-progress order has finished.
+func (s *Service) fillChallenger(ctx context.Context) error {
+	state, err := s.cfg.Store.Fleet(ctx)
+	if err != nil {
+		return err
+	}
+	return s.saveFleet(ctx, state, nil)
+}
+
+func (s *Service) saveFleet(ctx context.Context, next store.FleetState, events []store.FleetEvent) error {
 	history, err := s.cfg.Store.FleetModels(ctx)
 	if err != nil {
 		return err
 	}
-	next, events := fleet.Evaluate(state, runs, eval.Score("baseline-rules", baseline))
 	next, additions := fleet.SeatNext(next, history, s.cfg.ChallengerQueue)
 	events = append(events, additions...)
 	if len(events) == 0 {

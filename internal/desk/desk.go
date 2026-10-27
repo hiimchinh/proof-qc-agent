@@ -76,7 +76,7 @@ func (s *Service) Tick(ctx context.Context) (TickResult, error) {
 		if _, err := s.cfg.Store.RecoverOrders(ctx); err != nil {
 			return err
 		}
-		if err := s.evaluate(ctx); err != nil {
+		if err := s.fillChallenger(ctx); err != nil {
 			return err
 		}
 		i, err := s.cfg.Store.NextCaseIndex(ctx, len(s.shuffled))
