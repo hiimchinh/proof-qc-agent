@@ -52,7 +52,7 @@ func (s *Service) process(ctx context.Context, o store.DeskOrder, state store.Fl
 	if err != nil {
 		return false, errors.Join(err, finish("failed"))
 	}
-	failed := false
+	championFailed := false
 	for _, member := range []struct{ role, model string }{{"champion", state.Champion}, {"challenger", state.Challenger}} {
 		if member.model == "" {
 			continue
@@ -61,7 +61,7 @@ func (s *Service) process(ctx context.Context, o store.DeskOrder, state store.Fl
 		for _, run := range o.Runs {
 			if run.Role == member.role {
 				found = true
-				failed = failed || run.Error != ""
+				championFailed = championFailed || (member.role == "champion" && run.Error != "")
 			}
 		}
 		if found {
@@ -86,7 +86,7 @@ func (s *Service) process(ctx context.Context, o store.DeskOrder, state store.Fl
 			CostUSD: res.CostUSD, Latency: time.Since(start), Trace: trace, OverriddenByRules: res.OverriddenByRules}
 		if callErr != nil {
 			run.Error = callErr.Error()
-			failed = true
+			championFailed = championFailed || member.role == "champion"
 		}
 		saveCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
 		_, err = s.cfg.Store.SaveRun(saveCtx, run)
@@ -102,7 +102,7 @@ func (s *Service) process(ctx context.Context, o store.DeskOrder, state store.Fl
 		}
 	}
 	status := "done"
-	if failed {
+	if championFailed {
 		status = "failed"
 	}
 	return false, finish(status)

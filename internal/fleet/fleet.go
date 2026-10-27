@@ -9,10 +9,15 @@ import (
 	"time"
 
 	"github.com/hiimchinh/proof-qc-agent/internal/eval"
+	"github.com/hiimchinh/proof-qc-agent/internal/llm"
 	"github.com/hiimchinh/proof-qc-agent/internal/store"
 )
 
-const MinSamples = 30
+const (
+	MinSamples = 30
+	// MaxConsecutiveFailures retires an unreliable model before MinSamples.
+	MaxConsecutiveFailures = 5
+)
 
 type Score struct {
 	Model         string        `json:"model"`
@@ -70,6 +75,7 @@ func Scoreboard(runs []store.AgentRun) []Score {
 }
 
 // Evaluate uses the rules score measured on the stream supplied by the caller.
+// Runs must be oldest first, as returned by Store.Runs; roles may interleave.
 // It returns changes for Store.ApplyFleet to persist together under the tick lock.
 func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Scorecard) (store.FleetState, []store.FleetEvent) {
 	cards := scorecards(runs)
@@ -83,7 +89,8 @@ func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Score
 			"baseline": map[string]any{"n": baseline.Cases, "accuracy": baseline.Accuracy()},
 			"policy": map[string]any{
 				"min_samples": MinSamples, "min_accuracy": policy.MinAccuracy,
-				"min_gain_over_baseline": policy.MinGainOverBaseline, "min_notes_pass": policy.MinLintPass,
+				"max_consecutive_failures": MaxConsecutiveFailures,
+				"min_gain_over_baseline":   policy.MinGainOverBaseline, "min_notes_pass": policy.MinLintPass,
 				"max_cost_per_order": policy.MaxCostPerProof, "max_p50_ns": policy.MaxP50,
 			},
 		})
@@ -92,7 +99,16 @@ func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Score
 	for _, role := range []*string{&state.Champion, &state.Challenger} {
 		model := *role
 		card := cards[model]
-		if model == "" || card.Cases < MinSamples {
+		if model == "" {
+			continue
+		}
+		failures, lastError := consecutiveFailures(runs, model)
+		if failures >= MaxConsecutiveFailures {
+			event("retired", model, fmt.Sprintf("%d consecutive failed calls; last: %s", failures, llm.ShortErrorCause(lastError)))
+			*role = ""
+			continue
+		}
+		if card.Cases < MinSamples {
 			continue
 		}
 		keep, reasons := policy.Verdict(card, baseline)
@@ -123,4 +139,23 @@ func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Score
 		state.Champion, state.Challenger = state.Challenger, ""
 	}
 	return state, events
+}
+
+// consecutiveFailures stops at the latest answered call, even an incorrect one.
+func consecutiveFailures(runs []store.AgentRun, model string) (int, string) {
+	count, last := 0, ""
+	for i := len(runs) - 1; i >= 0; i-- {
+		run := runs[i]
+		if run.Model != model {
+			continue
+		}
+		if run.Error == "" {
+			break
+		}
+		if count == 0 {
+			last = run.Error
+		}
+		count++
+	}
+	return count, last
 }

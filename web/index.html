@@ -36,7 +36,7 @@
           <div id="fleet-scoreboard"></div>
           <p id="fleet-queue" role="status" class="queue-status">Reading the challenger queue…</p>
           <details><summary>Promotion and retirement policy</summary>
-            <p class="hint">After 30 orders: accuracy ≥90%, gain over rules ≥10 points, notes pass ≥95%, cost ≤$0.01/order, p50 ≤30 s. Promote a passing challenger for higher accuracy, then lower cost. Retire failing models. Failed calls count as misses and costs.</p>
+            <p class="hint">After 30 orders: accuracy ≥90%, gain over rules ≥10 points, notes pass ≥95%, cost ≤$0.01/order, p50 ≤30 s. Promote a passing challenger for higher accuracy, then lower cost. Retire failing models; 5 consecutive failed calls retire either model before 30 orders. Failed calls count as misses and costs.</p>
           </details>
         </section>
         <section class="card" aria-labelledby="events-title"><h3 id="events-title">Fleet events</h3><ol id="fleet-events" class="recent"><li class="hint">Loading events…</li></ol></section>

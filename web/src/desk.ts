@@ -13,9 +13,10 @@ function detail(key: string, title: string, ...children: Node[]): HTMLDetailsEle
 }
 function runView(order: DeskOrder, run: AgentRun): Node {
   const outcome = run.error ? "Failed" : run.correct ? "Matches label" : "Misses label";
-  return detail(`${order.id}-${run.role}`, `${run.role} · ${label(run.decision || "no decision")} · ${outcome}`,
+  const title = run.error ? `${run.role} call failed: ${run.errorCause}` : `${run.role} · ${label(run.decision || "no decision")} · ${outcome}`;
+  return detail(`${order.id}-${run.role}`, title,
     h("p", { class: "hint" }, `${run.model} · ${usd(run.costUsd)} · ${elapsed(run.latencyMs)} · Notes ${run.notesPass ? "pass" : "fail"}${run.overriddenByRules ? " · Code overrode routing" : ""}`),
-    ...(run.error ? [h("p", { class: "error" }, run.error)] : []),
+    ...(run.error ? [h("p", { class: run.role === "challenger" ? "hint" : "error" }, run.error)] : []),
     h("p", { class: "note" }, run.customerNote || "No customer note."),
     h("p", {}, `Designer: ${run.designerNote || "No designer changes."}`),
     h("ol", { class: "tool-trace" }, ...run.trace.map((s) => h("li", {},
@@ -45,7 +46,7 @@ function scoreView(s: FleetScore): HTMLElement {
       ...metric("Notes pass", s.n ? pct(s.notesPassRate) : "—"),
       ...metric("$ / order", s.n ? usd(s.costPerOrder) : "—"),
       ...metric("p50 latency", s.n ? elapsed(s.p50Ms) : "—")),
-    h("p", { class: "hint" }, s.n < 30 ? `${30 - s.n} more orders before a policy decision.` : "Eligible for policy evaluation."));
+    h("p", { class: "hint" }, s.n < 30 ? `${30 - s.n} more orders before quality evaluation; 5 consecutive failed calls retire a model early.` : "Eligible for policy evaluation."));
 }
 function render(d: Desk): void {
   const open = new Set(Array.from(document.querySelectorAll<HTMLDetailsElement>("#live-desk details[open]")).map((el) => el.dataset.key));

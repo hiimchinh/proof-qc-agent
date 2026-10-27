@@ -10,6 +10,7 @@ import (
 
 	"github.com/hiimchinh/proof-qc-agent/internal/agent"
 	"github.com/hiimchinh/proof-qc-agent/internal/fleet"
+	"github.com/hiimchinh/proof-qc-agent/internal/llm"
 	"github.com/hiimchinh/proof-qc-agent/internal/store"
 )
 
@@ -29,11 +30,11 @@ type deskOrderView struct {
 	Runs                                                            []agentRunView
 }
 type agentRunView struct {
-	Role, Model, Decision, DesignerNote, CustomerNote, Error string
-	Correct, NotesPass, OverriddenByRules                    bool
-	CostUsd                                                  float64
-	LatencyMs                                                int32
-	Trace                                                    []toolStepView
+	Role, Model, Decision, DesignerNote, CustomerNote, Error, ErrorCause string
+	Correct, NotesPass, OverriddenByRules                                bool
+	CostUsd                                                              float64
+	LatencyMs                                                            int32
+	Trace                                                                []toolStepView
 }
 type toolStepView struct {
 	Tool, Args, Result string
@@ -109,7 +110,7 @@ func deskOrder(o store.DeskOrder) deskOrderView {
 		WidthIn: o.Order.WidthIn, HeightIn: o.Order.HeightIn, Comment: o.Order.Comment, Expected: string(o.Expected), Status: o.Status, CreatedAt: o.CreatedAt.UTC().Format(time.RFC3339), Runs: []agentRunView{}}
 	for _, run := range o.Runs {
 		rv := agentRunView{Role: run.Role, Model: run.Model, Decision: string(run.Result.Decision), DesignerNote: run.Result.DesignerNote, CustomerNote: run.Result.CustomerNote,
-			Error: run.Error, Correct: run.Correct, NotesPass: run.NotesPass, OverriddenByRules: run.OverriddenByRules, CostUsd: run.CostUSD, LatencyMs: int32(run.Latency / time.Millisecond), Trace: []toolStepView{}}
+			Error: run.Error, ErrorCause: llm.ShortErrorCause(run.Error), Correct: run.Correct, NotesPass: run.NotesPass, OverriddenByRules: run.OverriddenByRules, CostUsd: run.CostUSD, LatencyMs: int32(run.Latency / time.Millisecond), Trace: []toolStepView{}}
 		var steps []agent.TraceStep
 		if json.Unmarshal(run.Trace, &steps) == nil {
 			for _, step := range steps {
