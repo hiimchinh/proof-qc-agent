@@ -99,3 +99,18 @@ func TestPersistentCursorAndStaleOrderRecovery(t *testing.T) {
 		t.Fatalf("fresh working %d reclaimed %+v %v", second.ID, claim, e)
 	}
 }
+
+func TestTickLocksInSeparateSchemasDoNotContend(t *testing.T) {
+	ctx := context.Background()
+	a, b := storetest.Open(t), storetest.Open(t)
+	ok, e := a.WithTickLock(ctx, func(ctx context.Context) error {
+		inner, err := b.WithTickLock(ctx, func(context.Context) error { return nil })
+		if !inner || err != nil {
+			t.Errorf("a deployment in another schema was blocked: %v %v", inner, err)
+		}
+		return nil
+	})
+	if !ok || e != nil {
+		t.Fatalf("lock %v %v", ok, e)
+	}
+}

@@ -6,7 +6,9 @@ import (
 	"time"
 )
 
-const tickLockID = 7_310_252_027
+// tickLockClass and the schema name together key the tick lock, so deployments
+// sharing one database in different schemas never block each other.
+const tickLockClass = 731_025
 
 // WithTickLock serializes tick and manual spending across instances. The callback
 // runs only when this session owns the lock; contention returns false immediately.
@@ -16,14 +18,14 @@ func (s *Store) WithTickLock(ctx context.Context, fn func(context.Context) error
 		return false, err
 	}
 	defer conn.Release()
-	if err = conn.QueryRow(ctx, `SELECT pg_try_advisory_lock($1)`, tickLockID).Scan(&held); err != nil || !held {
+	if err = conn.QueryRow(ctx, `SELECT pg_try_advisory_lock($1, hashtext(current_schema()))`, tickLockClass).Scan(&held); err != nil || !held {
 		return held, err
 	}
 	defer func() {
 		cleanup, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		var unlocked bool
-		unlockErr := conn.QueryRow(cleanup, `SELECT pg_advisory_unlock($1)`, tickLockID).Scan(&unlocked)
+		unlockErr := conn.QueryRow(cleanup, `SELECT pg_advisory_unlock($1, hashtext(current_schema()))`, tickLockClass).Scan(&unlocked)
 		if unlockErr != nil || !unlocked {
 			// A connection with an unverified session lock must never return to the pool.
 			_ = conn.Conn().Close(cleanup)
