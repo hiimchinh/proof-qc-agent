@@ -73,6 +73,7 @@ func Scoreboard(runs []store.AgentRun) []Score {
 // It returns changes for Store.ApplyFleet to persist together under the tick lock.
 func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Scorecard) (store.FleetState, []store.FleetEvent) {
 	cards := scorecards(runs)
+	previousChampion := state.Champion
 	var events []store.FleetEvent
 	championScore, challengerScore := score(cards[state.Champion]), score(cards[state.Challenger])
 	policy := eval.DefaultPolicy
@@ -112,7 +113,13 @@ func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Score
 	better := state.Champion == "" || challenger.Accuracy() > champion.Accuracy() ||
 		(challenger.Accuracy() == champion.Accuracy() && challenger.CostPerProof() < champion.CostPerProof())
 	if better {
-		event("promoted", state.Challenger, fmt.Sprintf("qualified challenger replaces %q by accuracy then cost", state.Champion))
+		reason := "qualified challenger fills the empty champion seat"
+		if state.Champion != "" {
+			reason = fmt.Sprintf("qualified challenger replaces %q by accuracy then cost", state.Champion)
+		} else if previousChampion != "" {
+			reason = fmt.Sprintf("qualified challenger replaces retired %s by accuracy then cost", previousChampion)
+		}
+		event("promoted", state.Challenger, reason)
 		state.Champion, state.Challenger = state.Challenger, ""
 	}
 	return state, events

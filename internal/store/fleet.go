@@ -70,3 +70,17 @@ func (s *Store) FleetEvents(ctx context.Context, limit int) ([]FleetEvent, error
 		return e, err
 	})
 }
+
+// FleetModels returns all membership history, including active seats for older
+// databases. Do not limit this query to the events displayed by the web desk.
+func (s *Store) FleetModels(ctx context.Context) ([]string, error) {
+	rows, err := s.pool.Query(ctx, `SELECT model FROM (
+  SELECT model FROM fleet_events
+  UNION SELECT champion FROM fleet_state
+  UNION SELECT challenger FROM fleet_state
+ ) AS history WHERE model <> '' ORDER BY model`)
+	if err != nil {
+		return nil, err
+	}
+	return pgx.CollectRows(rows, pgx.RowTo[string])
+}

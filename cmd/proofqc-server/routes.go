@@ -30,13 +30,13 @@ func newMux(st *store.Store, cfg config) (http.Handler, error) {
 		slog.Error("leaderboard unavailable", "err", err)
 	}
 	client := &llm.Client{APIKey: cfg.apiKey}
-	service, err := desk.New(desk.Config{Store: st, LLM: client, Cases: cases, Artwork: art, DailyCapUSD: cfg.dailyCapUSD, Champion: cfg.champion, Challenger: cfg.challenger})
+	service, err := desk.New(desk.Config{Store: st, LLM: client, Cases: cases, Artwork: art, DailyCapUSD: cfg.dailyCapUSD, Champion: cfg.champion, Challenger: cfg.challenger, ChallengerQueue: cfg.challengerQueue})
 	if err != nil {
 		return nil, err
 	}
 	gql, err := api.New(api.Config{
 		Store: st, LLM: client, Cases: cases, Artwork: art,
-		Leaderboard: board, DailyCapUSD: cfg.dailyCapUSD,
+		Leaderboard: board, DailyCapUSD: cfg.dailyCapUSD, ChallengerQueue: cfg.challengerQueue,
 	})
 	if err != nil {
 		return nil, err

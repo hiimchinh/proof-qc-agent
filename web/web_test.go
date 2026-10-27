@@ -65,3 +65,11 @@ func TestLiveDeskPrecedesTheManualReview(t *testing.T) {
 		t.Fatal("page must lead with a labelled simulated desk, scoreboard and fleet events, before the manual form")
 	}
 }
+
+func TestFleetQueueStatusIsInsideTheFleetCard(t *testing.T) {
+	body := get(t, "/").Body.String()
+	card, queue, policy := strings.Index(body, `id="fleet-title"`), strings.Index(body, `id="fleet-queue"`), strings.Index(body, "Promotion and retirement policy")
+	if card < 0 || queue < card || policy < queue || !strings.Contains(body, `id="fleet-queue" role="status"`) {
+		t.Fatal("fleet card must expose queue status before the policy details")
+	}
+}

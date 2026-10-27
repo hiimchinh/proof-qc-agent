@@ -58,8 +58,9 @@ function render(d: Desk): void {
     if (model && !scores.some((s) => s.model === model)) scores.push({ model, role, n: 0, accuracy: 0, notesPassRate: 0, costPerOrder: 0, p50Ms: 0 });
   }
   byId("fleet-scoreboard").replaceChildren(...scores.map(scoreView));
+  byId("fleet-queue").textContent = d.challengerQueue.length ? `Next to trial: ${d.challengerQueue.join(" → ")}` : "Queue empty";
   byId("fleet-events").replaceChildren(...(d.events.length ? d.events.map((e) => h("li", {},
-    h("strong", {}, `${e.kind} · ${e.model}`), h("p", {}, e.reason),
+    h("span", { class: "hint" }, `${e.kind} · ${e.model}`), h("p", { class: "fleet-reason" }, e.reason),
     detail(`event-${e.id}`, "Decision evidence", h("pre", {}, e.numbers)),
     h("time", { datetime: e.createdAt, class: "hint" }, new Date(e.createdAt).toLocaleString()))) : [h("li", { class: "hint" }, "No fleet events yet.")]));
   for (const el of document.querySelectorAll<HTMLDetailsElement>("#live-desk details")) {
@@ -68,7 +69,9 @@ function render(d: Desk): void {
   }
   const capped = d.spentToday >= d.dailyCapUsd;
   byId("desk-budget").textContent = `${usd(d.spentToday)} / ${usd(d.dailyCapUsd)} today (UTC)${capped ? " · Budget spent; new orders stay queued." : ""}`;
-  byId("desk-state").textContent = !d.champion ? "Champion retired · Shadow evaluation only" : "Champion acts · Challenger shadows";
+  byId("desk-state").textContent = !d.champion && !d.challenger ? "Fleet empty · Orders stay queued" :
+    !d.champion ? "Champion retired · Shadow evaluation only" :
+    !d.challenger ? "Champion acts · Challenger seat empty" : "Champion acts · Challenger shadows";
 }
 export function startDesk(): void {
   let loading = false;

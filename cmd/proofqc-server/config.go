@@ -8,9 +8,11 @@ import (
 	"strings"
 
 	"github.com/hiimchinh/proof-qc-agent/internal/desk"
+	"github.com/hiimchinh/proof-qc-agent/internal/fleet"
 )
 
 type config struct {
+	challengerQueue                 []string
 	addr                            string
 	databaseURL                     string
 	apiKey                          string
@@ -22,6 +24,19 @@ type config struct {
 // missing or malformed, so a bad deploy stops before it serves traffic.
 func loadConfig(getenv func(string) string) (config, error) {
 	c := config{addr: ":8080", dailyCapUSD: 3, champion: desk.DefaultChampion, challenger: desk.DefaultChallenger}
+	queue := strings.TrimSpace(getenv("CHALLENGER_QUEUE"))
+	if queue == "" {
+		queue = fleet.DefaultQueue
+	}
+	c.challengerQueue = []string{}
+	seen := map[string]bool{}
+	for part := range strings.SplitSeq(queue, ",") {
+		model := strings.TrimSpace(part)
+		if model != "" && !seen[model] {
+			c.challengerQueue = append(c.challengerQueue, model)
+			seen[model] = true
+		}
+	}
 	c.tickToken = getenv("TICK_TOKEN")
 	if model := strings.TrimSpace(getenv("CHAMPION_MODEL")); model != "" {
 		c.champion = model
