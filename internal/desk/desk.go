@@ -11,7 +11,6 @@ import (
 
 	"github.com/hiimchinh/proof-qc-agent/internal/agent"
 	"github.com/hiimchinh/proof-qc-agent/internal/eval"
-	"github.com/hiimchinh/proof-qc-agent/internal/fleet"
 	"github.com/hiimchinh/proof-qc-agent/internal/store"
 )
 
@@ -22,6 +21,7 @@ const (
 )
 
 type Config struct {
+	ChallengerQueue      []string
 	Store                *store.Store
 	LLM                  agent.Completer
 	Cases                []eval.Case
@@ -74,6 +74,9 @@ func (s *Service) Tick(ctx context.Context) (TickResult, error) {
 	var out TickResult
 	locked, err := s.cfg.Store.WithTickLock(ctx, func(ctx context.Context) error {
 		if _, err := s.cfg.Store.RecoverOrders(ctx); err != nil {
+			return err
+		}
+		if err := s.evaluate(ctx); err != nil {
 			return err
 		}
 		i, err := s.cfg.Store.NextCaseIndex(ctx, len(s.shuffled))
@@ -133,45 +136,6 @@ func (s *Service) image(c eval.Case) (image.Image, error) {
 	defer f.Close()
 	img, _, err := image.Decode(f)
 	return img, err
-}
-
-func (s *Service) evaluate(ctx context.Context) error {
-	runs, err := s.cfg.Store.Runs(ctx)
-	if err != nil {
-		return err
-	}
-	state, err := s.cfg.Store.Fleet(ctx)
-	if err != nil {
-		return err
-	}
-	// Compare with rules on the same observed orders, including failed model runs.
-	baseline := make([]eval.Outcome, 0, len(runs))
-	// Each model sees the same stream; build its baseline from the processed queue.
-	recent, err := s.cfg.Store.ObservedOrders(ctx)
-	if err != nil {
-		return err
-	}
-	for _, o := range recent {
-		c, ok := s.byID[o.CaseID]
-		if !ok {
-			return errors.New("desk: unknown queued case")
-		}
-		result, ok := s.baseline[c.ID]
-		if !ok {
-			img, err := s.image(c)
-			if err != nil {
-				return err
-			}
-			result = agent.Baseline(img, o.Order)
-			s.baseline[c.ID] = result
-		}
-		baseline = append(baseline, eval.Outcome{Case: c, Result: result})
-	}
-	next, events := fleet.Evaluate(state, runs, eval.Score("baseline-rules", baseline))
-	if len(events) == 0 {
-		return nil
-	}
-	return s.cfg.Store.ApplyFleet(ctx, next, events)
 }
 
 func midnight(t time.Time) time.Time {

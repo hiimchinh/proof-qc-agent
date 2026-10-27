@@ -14,6 +14,7 @@ import (
 )
 
 type deskView struct {
+	ChallengerQueue         []string
 	Simulated               bool
 	Champion, Challenger    string
 	SpentToday, DailyCapUsd float64
@@ -61,6 +62,10 @@ func (r *resolver) Desk(ctx context.Context, args struct{ Limit int32 }) (*deskV
 	if err != nil {
 		return nil, r.deskError(ctx, err)
 	}
+	history, err := r.store.FleetModels(ctx)
+	if err != nil {
+		return nil, r.deskError(ctx, err)
+	}
 	runs, err := r.store.Runs(ctx)
 	if err != nil {
 		return nil, r.deskError(ctx, err)
@@ -73,7 +78,7 @@ func (r *resolver) Desk(ctx context.Context, args struct{ Limit int32 }) (*deskV
 	if err != nil {
 		return nil, err
 	}
-	out := &deskView{Simulated: true, Champion: state.Champion, Challenger: state.Challenger, SpentToday: spent, DailyCapUsd: r.capUSD,
+	out := &deskView{ChallengerQueue: fleet.RemainingQueue(state, history, r.challengerQueue), Simulated: true, Champion: state.Champion, Challenger: state.Challenger, SpentToday: spent, DailyCapUsd: r.capUSD,
 		Orders: []deskOrderView{}, Scoreboard: []fleetScoreView{}, Events: []fleetEventView{}}
 	for _, o := range orders {
 		out.Orders = append(out.Orders, deskOrder(o))

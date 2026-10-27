@@ -27,13 +27,14 @@ const maxBody = 6 << 20
 
 // Config is everything the API needs; Store and LLM are required.
 type Config struct {
-	Store       *store.Store
-	LLM         agent.Completer
-	Cases       []eval.Case // the samples a visitor can review without an upload
-	Artwork     fs.FS       // the samples' artwork, keyed by Case.File
-	Leaderboard []results.Score
-	DailyCapUSD float64
-	Logger      *slog.Logger // slog.Default() when nil
+	ChallengerQueue []string
+	Store           *store.Store
+	LLM             agent.Completer
+	Cases           []eval.Case // the samples a visitor can review without an upload
+	Artwork         fs.FS       // the samples' artwork, keyed by Case.File
+	Leaderboard     []results.Score
+	DailyCapUSD     float64
+	Logger          *slog.Logger // slog.Default() when nil
 }
 
 // New returns the GraphQL handler. It accepts POST requests with a JSON body.

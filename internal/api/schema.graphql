@@ -105,6 +105,8 @@ type Sample {
 
 
 type Desk {
+  "Ordered candidates that have never been in the fleet; empty when exhausted."
+  challengerQueue: [String!]!
   simulated: Boolean!
   champion: String!
   challenger: String!

@@ -3,7 +3,7 @@
 // spend cap in front of the paid model call.
 //
 // Environment: PORT (8080), DATABASE_URL, OPENROUTER_API_KEY, DAILY_USD_CAP (3),
-// TICK_TOKEN, CHAMPION_MODEL and CHALLENGER_MODEL.
+// TICK_TOKEN, CHAMPION_MODEL, CHALLENGER_MODEL and CHALLENGER_QUEUE.
 package main
 
 import (

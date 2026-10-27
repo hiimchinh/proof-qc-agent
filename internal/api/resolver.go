@@ -18,27 +18,29 @@ const (
 )
 
 type resolver struct {
-	store   *store.Store
-	llm     agent.Completer
-	cases   map[string]eval.Case
-	art     fs.FS
-	samples []sampleView
-	board   []scoreView
-	capUSD  float64
-	limiter *limiter
-	now     func() time.Time
-	log     *slog.Logger
+	challengerQueue []string
+	store           *store.Store
+	llm             agent.Completer
+	cases           map[string]eval.Case
+	art             fs.FS
+	samples         []sampleView
+	board           []scoreView
+	capUSD          float64
+	limiter         *limiter
+	now             func() time.Time
+	log             *slog.Logger
 }
 
 func newResolver(cfg Config) *resolver {
 	r := &resolver{
 		store: cfg.Store, llm: cfg.LLM, art: cfg.Artwork, capUSD: cfg.DailyCapUSD,
-		cases:   make(map[string]eval.Case, len(cfg.Cases)),
-		samples: make([]sampleView, 0, len(cfg.Cases)),
-		board:   make([]scoreView, 0, len(cfg.Leaderboard)),
-		limiter: newLimiter(reviewsPerHour, time.Hour, time.Now),
-		now:     time.Now,
-		log:     cfg.Logger,
+		challengerQueue: cfg.ChallengerQueue,
+		cases:           make(map[string]eval.Case, len(cfg.Cases)),
+		samples:         make([]sampleView, 0, len(cfg.Cases)),
+		board:           make([]scoreView, 0, len(cfg.Leaderboard)),
+		limiter:         newLimiter(reviewsPerHour, time.Hour, time.Now),
+		now:             time.Now,
+		log:             cfg.Logger,
 	}
 	for _, c := range cfg.Cases {
 		r.cases[c.ID] = c
