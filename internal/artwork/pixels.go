@@ -21,6 +21,24 @@ type pixels struct {
 func newPixels(img image.Image) pixels {
 	b := img.Bounds()
 	px := pixels{w: b.Dx(), h: b.Dy(), p: make([]rgba, b.Dx()*b.Dy())}
+	switch src := img.(type) {
+	case *image.NRGBA:
+		for y := range px.h {
+			row := src.Pix[(y+b.Min.Y-src.Rect.Min.Y)*src.Stride+(b.Min.X-src.Rect.Min.X)*4:]
+			for x := range px.w {
+				px.p[y*px.w+x] = rgba{row[4*x], row[4*x+1], row[4*x+2], row[4*x+3]}
+			}
+		}
+		return px
+	case *image.RGBA:
+		for y := range px.h {
+			row := src.Pix[(y+b.Min.Y-src.Rect.Min.Y)*src.Stride+(b.Min.X-src.Rect.Min.X)*4:]
+			for x := range px.w {
+				px.p[y*px.w+x] = unpremultiply(row[4*x], row[4*x+1], row[4*x+2], row[4*x+3])
+			}
+		}
+		return px
+	}
 	for y := range px.h {
 		for x := range px.w {
 			c := color.NRGBAModel.Convert(img.At(b.Min.X+x, b.Min.Y+y)).(color.NRGBA)
@@ -28,6 +46,21 @@ func newPixels(img image.Image) pixels {
 		}
 	}
 	return px
+}
+
+// unpremultiply matches color.NRGBAModel without boxing every pixel in an interface.
+func unpremultiply(r, g, b, a uint8) rgba {
+	switch a {
+	case 0:
+		return rgba{}
+	case 255:
+		return rgba{r, g, b, a}
+	}
+	un := func(c uint8) uint8 {
+		c16, a16 := uint32(c)*0x101, uint32(a)*0x101
+		return uint8((c16 * 0xffff / a16) >> 8)
+	}
+	return rgba{un(r), un(g), un(b), a}
 }
 
 func (px pixels) at(x, y int) rgba { return px.p[y*px.w+x] }

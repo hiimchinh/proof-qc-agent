@@ -1,0 +1,102 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  "Every saved eval run, scored against today's labels."
+  leaderboard: [ModelScore!]!
+  "The newest answered reviews, newest first. limit is 1 to 50."
+  recentReviews(limit: Int = 10): [Review!]!
+  "What the demo spent on model calls since 00:00 UTC."
+  spentToday: Float!
+  "Labelled sample orders whose artwork can be reviewed without an upload."
+  samples: [Sample!]!
+}
+
+type Mutation {
+  "Run the preflight and one model on an artwork. Costs real money, so it is rate limited and capped per day."
+  reviewArtwork(input: ReviewInput!): Review!
+}
+
+enum Product {
+  die_cut
+  rectangle
+}
+
+input ReviewInput {
+  customer: String!
+  product: Product!
+  widthIn: Float!
+  heightIn: Float!
+  comment: String = ""
+  "One of the allowed models; anthropic/claude-haiku-5.5 when left out."
+  model: String
+  "A PNG or JPEG, base64 encoded, at most 4 MB and 6000 px a side. Give this or sampleId."
+  imageBase64: String
+  "The id of a sample whose artwork to use. Give this or imageBase64."
+  sampleId: String
+}
+
+type Review {
+  decision: String!
+  reasons: [String!]!
+  designerNote: String!
+  customerNote: String!
+  "Set by code, not the model: ways the comment asks for a different order."
+  orderChanges: [String!]!
+  preflight: Preflight!
+  "Support principles the final customer note still breaks."
+  lint: [LintViolation!]!
+  model: String!
+  costUsd: Float!
+  latencyMs: Int!
+  "RFC 3339, UTC."
+  createdAt: String!
+}
+
+type Preflight {
+  widthPx: Int!
+  heightPx: Int!
+  effectiveDpi: Float!
+  findings: [Finding!]!
+}
+
+type Finding {
+  flag: String!
+  message: String!
+}
+
+type LintViolation {
+  rule: String!
+  detail: String!
+}
+
+type ModelScore {
+  model: String!
+  "Where the order-change rules lived: rules in code, or prompt only."
+  variant: String!
+  runs: Int!
+  cases: Int!
+  accuracy: Float!
+  accuracyLow: Float!
+  accuracyHigh: Float!
+  lintPass: Float!
+  costPerProof: Float!
+  p50Ms: Int!
+  keep: Boolean!
+  verdict: String!
+}
+
+type Sample {
+  id: ID!
+  imageUrl: String!
+  customer: String!
+  product: Product!
+  widthIn: Float!
+  heightIn: Float!
+  comment: String!
+  "The hand-written label for this order."
+  want: String!
+  why: String!
+}

@@ -1,0 +1,4 @@
+# esbuild finds its native binary without the postinstall, which would also
+# replace the bin script that pnpm runs through node.
+allowBuilds:
+  esbuild: false

@@ -12,6 +12,12 @@ It also writes the note the customer reads. Every note is checked against the su
 
 The goal is a shorter time to proof without letting a bad proof reach a customer. A person still approves every proof.
 
+## Live demo
+
+DEMO_URL
+
+Pick a sample order or upload a PNG or JPEG, choose a model and see the decision, both notes, the preflight, the cost and the latency. The page is TypeScript, the API is GraphQL in Go (`internal/api`), and every review is stored in Postgres. Each visitor gets 20 reviews an hour, and the demo stops calling models once the day's spend reaches a cap.
+
 ## Results
 
 26 hand-labelled orders, one run, October 2026. Every model gets the same prompt and the same preflight.
@@ -77,6 +83,19 @@ go run ./cmd/proofqc eval -max-usd 2 \
 ```
 
 `-max-usd` stops new calls once the spend passes the cap. The client never retries on its own, so every billed attempt is counted.
+
+## Run the demo locally
+
+```sh
+docker run -d --rm --name proofqc-pg -p 5432:5432 \
+  -e POSTGRES_USER=proofqc -e POSTGRES_PASSWORD=proofqc -e POSTGRES_DB=proofqc postgres:17
+export DATABASE_URL='postgres://proofqc:proofqc@localhost:5432/proofqc?sslmode=disable'
+export OPENROUTER_API_KEY=...
+DAILY_USD_CAP=1 go run ./cmd/proofqc-server       # http://localhost:8080
+go test -race ./...                              # store and API tests use the same DATABASE_URL
+```
+
+The server applies its migration at startup. `PORT` defaults to 8080 and `DAILY_USD_CAP` to 3 (US dollars per UTC day; `0` blocks every model call). The page is built from `web/src` with `corepack pnpm build` in `web/`; the built `web/dist/app.js` is committed, so `go run` and `docker build` need no Node.
 
 ## What I would do next in production
 

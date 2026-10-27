@@ -67,10 +67,15 @@ func (r *Report) add(f Flag, format string, args ...any) {
 // Preflight measures the artwork against the order. It never decides what to do
 // about a finding; that is the agent's job.
 func Preflight(img image.Image, o Order) Report {
+	b := img.Bounds()
+	r := Report{WidthPx: b.Dx(), HeightPx: b.Dy()}
+	printDPI := math.Min(float64(b.Dx())/o.WidthIn, float64(b.Dy())/o.HeightIn)
+	r.EffectiveDPI = math.Round(printDPI*10) / 10
+
+	// Resolution is judged on the file as uploaded; every other check runs on a
+	// copy of at most maxAnalysisDPI, with dpi describing that copy.
+	img, dpi := forAnalysis(img, printDPI)
 	px := newPixels(img)
-	r := Report{WidthPx: px.w, HeightPx: px.h}
-	dpi := math.Min(float64(px.w)/o.WidthIn, float64(px.h)/o.HeightIn)
-	r.EffectiveDPI = math.Round(dpi*10) / 10
 
 	bg, hasBG := px.solidBorder()
 	mask := px.contentMask(bg, hasBG)
@@ -81,10 +86,10 @@ func Preflight(img image.Image, o Order) Report {
 	}
 
 	switch {
-	case dpi < minDPI:
-		r.add(LowResolution, "%.0f dpi at %.4gx%.4g in; needs %.0f", dpi, o.WidthIn, o.HeightIn, targetDPI)
-	case dpi < targetDPI:
-		r.add(MediumResolution, "%.0f dpi at %.4gx%.4g in; target %.0f", dpi, o.WidthIn, o.HeightIn, targetDPI)
+	case printDPI < minDPI:
+		r.add(LowResolution, "%.0f dpi at %.4gx%.4g in; needs %.0f", printDPI, o.WidthIn, o.HeightIn, targetDPI)
+	case printDPI < targetDPI:
+		r.add(MediumResolution, "%.0f dpi at %.4gx%.4g in; target %.0f", printDPI, o.WidthIn, o.HeightIn, targetDPI)
 	}
 
 	if o.Product == DieCut && hasBG {

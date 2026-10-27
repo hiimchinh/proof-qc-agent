@@ -7,6 +7,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 2
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: proofqc
+          POSTGRES_PASSWORD: proofqc
+          POSTGRES_DB: proofqc
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U proofqc" --health-interval 2s --health-timeout 2s --health-retries 15
+    env:
+      DATABASE_URL: postgres://proofqc:proofqc@localhost:5432/proofqc?sslmode=disable
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -14,7 +26,24 @@ jobs:
           go-version-file: go.mod
       - run: go vet ./...
       - run: go test -race ./...
+      - name: large uploads preflight in under 2 s (timed without the race detector)
+        run: go test -run TestLargeUploadMatchesTheSameArtAt600DPI ./internal/artwork
       - name: fixtures are reproducible
         run: go run ./cmd/genfixtures && git diff --exit-code testdata/
       - name: rules baseline runs offline
         run: go run ./cmd/proofqc eval -out /tmp/results
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: corepack enable
+      - run: corepack pnpm install --frozen-lockfile
+      - name: committed bundle matches the source
+        run: corepack pnpm build && git diff --exit-code dist

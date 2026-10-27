@@ -30,15 +30,27 @@ func LoadCases(path string) ([]Case, error) {
 	if err != nil {
 		return nil, err
 	}
-	var cs []Case
-	if err := json.Unmarshal(raw, &cs); err != nil {
+	cs, err := ParseCases(raw)
+	if err != nil {
 		return nil, fmt.Errorf("%s: %w", path, err)
 	}
 	for i := range cs {
-		if err := cs[i].Order.Validate(); err != nil {
-			return nil, fmt.Errorf("%s: case %s: %w", path, cs[i].ID, err)
-		}
 		cs[i].File = filepath.Join(filepath.Dir(path), cs[i].File)
+	}
+	return cs, nil
+}
+
+// ParseCases decodes cases.json and validates every order. File names stay as
+// written, relative to wherever the caller keeps the artwork.
+func ParseCases(raw []byte) ([]Case, error) {
+	var cs []Case
+	if err := json.Unmarshal(raw, &cs); err != nil {
+		return nil, err
+	}
+	for _, c := range cs {
+		if err := c.Order.Validate(); err != nil {
+			return nil, fmt.Errorf("case %s: %w", c.ID, err)
+		}
 	}
 	return cs, nil
 }
@@ -184,6 +196,7 @@ func (s Scorecard) P50() time.Duration {
 
 // Policy is the bar an agent has to clear to stay in production.
 type Policy struct {
+	MinAccuracy         float64       // a router wrong more often than this gets ignored by designers
 	MinGainOverBaseline float64       // accuracy points over the rules-only reviewer
 	MinLintPass         float64       // share of customer notes that follow the support principles
 	MaxCostPerProof     float64       // USD
@@ -192,6 +205,7 @@ type Policy struct {
 
 // DefaultPolicy keeps an agent only if it is clearly better than rules, polite, cheap and fast.
 var DefaultPolicy = Policy{
+	MinAccuracy:         0.90,
 	MinGainOverBaseline: 0.10,
 	MinLintPass:         0.95,
 	MaxCostPerProof:     0.01,
@@ -202,6 +216,9 @@ var DefaultPolicy = Policy{
 func (p Policy) Verdict(s, baseline Scorecard) (keep bool, reasons []string) {
 	if s.Skipped > 0 {
 		return false, []string{fmt.Sprintf("incomplete run: %d of %d cases skipped", s.Skipped, s.Cases)}
+	}
+	if a := s.Accuracy(); a < p.MinAccuracy {
+		reasons = append(reasons, fmt.Sprintf("%.0f%% accuracy (need %.0f%%)", a*100, p.MinAccuracy*100))
 	}
 	if gain := s.Accuracy() - baseline.Accuracy(); gain < p.MinGainOverBaseline {
 		reasons = append(reasons, fmt.Sprintf("only %+.0f pts over the rules baseline (need %+.0f)", gain*100, p.MinGainOverBaseline*100))

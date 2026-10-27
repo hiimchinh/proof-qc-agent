@@ -73,6 +73,7 @@ func TestVerdict(t *testing.T) {
 		{"breaks support principles", card(0.95, 0.80, 0.004, 5*time.Second), false, "support"},
 		{"too expensive", card(0.95, 1, 0.05, 5*time.Second), false, "$"},
 		{"too slow", card(0.95, 1, 0.004, 90*time.Second), false, "p50"},
+		{"beats a weak baseline but is still wrong too often", card(0.85, 1, 0.004, 5*time.Second), false, "accuracy"},
 	}
 	for _, c := range cases {
 		keep, reasons := p.Verdict(c.s, base)

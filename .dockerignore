@@ -1,0 +1,16 @@
+# Only what `go build ./cmd/proofqc-server` embeds or compiles goes into the image.
+.git
+.github
+**/*_test.go
+web/node_modules
+web/src
+web/*.json
+web/*.yaml
+results/v1-26-cases
+results/**/*.md
+proofqc
+proofqc-server
+LICENSE
+README.md
+Dockerfile
+.dockerignore

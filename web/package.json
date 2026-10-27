@@ -1,0 +1,14 @@
+{
+  "name": "proof-qc-demo-web",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.3.0",
+  "scripts": {
+    "build": "tsc --noEmit && esbuild src/app.ts --bundle --minify --target=es2022 --outfile=dist/app.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.11",
+    "typescript": "5.9.3"
+  }
+}
