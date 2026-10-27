@@ -10,7 +10,7 @@ func TestConfigChallengerQueue(t *testing.T) {
 		name, value string
 		want        []string
 	}{
-		{"default", "", []string{"google/gemma-3-27b-it", "x-ai/grok-4.7"}},
+		{"default", "", []string{"google/gemma-4-31b-it", "qwen/qwen3-vl-235b-a22b-instruct", "x-ai/grok-4.7"}},
 		{"custom ordered", " x-ai/grok-4.7 , google/gemma-3-27b-it , x-ai/grok-4.7 ", []string{"x-ai/grok-4.7", "google/gemma-3-27b-it"}},
 		{"empty entries", ",, google/gemma-3-27b-it, ,", []string{"google/gemma-3-27b-it"}},
 		{"explicit empty", ",", []string{}},

@@ -24,6 +24,10 @@ func TestCompleteToolConversation(t *testing.T) {
 	if len(seen["tools"].([]any)) != 1 || seen["response_format"] != nil {
 		t.Fatalf("request = %#v", seen)
 	}
+	provider, ok := seen["provider"].(map[string]any)
+	if !ok || provider["require_parameters"] != true {
+		t.Fatalf("tool providers must honour requested parameters: %#v", seen["provider"])
+	}
 }
 
 func TestCompleteKeepsUsageForRejectedResponses(t *testing.T) {

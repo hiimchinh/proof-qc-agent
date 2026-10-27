@@ -11,8 +11,8 @@ import (
 	"github.com/hiimchinh/proof-qc-agent/internal/notelint"
 )
 
-func (r *deskRun) route(o artwork.Order, ans answer) {
-	res := &r.result
+func (r *deskRun) route(o artwork.Order, ans routeArguments) error {
+	res := r.result
 	res.Decision, res.Reasons = ans.Decision, ans.Reasons
 	res.DesignerNote, res.CustomerNote = ans.DesignerNote, ans.CustomerNote
 	if changes := orderChanges(o, ans.Requested); len(changes) > 0 {
@@ -41,7 +41,12 @@ func (r *deskRun) route(o artwork.Order, ans answer) {
 			res.Reasons = append(res.Reasons, finding.Message)
 		}
 	}
+	if ans.customerNoteNull && !res.OverriddenByRules {
+		return fmt.Errorf("customer_note is required and must not be null unless supplied by rules")
+	}
 	res.Lint = notelint.Check(res.CustomerNote, o.Customer)
+	r.result = res
+	return nil
 }
 
 func (r *deskRun) repair(ctx context.Context, o artwork.Order) {

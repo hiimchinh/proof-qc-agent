@@ -164,8 +164,13 @@ func (r *deskRun) execute(ctx context.Context, img image.Image, o artwork.Order,
 		if err != nil {
 			return "", false, err
 		}
-		r.route(o, ans)
+		if err := r.route(o, ans); err != nil {
+			return "", false, err
+		}
 		step.Overridden = r.result.OverriddenByRules
+		if step.Overridden {
+			step.Result = string(r.result.Decision) + "; customer note supplied by rules"
+		}
 		return string(r.result.Decision), true, nil
 	}
 	return "", false, errors.New("unsupported tool")
