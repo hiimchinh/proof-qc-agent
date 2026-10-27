@@ -14,7 +14,7 @@ The goal is a shorter time to proof without letting a bad proof reach a customer
 
 ## Live demo
 
-https://proof-qc-demo-743803012877.us-central1.run.app (Cloud Run, us-central1; Postgres on Cloud SQL)
+https://proof-qc.hiimchinh.com (Cloud Run, us-central1; Postgres on Cloud SQL)
 
 Pick a sample order or upload a PNG or JPEG, choose a model and see the decision, both notes, the preflight, the cost and the latency. The page is TypeScript, the API is GraphQL in Go (`internal/api`), and every review is stored in Postgres. Each visitor gets 20 reviews an hour, and the demo stops calling models once the day's spend reaches a cap.
 
@@ -124,4 +124,4 @@ The server applies its migration at startup. `PORT` defaults to 8080 and `DAILY_
 
 ## License
 
-MIT
+[PolyForm Noncommercial 1.0.0](LICENSE). You may read, run and evaluate the code; commercial use needs written permission.
