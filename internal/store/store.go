@@ -88,7 +88,7 @@ func (s *Store) Recent(ctx context.Context, limit int) ([]Review, error) {
 // SpentSince sums the cost of every call made at or after t, failed ones included.
 func (s *Store) SpentSince(ctx context.Context, t time.Time) (float64, error) {
 	var usd float64
-	err := s.pool.QueryRow(ctx, "SELECT COALESCE(SUM(cost_usd), 0) FROM reviews WHERE created_at >= $1", t).Scan(&usd)
+	err := s.pool.QueryRow(ctx, "SELECT COALESCE(SUM(cost_usd), 0) FROM (SELECT cost_usd FROM reviews WHERE created_at >= $1 UNION ALL SELECT cost_usd FROM agent_runs WHERE created_at >= $1) costs", t).Scan(&usd)
 	if err != nil {
 		return 0, fmt.Errorf("spend since %s: %w", t.Format(time.RFC3339), err)
 	}
