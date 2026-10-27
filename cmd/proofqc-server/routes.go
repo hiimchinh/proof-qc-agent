@@ -11,6 +11,7 @@ import (
 
 	proofqc "github.com/hiimchinh/proof-qc-agent"
 	"github.com/hiimchinh/proof-qc-agent/internal/api"
+	"github.com/hiimchinh/proof-qc-agent/internal/desk"
 	"github.com/hiimchinh/proof-qc-agent/internal/llm"
 	"github.com/hiimchinh/proof-qc-agent/internal/store"
 	"github.com/hiimchinh/proof-qc-agent/results"
@@ -18,7 +19,7 @@ import (
 )
 
 // newMux wires the page, the GraphQL API, the sample artwork and the health check.
-func newMux(st *store.Store, apiKey string, dailyCapUSD float64) (http.Handler, error) {
+func newMux(st *store.Store, cfg config) (http.Handler, error) {
 	cases, art, err := proofqc.Cases()
 	if err != nil {
 		return nil, err
@@ -28,9 +29,14 @@ func newMux(st *store.Store, apiKey string, dailyCapUSD float64) (http.Handler, 
 		// The demo still works without the table; CI fails on this, so it is rare.
 		slog.Error("leaderboard unavailable", "err", err)
 	}
+	client := &llm.Client{APIKey: cfg.apiKey}
+	service, err := desk.New(desk.Config{Store: st, LLM: client, Cases: cases, Artwork: art, DailyCapUSD: cfg.dailyCapUSD, Champion: cfg.champion, Challenger: cfg.challenger})
+	if err != nil {
+		return nil, err
+	}
 	gql, err := api.New(api.Config{
-		Store: st, LLM: &llm.Client{APIKey: apiKey}, Cases: cases, Artwork: art,
-		Leaderboard: board, DailyCapUSD: dailyCapUSD,
+		Store: st, LLM: client, Cases: cases, Artwork: art,
+		Leaderboard: board, DailyCapUSD: cfg.dailyCapUSD,
 	})
 	if err != nil {
 		return nil, err
@@ -42,6 +48,7 @@ func newMux(st *store.Store, apiKey string, dailyCapUSD float64) (http.Handler, 
 
 	mux := http.NewServeMux()
 	mux.Handle("/graphql", gql)
+	mux.Handle("/internal/tick", desk.TickHandler(cfg.tickToken, service))
 	mux.Handle("GET /samples/{file}", samples(art, files))
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)

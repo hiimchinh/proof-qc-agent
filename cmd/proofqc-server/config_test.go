@@ -51,3 +51,17 @@ func TestConfigRejectsBadValues(t *testing.T) {
 		}
 	}
 }
+
+func TestConfigFleetDefaultsAndToken(t *testing.T) {
+	c, err := loadConfig(env(map[string]string{"DATABASE_URL": "postgres://x", "OPENROUTER_API_KEY": "k", "TICK_TOKEN": "tick-test"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if c.champion != "openai/gpt-6.1-terra" || c.challenger != "anthropic/claude-haiku-5.5" || c.tickToken != "tick-test" {
+		t.Fatalf("fleet defaults incorrect")
+	}
+	c, err = loadConfig(env(map[string]string{"DATABASE_URL": "postgres://x", "OPENROUTER_API_KEY": "k", "CHAMPION_MODEL": "vendor/first", "CHALLENGER_MODEL": "vendor/second"}))
+	if err != nil || c.champion != "vendor/first" || c.challenger != "vendor/second" {
+		t.Fatalf("custom fleet not loaded")
+	}
+}

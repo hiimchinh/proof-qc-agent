@@ -2,7 +2,8 @@
 // Postgres log of every review, with a per-visitor rate limit and a daily
 // spend cap in front of the paid model call.
 //
-// Environment: PORT (8080), DATABASE_URL, OPENROUTER_API_KEY, DAILY_USD_CAP (3).
+// Environment: PORT (8080), DATABASE_URL, OPENROUTER_API_KEY, DAILY_USD_CAP (3),
+// TICK_TOKEN, CHAMPION_MODEL and CHALLENGER_MODEL.
 package main
 
 import (
@@ -42,7 +43,7 @@ func run() error {
 	}
 	defer st.Close()
 
-	mux, err := newMux(st, cfg.apiKey, cfg.dailyCapUSD)
+	mux, err := newMux(st, cfg)
 	if err != nil {
 		return err
 	}
