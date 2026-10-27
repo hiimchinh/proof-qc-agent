@@ -15,6 +15,16 @@ It also writes the note the customer reads. Every note is checked against the su
 
 The goal is a shorter time to proof without letting a bad proof reach a customer. A person still approves every proof.
 
+## The hard parts
+
+The sticker checks are the easy part. This is a proof of concept for running agents unattended:
+
+- **Models extract, code decides.** The model reads the size, shape and material a customer asks for; [code](internal/agent/order_rules.go) decides. Moving those rules out of the prompt took accuracy from 89–93% to 97–100%.
+- **Bounded tool loop.** [Each agent](internal/agent/desk.go) gets at most six calls, never retries, and a tool result cannot bypass the rules. Every step is traced.
+- **A fleet that manages itself.** [The policy](internal/fleet/fleet.go) promotes a challenger that beats the champion, retires models that miss accuracy, note quality, cost or latency, retires a model early after five consecutive failed calls, and seats the next candidate. Every change is stored with the numbers behind it.
+- **Money is a hard limit.** One [daily ledger](internal/api/budget.go) covers scheduled agents and visitors; a cap leaves work queued and resumes it without paying twice.
+- **Safe to run more than once.** Ticks are serialized with a [Postgres advisory lock](internal/store/coordination.go); abandoned orders are recovered.
+
 ## Runs on its own
 
 A scheduled `POST /internal/tick` enqueues one **simulated order** from the 106 labelled cases embedded in the binary. The champion handles it; the challenger runs in shadow on the same artwork and instructions. Both choose tools: `measure_artwork` runs the exact Go preflight, `customer_history` reads earlier orders from Postgres, and terminal `route_order` submits a decision. Code applies the order rules and note checks. Each tool step, override, failed call, cost and latency is saved.
