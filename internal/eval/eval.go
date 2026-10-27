@@ -89,6 +89,37 @@ type Scorecard struct {
 	CostUSD   float64 `json:"cost_usd"`
 	Misses    []Miss  `json:"misses"`
 	latencies []time.Duration
+	runAcc    []float64
+}
+
+// Merge pools several runs of the same reviewer and keeps each run's accuracy.
+func Merge(runs ...Scorecard) Scorecard {
+	var m Scorecard
+	for _, r := range runs {
+		m.Model = r.Model
+		m.Cases += r.Cases
+		m.Correct += r.Correct
+		m.Errors += r.Errors
+		m.Skipped += r.Skipped
+		m.Answered += r.Answered
+		m.LintClean += r.LintClean
+		m.CostUSD += r.CostUSD
+		m.Misses = append(m.Misses, r.Misses...)
+		m.latencies = append(m.latencies, r.latencies...)
+		m.runAcc = append(m.runAcc, r.Accuracy())
+	}
+	return m
+}
+
+// Runs is how many runs the scorecard pools.
+func (s Scorecard) Runs() int { return max(len(s.runAcc), 1) }
+
+// AccuracyRange is the lowest and highest single-run accuracy.
+func (s Scorecard) AccuracyRange() (lo, hi float64) {
+	if len(s.runAcc) == 0 {
+		return s.Accuracy(), s.Accuracy()
+	}
+	return slices.Min(s.runAcc), slices.Max(s.runAcc)
 }
 
 // Score builds a scorecard; a failed call counts as a wrong answer.

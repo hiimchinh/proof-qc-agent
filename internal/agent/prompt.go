@@ -25,18 +25,31 @@ Choose one decision:
 Read the customer's comment thoroughly; it overrides what the image alone suggests.
 The preflight measurements are exact; trust them over your view of the image.
 
+requested: what the comment explicitly asks for. Size in inches only if the comment states one (else null for both). shape: die_cut (cut around the art), rectangle (square or rectangular sticker), or none if not mentioned. material: the stock named in the comment (e.g. holographic, clear, glitter), or "" if none. Report what is asked even if it matches the order.
+
 designer_note: short imperative steps for the designer.
 customer_note: what the customer reads. Use their first name. Be concise (under 60 words) and comprehensive. Never say sorry, unfortunately, can't, cannot, won't or unable; offer the solution instead. Avoid "appreciate". At most one exclamation point.`
 
 var answerSchema = json.RawMessage(`{
   "type": "object",
   "additionalProperties": false,
-  "required": ["decision", "reasons", "designer_note", "customer_note"],
+  "required": ["decision", "reasons", "designer_note", "customer_note", "requested"],
   "properties": {
     "decision": {"type": "string", "enum": ["ready_for_proof", "recreate_artwork", "ask_customer"]},
     "reasons": {"type": "array", "items": {"type": "string"}},
     "designer_note": {"type": "string"},
-    "customer_note": {"type": "string"}
+    "customer_note": {"type": "string"},
+    "requested": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width_in", "height_in", "shape", "material"],
+      "properties": {
+        "width_in": {"type": ["number", "null"]},
+        "height_in": {"type": ["number", "null"]},
+        "shape": {"type": "string", "enum": ["none", "die_cut", "rectangle"]},
+        "material": {"type": "string"}
+      }
+    }
   }
 }`)
 

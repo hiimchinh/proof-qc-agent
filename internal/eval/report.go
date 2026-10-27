@@ -12,8 +12,13 @@ func Markdown(baseline Scorecard, cards []Scorecard, p Policy) string {
 	fmt.Fprintf(&b, "| Reviewer | Accuracy | Notes follow support principles | $ / proof | p50 latency | Verdict |\n")
 	fmt.Fprintf(&b, "|---|---:|---:|---:|---:|---|\n")
 	row := func(s Scorecard, verdict string) {
-		fmt.Fprintf(&b, "| `%s` | %d/%d (%.0f%%) | %.0f%% | $%.4f | %s | %s |\n",
-			s.Model, s.Correct, s.Cases, s.Accuracy()*100, s.LintPassRate()*100,
+		acc := fmt.Sprintf("%d/%d (%.0f%%)", s.Correct, s.Cases, s.Accuracy()*100)
+		if s.Runs() > 1 {
+			lo, hi := s.AccuracyRange()
+			acc = fmt.Sprintf("%.0f%% (%.0f–%.0f)", s.Accuracy()*100, lo*100, hi*100)
+		}
+		fmt.Fprintf(&b, "| `%s` | %s | %.0f%% | $%.4f | %s | %s |\n",
+			s.Model, acc, s.LintPassRate()*100,
 			s.CostPerProof(), s.P50().Round(100*time.Millisecond), verdict)
 	}
 	row(baseline, "reference")

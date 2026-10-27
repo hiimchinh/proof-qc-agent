@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"strings"
 	"time"
 
 	"github.com/hiimchinh/proof-qc-agent/internal/artwork"
@@ -34,9 +35,10 @@ type Result struct {
 	DesignerNote string               `json:"designer_note"`
 	CustomerNote string               `json:"customer_note"`
 	Preflight    artwork.Report       `json:"preflight"`
-	Lint         []notelint.Violation `json:"lint,omitempty"`         // rules the final note still breaks
-	Repaired     []notelint.Violation `json:"repaired,omitempty"`     // rules the first draft broke
-	RepairError  string               `json:"repair_error,omitempty"` // the repair call failed; the first answer stands
+	Lint         []notelint.Violation `json:"lint,omitempty"`          // rules the final note still breaks
+	Repaired     []notelint.Violation `json:"repaired,omitempty"`      // rules the first draft broke
+	RepairError  string               `json:"repair_error,omitempty"`  // the repair call failed; the first answer stands
+	OrderChanges []string             `json:"order_changes,omitempty"` // set by code, not the model
 	Model        string               `json:"model"`
 	Attempts     int                  `json:"attempts"`
 	CostUSD      float64              `json:"cost_usd"`
@@ -52,13 +54,17 @@ type Completer interface {
 type Agent struct {
 	Model string
 	LLM   Completer
+	// PromptOnly leaves order-change rules to the model, to measure what the
+	// rules in code add.
+	PromptOnly bool
 }
 
 type answer struct {
-	Decision     Decision `json:"decision"`
-	Reasons      []string `json:"reasons"`
-	DesignerNote string   `json:"designer_note"`
-	CustomerNote string   `json:"customer_note"`
+	Decision     Decision  `json:"decision"`
+	Reasons      []string  `json:"reasons"`
+	DesignerNote string    `json:"designer_note"`
+	CustomerNote string    `json:"customer_note"`
+	Requested    requested `json:"requested"`
 }
 
 // Review runs the preflight, asks the model for a decision and checks the customer note.
@@ -101,14 +107,22 @@ func (a Agent) Review(ctx context.Context, img image.Image, o artwork.Order) (Re
 	}
 	res.Decision, res.Reasons = ans.Decision, ans.Reasons
 	res.DesignerNote, res.CustomerNote = ans.DesignerNote, ans.CustomerNote
-	res.Lint = notelint.Check(ans.CustomerNote, o.Customer)
+	if changes := orderChanges(o, ans.Requested); len(changes) > 0 && !a.PromptOnly {
+		// Models lean toward pleasing the customer; a changed order is a business
+		// rule, so code decides it.
+		res.OrderChanges = changes
+		res.Decision = AskCustomer
+		res.Reasons = append(res.Reasons, "order change: "+strings.Join(changes, "; "))
+		res.CustomerNote = orderChangeNote(o.Customer, changes)
+	}
+	res.Lint = notelint.Check(res.CustomerNote, o.Customer)
 	if len(res.Lint) == 0 {
 		return res, nil
 	}
 
 	// One repair, for the note only: the decision was already valid and stays.
 	res.Repaired = res.Lint
-	fixed, err := call(prompt + repairPrompt(ans.CustomerNote, res.Lint))
+	fixed, err := call(prompt + repairPrompt(res.CustomerNote, res.Lint))
 	if err != nil {
 		res.RepairError = err.Error()
 		return res, nil

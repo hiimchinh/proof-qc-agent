@@ -144,7 +144,7 @@ func main() {
 	flag.Parse()
 	face := mustFace()
 	var cases []eval.Case
-	for _, r := range recipes {
+	for _, r := range append(recipes, generated(80)...) {
 		file := r.id + ".png"
 		if err := writePNG(filepath.Join(*out, file), draw(r, face)); err != nil {
 			log.Fatal(err)

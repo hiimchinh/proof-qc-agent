@@ -336,5 +336,1045 @@
     },
     "want": "ready_for_proof",
     "why": "asks, in Spanish, to remove the white background"
+  },
+  {
+    "id": "gen-001-none",
+    "file": "gen-001-none.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "comment: none"
+  },
+  {
+    "id": "gen-002-rush",
+    "file": "gen-002-rush.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Need these by Friday if possible, thanks!"
+    },
+    "want": "ready_for_proof",
+    "why": "comment: rush"
+  },
+  {
+    "id": "gen-003-praise",
+    "file": "gen-003-praise.png",
+    "order": {
+      "customer": "Nguyễn Văn An",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Love your stickers, ordered from you three times now."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: praise"
+  },
+  {
+    "id": "gen-004-same-size",
+    "file": "gen-004-same-size.png",
+    "order": {
+      "customer": "Zoë Hill",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Please print at 4x2 inches."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: same-size"
+  },
+  {
+    "id": "gen-005-vibrant",
+    "file": "gen-005-vibrant.png",
+    "order": {
+      "customer": "José García",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Make the colors as bright as you can."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: vibrant"
+  },
+  {
+    "id": "gen-006-remove-bg",
+    "file": "gen-006-remove-bg.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "rectangle",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Please remove the white background."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg"
+  },
+  {
+    "id": "gen-007-remove-bg-fr",
+    "file": "gen-007-remove-bg-fr.png",
+    "order": {
+      "customer": "Sam Carter",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Merci d'enlever le fond blanc."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg-fr"
+  },
+  {
+    "id": "gen-008-remove-bg-de",
+    "file": "gen-008-remove-bg-de.png",
+    "order": {
+      "customer": "Raj Mehta",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Bitte den weißen Hintergrund entfernen."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg-de"
+  },
+  {
+    "id": "gen-009-remove-bg-vi",
+    "file": "gen-009-remove-bg-vi.png",
+    "order": {
+      "customer": "Mei Chen",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Vui lòng xoá nền trắng giúp mình."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg-vi"
+  },
+  {
+    "id": "gen-010-add-text",
+    "file": "gen-010-add-text.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Add our website, example.com, under the logo."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: add-text"
+  },
+  {
+    "id": "gen-011-change-text",
+    "file": "gen-011-change-text.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Change the word to all lowercase please."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: change-text"
+  },
+  {
+    "id": "gen-012-thicker",
+    "file": "gen-012-thicker.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "The thin lines look weak, can you make them bolder?"
+    },
+    "want": "ready_for_proof",
+    "why": "comment: thicker"
+  },
+  {
+    "id": "gen-013-center",
+    "file": "gen-013-center.png",
+    "order": {
+      "customer": "Nguyễn Văn An",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Center the logo please."
+    },
+    "want": "recreate_artwork",
+    "why": "130 dpi"
+  },
+  {
+    "id": "gen-014-bigger-text",
+    "file": "gen-014-bigger-text.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Make the text a bit larger."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: bigger-text"
+  },
+  {
+    "id": "gen-015-redraw-ok",
+    "file": "gen-015-redraw-ok.png",
+    "order": {
+      "customer": "Fatima Khan",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Feel free to redraw it if the file is not good enough."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: redraw-ok"
+  },
+  {
+    "id": "gen-016-size-up",
+    "file": "gen-016-size-up.png",
+    "order": {
+      "customer": "Mei Chen",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Can you make these 5 inches wide instead?"
+    },
+    "want": "ask_customer",
+    "why": "comment: size-up"
+  },
+  {
+    "id": "gen-017-size-down",
+    "file": "gen-017-size-down.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Actually I need them 1x1 inches."
+    },
+    "want": "ask_customer",
+    "why": "comment: size-down"
+  },
+  {
+    "id": "gen-018-to-square",
+    "file": "gen-018-to-square.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+    },
+    "want": "ask_customer",
+    "why": "comment: to-square"
+  },
+  {
+    "id": "gen-019-to-diecut",
+    "file": "gen-019-to-diecut.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "rectangle",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Please cut around the logo instead of a rectangle."
+    },
+    "want": "ask_customer",
+    "why": "comment: to-diecut"
+  },
+  {
+    "id": "gen-020-holo",
+    "file": "gen-020-holo.png",
+    "order": {
+      "customer": "Nguyễn Văn An",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Please print these on holographic vinyl."
+    },
+    "want": "ask_customer",
+    "why": "comment: holo"
+  },
+  {
+    "id": "gen-021-clear",
+    "file": "gen-021-clear.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "I want these on clear vinyl so the laptop shows through."
+    },
+    "want": "ask_customer",
+    "why": "comment: clear"
+  },
+  {
+    "id": "gen-022-glitter",
+    "file": "gen-022-glitter.png",
+    "order": {
+      "customer": "Kate O'Brien",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Can we do glitter for this one?"
+    },
+    "want": "ask_customer",
+    "why": "comment: glitter"
+  },
+  {
+    "id": "gen-023-other-file",
+    "file": "gen-023-other-file.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "rectangle",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Use the green version of the logo instead, I'll send it."
+    },
+    "want": "ask_customer",
+    "why": "comment: other-file"
+  },
+  {
+    "id": "gen-024-email-later",
+    "file": "gen-024-email-later.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "This is a placeholder, final art coming by email tomorrow."
+    },
+    "want": "ask_customer",
+    "why": "comment: email-later"
+  },
+  {
+    "id": "gen-025-hires-later",
+    "file": "gen-025-hires-later.png",
+    "order": {
+      "customer": "Zoë Hill",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "The file is low quality, I'll upload a better one tonight."
+    },
+    "want": "ask_customer",
+    "why": "comment: hires-later"
+  },
+  {
+    "id": "gen-026-contradict",
+    "file": "gen-026-contradict.png",
+    "order": {
+      "customer": "Fatima Khan",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Remove the background but keep the white box around it."
+    },
+    "want": "ask_customer",
+    "why": "comment: contradict"
+  },
+  {
+    "id": "gen-027-contradict-size",
+    "file": "gen-027-contradict-size.png",
+    "order": {
+      "customer": "Zoë Hill",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Make it bigger but keep it the same size as the order."
+    },
+    "want": "ask_customer",
+    "why": "comment: contradict-size"
+  },
+  {
+    "id": "gen-028-none",
+    "file": "gen-028-none.png",
+    "order": {
+      "customer": "Nguyễn Văn An",
+      "product": "rectangle",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "comment: none"
+  },
+  {
+    "id": "gen-029-rush",
+    "file": "gen-029-rush.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Need these by Friday if possible, thanks!"
+    },
+    "want": "recreate_artwork",
+    "why": "100 dpi"
+  },
+  {
+    "id": "gen-030-praise",
+    "file": "gen-030-praise.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Love your stickers, ordered from you three times now."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: praise"
+  },
+  {
+    "id": "gen-031-same-size",
+    "file": "gen-031-same-size.png",
+    "order": {
+      "customer": "José García",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Please print at 3x3 inches."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: same-size"
+  },
+  {
+    "id": "gen-032-vibrant",
+    "file": "gen-032-vibrant.png",
+    "order": {
+      "customer": "Kate O'Brien",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Make the colors as bright as you can."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: vibrant"
+  },
+  {
+    "id": "gen-033-remove-bg",
+    "file": "gen-033-remove-bg.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Please remove the white background."
+    },
+    "want": "recreate_artwork",
+    "why": "130 dpi"
+  },
+  {
+    "id": "gen-034-remove-bg-fr",
+    "file": "gen-034-remove-bg-fr.png",
+    "order": {
+      "customer": "José García",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Merci d'enlever le fond blanc."
+    },
+    "want": "recreate_artwork",
+    "why": "130 dpi"
+  },
+  {
+    "id": "gen-035-remove-bg-de",
+    "file": "gen-035-remove-bg-de.png",
+    "order": {
+      "customer": "Raj Mehta",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Bitte den weißen Hintergrund entfernen."
+    },
+    "want": "recreate_artwork",
+    "why": "130 dpi"
+  },
+  {
+    "id": "gen-036-remove-bg-vi",
+    "file": "gen-036-remove-bg-vi.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Vui lòng xoá nền trắng giúp mình."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg-vi"
+  },
+  {
+    "id": "gen-037-add-text",
+    "file": "gen-037-add-text.png",
+    "order": {
+      "customer": "Fatima Khan",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Add our website, example.com, under the logo."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: add-text"
+  },
+  {
+    "id": "gen-038-change-text",
+    "file": "gen-038-change-text.png",
+    "order": {
+      "customer": "Mei Chen",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Change the word to all lowercase please."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: change-text"
+  },
+  {
+    "id": "gen-039-thicker",
+    "file": "gen-039-thicker.png",
+    "order": {
+      "customer": "Nguyễn Văn An",
+      "product": "rectangle",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "The thin lines look weak, can you make them bolder?"
+    },
+    "want": "ready_for_proof",
+    "why": "comment: thicker"
+  },
+  {
+    "id": "gen-040-center",
+    "file": "gen-040-center.png",
+    "order": {
+      "customer": "Mei Chen",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Center the logo please."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: center"
+  },
+  {
+    "id": "gen-041-bigger-text",
+    "file": "gen-041-bigger-text.png",
+    "order": {
+      "customer": "Raj Mehta",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Make the text a bit larger."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: bigger-text"
+  },
+  {
+    "id": "gen-042-redraw-ok",
+    "file": "gen-042-redraw-ok.png",
+    "order": {
+      "customer": "José García",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Feel free to redraw it if the file is not good enough."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: redraw-ok"
+  },
+  {
+    "id": "gen-043-size-up",
+    "file": "gen-043-size-up.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Can you make these 4.5 inches wide instead?"
+    },
+    "want": "ask_customer",
+    "why": "comment: size-up"
+  },
+  {
+    "id": "gen-044-size-down",
+    "file": "gen-044-size-down.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Actually I need them 1.25x1.25 inches."
+    },
+    "want": "ask_customer",
+    "why": "comment: size-down"
+  },
+  {
+    "id": "gen-045-to-square",
+    "file": "gen-045-to-square.png",
+    "order": {
+      "customer": "Kate O'Brien",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+    },
+    "want": "ask_customer",
+    "why": "comment: to-square"
+  },
+  {
+    "id": "gen-046-to-diecut",
+    "file": "gen-046-to-diecut.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "rectangle",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Please cut around the logo instead of a rectangle."
+    },
+    "want": "ask_customer",
+    "why": "comment: to-diecut"
+  },
+  {
+    "id": "gen-047-holo",
+    "file": "gen-047-holo.png",
+    "order": {
+      "customer": "Sam Carter",
+      "product": "rectangle",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Please print these on holographic vinyl."
+    },
+    "want": "ask_customer",
+    "why": "comment: holo"
+  },
+  {
+    "id": "gen-048-clear",
+    "file": "gen-048-clear.png",
+    "order": {
+      "customer": "Zoë Hill",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "I want these on clear vinyl so the laptop shows through."
+    },
+    "want": "ask_customer",
+    "why": "comment: clear"
+  },
+  {
+    "id": "gen-049-glitter",
+    "file": "gen-049-glitter.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Can we do glitter for this one?"
+    },
+    "want": "ask_customer",
+    "why": "comment: glitter"
+  },
+  {
+    "id": "gen-050-other-file",
+    "file": "gen-050-other-file.png",
+    "order": {
+      "customer": "Sam Carter",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Use the green version of the logo instead, I'll send it."
+    },
+    "want": "ask_customer",
+    "why": "comment: other-file"
+  },
+  {
+    "id": "gen-051-email-later",
+    "file": "gen-051-email-later.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "This is a placeholder, final art coming by email tomorrow."
+    },
+    "want": "ask_customer",
+    "why": "comment: email-later"
+  },
+  {
+    "id": "gen-052-hires-later",
+    "file": "gen-052-hires-later.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "rectangle",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "The file is low quality, I'll upload a better one tonight."
+    },
+    "want": "ask_customer",
+    "why": "comment: hires-later"
+  },
+  {
+    "id": "gen-053-contradict",
+    "file": "gen-053-contradict.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Remove the background but keep the white box around it."
+    },
+    "want": "ask_customer",
+    "why": "comment: contradict"
+  },
+  {
+    "id": "gen-054-contradict-size",
+    "file": "gen-054-contradict-size.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "rectangle",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Make it bigger but keep it the same size as the order."
+    },
+    "want": "ask_customer",
+    "why": "comment: contradict-size"
+  },
+  {
+    "id": "gen-055-none",
+    "file": "gen-055-none.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "comment: none"
+  },
+  {
+    "id": "gen-056-rush",
+    "file": "gen-056-rush.png",
+    "order": {
+      "customer": "Fatima Khan",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Need these by Friday if possible, thanks!"
+    },
+    "want": "ready_for_proof",
+    "why": "comment: rush"
+  },
+  {
+    "id": "gen-057-praise",
+    "file": "gen-057-praise.png",
+    "order": {
+      "customer": "Sam Carter",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Love your stickers, ordered from you three times now."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: praise"
+  },
+  {
+    "id": "gen-058-same-size",
+    "file": "gen-058-same-size.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Please print at 4x2 inches."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: same-size"
+  },
+  {
+    "id": "gen-059-vibrant",
+    "file": "gen-059-vibrant.png",
+    "order": {
+      "customer": "Kate O'Brien",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Make the colors as bright as you can."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: vibrant"
+  },
+  {
+    "id": "gen-060-remove-bg",
+    "file": "gen-060-remove-bg.png",
+    "order": {
+      "customer": "José García",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Please remove the white background."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg"
+  },
+  {
+    "id": "gen-061-remove-bg-fr",
+    "file": "gen-061-remove-bg-fr.png",
+    "order": {
+      "customer": "Zoë Hill",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Merci d'enlever le fond blanc."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg-fr"
+  },
+  {
+    "id": "gen-062-remove-bg-de",
+    "file": "gen-062-remove-bg-de.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Bitte den weißen Hintergrund entfernen."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg-de"
+  },
+  {
+    "id": "gen-063-remove-bg-vi",
+    "file": "gen-063-remove-bg-vi.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Vui lòng xoá nền trắng giúp mình."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: remove-bg-vi"
+  },
+  {
+    "id": "gen-064-add-text",
+    "file": "gen-064-add-text.png",
+    "order": {
+      "customer": "Mei Chen",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 2,
+      "comment": "Add our website, example.com, under the logo."
+    },
+    "want": "recreate_artwork",
+    "why": "100 dpi"
+  },
+  {
+    "id": "gen-065-change-text",
+    "file": "gen-065-change-text.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Change the word to all lowercase please."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: change-text"
+  },
+  {
+    "id": "gen-066-thicker",
+    "file": "gen-066-thicker.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "rectangle",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "The thin lines look weak, can you make them bolder?"
+    },
+    "want": "ready_for_proof",
+    "why": "comment: thicker"
+  },
+  {
+    "id": "gen-067-center",
+    "file": "gen-067-center.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Center the logo please."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: center"
+  },
+  {
+    "id": "gen-068-bigger-text",
+    "file": "gen-068-bigger-text.png",
+    "order": {
+      "customer": "Aisha Bello",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Make the text a bit larger."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: bigger-text"
+  },
+  {
+    "id": "gen-069-redraw-ok",
+    "file": "gen-069-redraw-ok.png",
+    "order": {
+      "customer": "José García",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Feel free to redraw it if the file is not good enough."
+    },
+    "want": "ready_for_proof",
+    "why": "comment: redraw-ok"
+  },
+  {
+    "id": "gen-070-size-up",
+    "file": "gen-070-size-up.png",
+    "order": {
+      "customer": "Fatima Khan",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Can you make these 5 inches wide instead?"
+    },
+    "want": "ask_customer",
+    "why": "comment: size-up"
+  },
+  {
+    "id": "gen-071-size-down",
+    "file": "gen-071-size-down.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "die_cut",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Actually I need them 1.25x1.25 inches."
+    },
+    "want": "ask_customer",
+    "why": "comment: size-down"
+  },
+  {
+    "id": "gen-072-to-square",
+    "file": "gen-072-to-square.png",
+    "order": {
+      "customer": "Zoë Hill",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Keep the background and make it a square sticker, don't cut around the shape."
+    },
+    "want": "ask_customer",
+    "why": "comment: to-square"
+  },
+  {
+    "id": "gen-073-to-diecut",
+    "file": "gen-073-to-diecut.png",
+    "order": {
+      "customer": "Fatima Khan",
+      "product": "rectangle",
+      "width_in": 2.5,
+      "height_in": 2.5,
+      "comment": "Please cut around the logo instead of a rectangle."
+    },
+    "want": "ask_customer",
+    "why": "comment: to-diecut"
+  },
+  {
+    "id": "gen-074-holo",
+    "file": "gen-074-holo.png",
+    "order": {
+      "customer": "Chloé Dubois",
+      "product": "rectangle",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Please print these on holographic vinyl."
+    },
+    "want": "ask_customer",
+    "why": "comment: holo"
+  },
+  {
+    "id": "gen-075-clear",
+    "file": "gen-075-clear.png",
+    "order": {
+      "customer": "Mei Chen",
+      "product": "rectangle",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "I want these on clear vinyl so the laptop shows through."
+    },
+    "want": "ask_customer",
+    "why": "comment: clear"
+  },
+  {
+    "id": "gen-076-glitter",
+    "file": "gen-076-glitter.png",
+    "order": {
+      "customer": "José García",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Can we do glitter for this one?"
+    },
+    "want": "ask_customer",
+    "why": "comment: glitter"
+  },
+  {
+    "id": "gen-077-other-file",
+    "file": "gen-077-other-file.png",
+    "order": {
+      "customer": "José García",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "Use the green version of the logo instead, I'll send it."
+    },
+    "want": "ask_customer",
+    "why": "comment: other-file"
+  },
+  {
+    "id": "gen-078-email-later",
+    "file": "gen-078-email-later.png",
+    "order": {
+      "customer": "Łukasz Nowak",
+      "product": "rectangle",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "This is a placeholder, final art coming by email tomorrow."
+    },
+    "want": "ask_customer",
+    "why": "comment: email-later"
+  },
+  {
+    "id": "gen-079-hires-later",
+    "file": "gen-079-hires-later.png",
+    "order": {
+      "customer": "Jonas Müller",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "The file is low quality, I'll upload a better one tonight."
+    },
+    "want": "ask_customer",
+    "why": "comment: hires-later"
+  },
+  {
+    "id": "gen-080-contradict",
+    "file": "gen-080-contradict.png",
+    "order": {
+      "customer": "Mei Chen",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "Remove the background but keep the white box around it."
+    },
+    "want": "ask_customer",
+    "why": "comment: contradict"
   }
 ]

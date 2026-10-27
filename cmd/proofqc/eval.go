@@ -21,7 +21,9 @@ func runEval(args []string) error {
 	outDir := fs.String("out", "results", "where to write outcomes and the leaderboard")
 	maxUSD := fs.Float64("max-usd", 5, "stop calling models once this much is spent")
 	workers := fs.Int("workers", 4, "concurrent calls per model")
-	reuse := fs.Bool("reuse", false, "score saved outcomes in -out instead of calling a model again")
+	reuse := fs.Bool("reuse", false, "score every saved run in -out instead of calling a model again")
+	run := fs.Int("run", 1, "run number, so repeated runs of one model are kept side by side")
+	promptOnly := fs.Bool("prompt-only", false, "leave order-change rules to the model (to measure what the rules add)")
 	_ = fs.Parse(args)
 
 	cases, err := eval.LoadCases(*casesPath)
@@ -48,40 +50,52 @@ func runEval(args []string) error {
 	var cards []eval.Scorecard
 	b := &eval.Budget{Max: *maxUSD}
 	for _, model := range splitModels(*models) {
-		path := filepath.Join(*outDir, strings.ReplaceAll(model, "/", "__")+".json")
-		var outs []eval.Outcome
+		stem := filepath.Join(*outDir, strings.ReplaceAll(model, "/", "__"))
 		if *reuse {
-			if outs, err = readOutcomes(path); err != nil {
-				return err
+			paths, _ := filepath.Glob(stem + ".run*.json")
+			if len(paths) == 0 {
+				return fmt.Errorf("no saved runs for %s in %s", model, *outDir)
 			}
-			if err := eval.Relabel(outs, cases); err != nil {
-				return fmt.Errorf("%s: %w", path, err)
-			}
-		} else {
-			client, err := newClient()
-			if err != nil {
-				return err
-			}
-			a := agent.Agent{Model: model, LLM: client}
-			review := func(c eval.Case) (agent.Result, error) {
-				img, err := loadImage(c.File)
-				if err != nil {
-					return agent.Result{}, err
+			var runs []eval.Scorecard
+			for _, p := range paths {
+				if strings.HasSuffix(p, ".partial.json") {
+					continue
 				}
-				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
-				defer cancel()
-				return a.Review(ctx, img, c.Order)
+				outs, err := readOutcomes(p)
+				if err != nil {
+					return err
+				}
+				if err := eval.Relabel(outs, cases); err != nil {
+					return fmt.Errorf("%s: %w", p, err)
+				}
+				runs = append(runs, eval.Score(model, outs))
 			}
-			if outs, err = eval.Run(cases, review, *workers, b); err != nil {
-				return err
+			cards = append(cards, eval.Merge(runs...))
+			continue
+		}
+
+		client, err := newClient()
+		if err != nil {
+			return err
+		}
+		a := agent.Agent{Model: model, LLM: client, PromptOnly: *promptOnly}
+		review := func(c eval.Case) (agent.Result, error) {
+			img, err := loadImage(c.File)
+			if err != nil {
+				return agent.Result{}, err
 			}
+			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
+			defer cancel()
+			return a.Review(ctx, img, c.Order)
+		}
+		outs, err := eval.Run(cases, review, *workers, b)
+		if err != nil {
+			return err
 		}
 		s := eval.Score(model, outs)
 		cards = append(cards, s)
-		fmt.Fprintf(os.Stderr, "%-36s %2d/%d  $%.4f/proof  run spend $%.2f\n", model, s.Correct, s.Cases, s.CostPerProof(), b.Spent())
-		if *reuse {
-			continue
-		}
+		fmt.Fprintf(os.Stderr, "%-36s %3d/%d  $%.4f/proof  run spend $%.2f\n", model, s.Correct, s.Cases, s.CostPerProof(), b.Spent())
+		path := fmt.Sprintf("%s.run%d.json", stem, *run)
 		if s.Skipped > 0 {
 			// Never replace a complete run with a partial one.
 			path = strings.TrimSuffix(path, ".json") + ".partial.json"

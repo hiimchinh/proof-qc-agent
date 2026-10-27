@@ -113,3 +113,24 @@ func writeFile(t *testing.T, path, body string) {
 		t.Fatal(err)
 	}
 }
+
+func TestMergeRunsPoolsCountsAndKeepsTheRange(t *testing.T) {
+	r1 := Score("m", []Outcome{
+		outcome(agent.ReadyForProof, agent.ReadyForProof, 0.01, time.Second, false, nil),
+		outcome(agent.AskCustomer, agent.ReadyForProof, 0.01, time.Second, false, nil),
+	})
+	r2 := Score("m", []Outcome{
+		outcome(agent.ReadyForProof, agent.ReadyForProof, 0.01, 3*time.Second, false, nil),
+		outcome(agent.AskCustomer, agent.AskCustomer, 0.01, 3*time.Second, false, nil),
+	})
+	m := Merge(r1, r2)
+	if m.Cases != 4 || m.Correct != 3 || m.Accuracy() != 0.75 || m.CostPerProof() != 0.01 {
+		t.Fatalf("merged = %+v", m)
+	}
+	if lo, hi := m.AccuracyRange(); lo != 0.5 || hi != 1 {
+		t.Fatalf("range = %v..%v, want 0.5..1", lo, hi)
+	}
+	if !strings.Contains(Markdown(r1, []Scorecard{m}, DefaultPolicy), "75% (50–100)") {
+		t.Fatalf("leaderboard does not show the run range:\n%s", Markdown(r1, []Scorecard{m}, DefaultPolicy))
+	}
+}
