@@ -6,15 +6,23 @@ import (
 	"strings"
 )
 
-// decodeRoute enforces the advertised tool schema even when a provider ignores it.
-func decodeRoute(raw string) (answer, error) {
-	var ans answer
+type routeArguments struct {
+	answer
+	customerNoteNull bool
+}
+
+// decodeRoute checks tool structure; routing rules can supply a null customer note.
+func decodeRoute(raw string) (routeArguments, error) {
+	var ans routeArguments
 	var fields map[string]json.RawMessage
 	if err := json.Unmarshal([]byte(raw), &fields); err != nil {
 		return ans, err
 	}
-	if err := requiredFields(fields, "decision", "reasons", "designer_note", "customer_note", "requested"); err != nil {
+	if err := requiredFields(fields, "decision", "reasons", "designer_note", "requested"); err != nil {
 		return ans, err
+	}
+	if _, ok := fields["customer_note"]; !ok {
+		return ans, fmt.Errorf("customer_note is required")
 	}
 	var requestedFields map[string]json.RawMessage
 	if err := json.Unmarshal(fields["requested"], &requestedFields); err != nil {
@@ -30,9 +38,10 @@ func decodeRoute(raw string) (answer, error) {
 	}
 	dec := json.NewDecoder(strings.NewReader(raw))
 	dec.DisallowUnknownFields()
-	if err := dec.Decode(&ans); err != nil {
+	if err := dec.Decode(&ans.answer); err != nil {
 		return ans, err
 	}
+	ans.customerNoteNull = strings.TrimSpace(string(fields["customer_note"])) == "null"
 	if !ans.Decision.valid() {
 		return ans, fmt.Errorf("unknown decision %q", ans.Decision)
 	}
