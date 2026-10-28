@@ -144,6 +144,8 @@ type AgentRun {
   overriddenByRules: Boolean!
   error: String!
   errorCause: String!
+  # False when the provider, not the model, stopped the call; fleet scores skip it.
+  scored: Boolean!
   trace: [ToolStep!]!
 }
 

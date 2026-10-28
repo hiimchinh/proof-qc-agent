@@ -73,3 +73,14 @@ func TestFleetQueueStatusIsInsideTheFleetCard(t *testing.T) {
 		t.Fatal("fleet card must expose queue status before the policy details")
 	}
 }
+
+func TestChampionSummaryPrecedesTheOrderFeed(t *testing.T) {
+	body := get(t, "/").Body.String()
+	kpis, orders := strings.Index(body, `<dl id="desk-kpis"`), strings.Index(body, `id="desk-orders"`)
+	if kpis < 0 || orders < kpis {
+		t.Fatal("champion summary must come before the order feed")
+	}
+	if !strings.Contains(body, "rate-limited on 12 calls in a row") {
+		t.Fatal("policy details must explain when a rate-limited challenger is skipped")
+	}
+}

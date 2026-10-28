@@ -22,6 +22,7 @@
       <div><p class="eyebrow">Simulated order stream</p><h2 id="desk-title">Live desk</h2></div>
       <p id="desk-state" class="hint">Loading fleet state…</p>
     </div>
+    <dl id="desk-kpis" class="kpis" aria-label="Champion summary"></dl>
     <p class="hint">Orders come from 106 labelled synthetic cases, not customer traffic. Scheduled ticks run the agents; this page only reads their results.</p>
     <div class="desk-layout">
       <section class="card" aria-labelledby="incoming-title">
@@ -36,7 +37,7 @@
           <div id="fleet-scoreboard"></div>
           <p id="fleet-queue" role="status" class="queue-status">Reading the challenger queue…</p>
           <details><summary>Promotion and retirement policy</summary>
-            <p class="hint">After 30 orders: accuracy ≥90%, gain over rules ≥10 points, notes pass ≥95%, cost ≤$0.01/order, p50 ≤30 s. Promote a passing challenger for higher accuracy, then lower cost. Retire failing models; 5 consecutive failed calls retire either model before 30 orders. Failed calls count as misses and costs.</p>
+            <p class="hint">After 30 orders: accuracy ≥90%, gain over rules ≥10 points, notes pass ≥95%, cost ≤$0.01/order, p50 ≤30 s. Promote a passing challenger for higher accuracy, then lower cost. Retire failing models; 5 consecutive failed calls retire either model before 30 orders. Failed calls count as misses and costs. Provider rate limits and account credit errors are not scored; a challenger rate-limited on 12 calls in a row is skipped for the next candidate.</p>
           </details>
         </section>
         <section class="card" aria-labelledby="events-title"><h3 id="events-title">Fleet events</h3><ol id="fleet-events" class="recent"><li class="hint">Loading events…</li></ol></section>

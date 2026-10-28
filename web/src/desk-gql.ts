@@ -2,7 +2,7 @@ export interface ToolStep { tool: string; args: string; result: string; overridd
 export interface AgentRun {
   role: string; model: string; decision: string; designerNote: string; customerNote: string;
   correct: boolean; notesPass: boolean; costUsd: number; latencyMs: number;
-  overriddenByRules: boolean; error: string; errorCause: string; trace: ToolStep[];
+  overriddenByRules: boolean; error: string; errorCause: string; scored: boolean; trace: ToolStep[];
 }
 export interface DeskOrder {
   id: string; caseId: string; customer: string; product: string; widthIn: number; heightIn: number;
@@ -20,7 +20,7 @@ export interface Desk {
 export const deskQuery = `{ desk {
   simulated champion challenger challengerQueue spentToday dailyCapUsd
   orders { id caseId customer product widthIn heightIn comment expected status createdAt
-    runs { role model decision designerNote customerNote correct notesPass costUsd latencyMs overriddenByRules error errorCause
+    runs { role model decision designerNote customerNote correct notesPass costUsd latencyMs overriddenByRules error errorCause scored
       trace { tool args result overridden } } }
   scoreboard { model role n accuracy notesPassRate costPerOrder p50Ms }
   events { id kind model reason numbers createdAt }
