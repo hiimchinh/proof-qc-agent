@@ -57,8 +57,7 @@ func ShortErrorCause(text string) string {
 	if IsAccountCreditError(text) {
 		return "provider account is out of credits"
 	}
-	lower := strings.ToLower(text)
-	if strings.Contains(lower, "rate-limited") || strings.Contains(lower, "rate limit") || strings.Contains(lower, "status 429") {
+	if IsRateLimitError(text) {
 		provider := ""
 		if _, rest, ok := strings.Cut(text, "; provider: "); ok {
 			provider, _, _ = strings.Cut(rest, ";")
@@ -80,4 +79,17 @@ func IsAccountCreditError(text string) bool {
 		strings.Contains(lower, "exceed your available credits") ||
 		strings.Contains(lower, "insufficient credits") ||
 		strings.Contains(lower, "your credit balance is too low")
+}
+
+var rateLimitStatus = regexp.MustCompile(`(?i)\b(?:http(?:/\d(?:\.\d)?)?|status)\s*:?\s*429\b`)
+
+// IsRateLimitError identifies provider capacity failures, not model failures.
+func IsRateLimitError(text string) bool {
+	if IsAccountCreditError(text) {
+		return false
+	}
+	lower := strings.ToLower(text)
+	return rateLimitStatus.MatchString(text) ||
+		strings.Contains(lower, "rate-limited") ||
+		strings.Contains(lower, "rate limit")
 }
