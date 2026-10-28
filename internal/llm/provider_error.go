@@ -54,6 +54,9 @@ func safeErrorText(text, apiKey string, limit int) string {
 // Provider errors are already key-redacted by Client; redact named credentials
 // again before truncation so older or externally supplied errors stay safe.
 func ShortErrorCause(text string) string {
+	if IsAccountCreditError(text) {
+		return "provider account is out of credits"
+	}
 	lower := strings.ToLower(text)
 	if strings.Contains(lower, "rate-limited") || strings.Contains(lower, "rate limit") || strings.Contains(lower, "status 429") {
 		provider := ""
@@ -66,4 +69,15 @@ func ShortErrorCause(text string) string {
 		return "rate-limited upstream"
 	}
 	return safeErrorText(text, "", 160)
+}
+
+var accountCreditStatus = regexp.MustCompile(`(?i)\b(?:http(?:/\d(?:\.\d)?)?|status)\s*:?\s*402\b`)
+
+// IsAccountCreditError identifies account billing failures, not model failures.
+func IsAccountCreditError(text string) bool {
+	lower := strings.ToLower(text)
+	return accountCreditStatus.MatchString(text) ||
+		strings.Contains(lower, "exceed your available credits") ||
+		strings.Contains(lower, "insufficient credits") ||
+		strings.Contains(lower, "your credit balance is too low")
 }

@@ -28,11 +28,14 @@ type Score struct {
 	P50           time.Duration `json:"p50_ns"`
 }
 
-// scorecards retain eval's answered-call latency while counting every failed
-// call in the accuracy and note-quality denominators.
+// scorecards retain eval's answered-call latency and count model failures in
+// accuracy and note quality. Account credit errors are excluded.
 func scorecards(runs []store.AgentRun) map[string]eval.Scorecard {
 	groups := map[string][]store.AgentRun{}
 	for _, run := range runs {
+		if llm.IsAccountCreditError(run.Error) {
+			continue
+		}
 		groups[run.Model] = append(groups[run.Model], run)
 	}
 	cards := make(map[string]eval.Scorecard, len(groups))
@@ -63,7 +66,7 @@ func score(card eval.Scorecard) Score {
 	return Score{Model: card.Model, N: card.Cases, Accuracy: card.Accuracy(), NotesPassRate: card.LintPassRate(), CostPerOrder: card.CostPerProof(), P50: card.P50()}
 }
 
-// Scoreboard is stable by model name; errors still consume a sample and budget.
+// Scoreboard is stable by model name; only model errors consume a sample and budget.
 func Scoreboard(runs []store.AgentRun) []Score {
 	cards := scorecards(runs)
 	out := make([]Score, 0, len(cards))
@@ -146,7 +149,7 @@ func consecutiveFailures(runs []store.AgentRun, model string) (int, string) {
 	count, last := 0, ""
 	for i := len(runs) - 1; i >= 0; i-- {
 		run := runs[i]
-		if run.Model != model {
+		if run.Model != model || llm.IsAccountCreditError(run.Error) {
 			continue
 		}
 		if run.Error == "" {
