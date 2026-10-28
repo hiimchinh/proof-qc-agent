@@ -1,5 +1,5 @@
 # proof-qc-agent
-[![Live desk: simulated orders routed by a champion agent while a challenger runs in shadow](docs/live-desk.png)](https://proof-qc.hiimchinh.com)
+[![Live desk: what customers got from the latest 100 simulated orders, then the model behind it](docs/live-desk.png)](https://proof-qc.hiimchinh.com)
 
 Live: **https://proof-qc.hiimchinh.com**. Agents work a simulated order stream every 10 minutes with nobody clicking. [Tool trace for one order](docs/tool-trace.png).
 
