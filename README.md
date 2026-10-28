@@ -13,7 +13,11 @@ It measures the file against the order, reads the customer's comment, and decide
 
 It also writes the note the customer reads. Every note is checked against the support principles in the [Sticker Mule Guide](https://www.stickermule.com/guide). If a note says "sorry" or forgets the customer's name, the agent gets one chance to rewrite it.
 
-The goal is a shorter time to proof without letting a bad proof reach a customer. A person still approves every proof.
+## Why it matters
+
+Every Sticker Mule order gets a free proof shortly after checkout and unlimited free changes ([proofing FAQ](https://www.stickermule.com/stickermule/faqs/proofing)). The card is charged only when the customer approves ([FAQ](https://www.stickermule.com/faqs/stickermule/can-i-see-a-proof-before-ordering)), and the delivery date moves if the proof is not approved by 5pm EST the next business day ([FAQ](https://www.stickermule.com/faqs/stickermule/how-long-to-approve-proof)). So every revision round costs designer time, delays the charge and can push a delivery date.
+
+This agent reads every order before the proof. Clean orders go straight to a designer. Problems (low-resolution art, a size or material change hidden in a comment, conflicting instructions) are caught before the customer sees a proof, which saves a free revision round. The live desk counts this for the latest 100 orders: sent straight to proof, issues caught, issues missed (each costs the customer an extra round) and unneeded questions or rework. A person still approves every proof.
 
 ## The hard parts
 
@@ -54,7 +58,7 @@ In the live demo, Cloud Scheduler calls the tick every 10 minutes. Ticks are ser
 
 https://proof-qc.hiimchinh.com (Cloud Run, us-central1; Postgres on Cloud SQL)
 
-The first view is the live desk: orders, tool traces, champion/challenger scoreboard and fleet events. The separate “Try your own artwork” form still accepts a PNG or JPEG, a model and order instructions. The page is TypeScript, the API is GraphQL in Go (`internal/api`), and every review is stored in Postgres. Each visitor gets 20 reviews an hour, and the demo stops calling models once the day's spend reaches a cap.
+The first view is the live desk: what customers got over the latest 100 orders, the model behind it, then orders, tool traces, the champion/challenger scoreboard and fleet events. The separate “Try your own artwork” form still accepts a PNG or JPEG, a model and order instructions. The page is TypeScript, the API is GraphQL in Go (`internal/api`), and every review is stored in Postgres. Each visitor gets 20 reviews an hour, and the demo stops calling models once the day's spend reaches a cap.
 
 ## Results
 
@@ -158,12 +162,12 @@ go test -race ./...                              # store and API tests use the s
 
 The server applies its migration at startup. `PORT` defaults to 8080 and `DAILY_USD_CAP` to 3 (US dollars per UTC day; `0` blocks every model call). The page is built from `web/src` with `corepack pnpm build` in `web/`; the built `web/dist/app.js` is committed, so `go run` and `docker build` need no Node.
 
-## What I would do next in production
+## How I would roll this out at Sticker Mule
 
-1. Run it in shadow mode on real orders for two weeks: the agent decides, designers work as usual, and the eval compares the two.
-2. Grow the labelled set from orders designers had to send back, and gate prompt and model changes on it in CI.
-3. Replace the simulated queue source with the real order feed, keeping designer approval and the same run ledger.
-4. Track the metric it exists for, time to proof, plus the share of proofs approved without edits. If those do not move, retire it.
+1. **Baseline, one week.** From existing order data, per new order: time from checkout to first proof, revision rounds before approval, share of proofs approved first time, and delivery dates pushed because approval missed the cutoff.
+2. **Shadow, one to two weeks.** Replace the simulated queue with the real order feed. The agent routes every new order; designers work as usual and nothing reaches a customer. Compare its routing with what designers did, and add every order a designer sent back to the labelled set.
+3. **Turn it on for one product line**, for example die-cut stickers, only if shadow routing passes the gate: missed issues below an agreed rate, since each one costs a customer an extra round.
+4. **Keep a kill switch.** If revision rounds per order or pushed delivery dates rise against the baseline for two days, route that line back to designers and retire the version. Prompt and model changes stay gated on the labelled set in CI, and the fleet keeps a challenger in shadow.
 
 ## License
 

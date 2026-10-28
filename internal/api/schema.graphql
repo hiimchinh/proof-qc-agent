@@ -115,6 +115,23 @@ type Desk {
   orders: [DeskOrder!]!
   scoreboard: [FleetScore!]!
   events: [FleetEvent!]!
+  "The latest champion decisions restated as what the customer waiting on a proof gets."
+  impact: CustomerImpact!
+}
+
+type CustomerImpact {
+  "Champion decisions counted, at most the latest 100."
+  orders: Int!
+  "Clean orders a designer could start without triage."
+  straightToProof: Int!
+  "Problems routed before the proof; each avoids a free revision round."
+  issuesCaught: Int!
+  "Problems routed as ready; each costs the customer an extra revision round."
+  missedIssues: Int!
+  "Clean orders flagged, or problems sent to the wrong fix; the proof is slower."
+  detours: Int!
+  "Failed calls; a designer triages those orders as today."
+  handedToDesigner: Int!
 }
 
 type DeskOrder {
@@ -144,7 +161,7 @@ type AgentRun {
   overriddenByRules: Boolean!
   error: String!
   errorCause: String!
-  # False when the provider, not the model, stopped the call; fleet scores skip it.
+  "False when the provider, not the model, stopped the call; fleet scores skip it."
   scored: Boolean!
   trace: [ToolStep!]!
 }

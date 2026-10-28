@@ -86,7 +86,10 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .78rem; padding
 .kpi dt { color: var(--muted); font-size: .8rem; }
 .kpi dd { margin: 2px 0 0; font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .kpi p { margin: 2px 0 0; }
-@media (max-width: 760px) { .kpis { grid-template-columns: 1fr 1fr; } .kpi:first-child { grid-column: 1 / -1; } }
+.kpi.good { border-left: 4px solid var(--ok); }
+.kpi.cost { border-left: 4px solid var(--warn); }
+.impact-title, #model-title { margin-top: 16px; }
+@media (max-width: 760px) { .kpis { grid-template-columns: 1fr 1fr; } #desk-kpis .kpi:first-child { grid-column: 1 / -1; } }
 .queue-status { overflow-wrap: anywhere; padding: 12px 0; margin: 0; font-weight: 600; }
 .fleet-reason { font-weight: 600; margin: 8px 0; border-left: 4px solid var(--focus); padding-left: 12px; overflow-wrap: anywhere; }
 #fleet-events > li { overflow-wrap: anywhere; }

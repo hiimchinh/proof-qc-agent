@@ -12,7 +12,7 @@
 <header class="wrap">
   <p class="eyebrow">Proof QC agent / Operations</p>
   <h1>Autonomous proof desk</h1>
-  <p class="lede">An agent measures incoming artwork, reads the customer’s instructions and routes the order. A challenger tests the same work in shadow. Code enforces the rules; a person still approves every proof.</p>
+  <p class="lede">Every Sticker Mule order gets a free proof and unlimited free changes, and the delivery date holds only if the customer approves in time. Each free revision round costs designer time and can push that date. This agent reads every order before the proof: clean orders go straight to a designer, and problems are caught before the customer sees a proof. A person still approves every proof.</p>
   <p class="meta"><a href="https://github.com/hiimchinh/proof-qc-agent">Source and eval on GitHub</a> · <span id="spent">Today's model spend: …</span></p>
 </header>
 
@@ -22,7 +22,11 @@
       <div><p class="eyebrow">Simulated order stream</p><h2 id="desk-title">Live desk</h2></div>
       <p id="desk-state" class="hint">Loading fleet state…</p>
     </div>
-    <dl id="desk-kpis" class="kpis" aria-label="Champion summary"></dl>
+    <p id="impact-title" class="eyebrow impact-title">What customers got</p>
+    <dl id="desk-impact" class="kpis" aria-labelledby="impact-title"></dl>
+    <p id="desk-impact-note" class="hint"></p>
+    <p id="model-title" class="eyebrow">The model behind it</p>
+    <dl id="desk-kpis" class="kpis" aria-labelledby="model-title"></dl>
     <p class="hint">Orders come from 106 labelled synthetic cases, not customer traffic. Scheduled ticks run the agents; this page only reads their results.</p>
     <div class="desk-layout">
       <section class="card" aria-labelledby="incoming-title">

@@ -51,6 +51,17 @@ function scoreView(s: FleetScore): HTMLElement {
       ...metric("p50 latency", s.n ? elapsed(s.p50Ms) : "—")),
     h("p", { class: "hint" }, s.n < 30 ? `${30 - s.n} more orders before quality evaluation; 5 consecutive failed calls retire a model early.` : "Eligible for policy evaluation."));
 }
+function impactViews(d: Desk): HTMLElement[] {
+  const i = d.impact;
+  const tile = (tone: string, name: string, value: number, note: string) =>
+    h("div", { class: `kpi ${tone}` }, h("dt", {}, name), h("dd", {}, String(value)), h("p", { class: "hint" }, note));
+  return [
+    tile("good", "Sent straight to proof", i.straightToProof, "clean orders, no triage wait"),
+    tile("good", "Issues caught before the proof", i.issuesCaught, "a free revision round avoided each"),
+    tile("cost", "Issues missed", i.missedIssues, "an extra revision round each"),
+    tile("cost", "Unneeded questions or rework", i.detours, "a slower proof each"),
+  ];
+}
 function kpiViews(d: Desk): HTMLElement[] {
   const champion = d.scoreboard.find((s) => s.model === d.champion);
   const measured = champion && champion.n > 0;
@@ -65,6 +76,10 @@ function kpiViews(d: Desk): HTMLElement[] {
   ];
 }
 function render(d: Desk): void {
+  byId("impact-title").textContent = d.impact.orders ? `What customers got · last ${d.impact.orders} orders` : "What customers got";
+  byId("desk-impact").replaceChildren(...impactViews(d));
+  byId("desk-impact-note").textContent = d.impact.handedToDesigner
+    ? `${d.impact.handedToDesigner} more went to a designer as usual because the model call failed.` : "";
   byId("desk-kpis").replaceChildren(...kpiViews(d));
   const open = new Set(Array.from(document.querySelectorAll<HTMLDetailsElement>("#live-desk details[open]")).map((el) => el.dataset.key));
   const focused = document.activeElement?.closest<HTMLDetailsElement>("details")?.dataset.key;
