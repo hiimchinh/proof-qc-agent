@@ -21,7 +21,7 @@ The sticker checks are the easy part. This is a proof of concept for running age
 
 - **Models extract, code decides.** The model reads the size, shape and material a customer asks for; [code](internal/agent/order_rules.go) decides. Moving those rules out of the prompt took accuracy from 89–93% to 97–100%.
 - **Bounded tool loop.** [Each agent](internal/agent/desk.go) gets at most six calls, never retries, and a tool result cannot bypass the rules. Every step is traced.
-- **A fleet that manages itself.** [The policy](internal/fleet/fleet.go) promotes a challenger that beats the champion, retires models that miss accuracy, note quality, cost or latency, retires a model early after five consecutive failed calls, and seats the next candidate. Every change is stored with the numbers behind it.
+- **A fleet that manages itself.** [The policy](internal/fleet/fleet.go) promotes a challenger that beats the champion, retires models that miss accuracy, note quality, cost or latency, retires a model early after five consecutive failed calls, and seats the next candidate. Credit and billing failures pause model scoring instead of retiring models. Every change is stored with the numbers behind it.
 - **Money is a hard limit.** One [daily ledger](internal/api/budget.go) covers scheduled agents and visitors; a cap leaves work queued and resumes it without paying twice.
 - **Safe to run more than once.** Ticks are serialized with a [Postgres advisory lock](internal/store/coordination.go); abandoned orders are recovered.
 
