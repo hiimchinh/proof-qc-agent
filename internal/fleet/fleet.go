@@ -17,6 +17,9 @@ const (
 	MinSamples = 30
 	// MaxConsecutiveFailures retires an unreliable model before MinSamples.
 	MaxConsecutiveFailures = 5
+	// MaxConsecutiveRateLimits skips a challenger the provider will not serve,
+	// about two hours of ticks. It is never scored, so it is not retired.
+	MaxConsecutiveRateLimits = 12
 )
 
 type Score struct {
@@ -33,7 +36,7 @@ type Score struct {
 func scorecards(runs []store.AgentRun) map[string]eval.Scorecard {
 	groups := map[string][]store.AgentRun{}
 	for _, run := range runs {
-		if isProviderOutage(run.Error) {
+		if llm.IsProviderOutage(run.Error) {
 			continue
 		}
 		groups[run.Model] = append(groups[run.Model], run)
@@ -92,8 +95,8 @@ func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Score
 			"baseline": map[string]any{"n": baseline.Cases, "accuracy": baseline.Accuracy()},
 			"policy": map[string]any{
 				"min_samples": MinSamples, "min_accuracy": policy.MinAccuracy,
-				"max_consecutive_failures": MaxConsecutiveFailures,
-				"min_gain_over_baseline":   policy.MinGainOverBaseline, "min_notes_pass": policy.MinLintPass,
+				"max_consecutive_failures": MaxConsecutiveFailures, "max_consecutive_rate_limits": MaxConsecutiveRateLimits,
+				"min_gain_over_baseline": policy.MinGainOverBaseline, "min_notes_pass": policy.MinLintPass,
 				"max_cost_per_order": policy.MaxCostPerProof, "max_p50_ns": policy.MaxP50,
 			},
 		})
@@ -104,6 +107,13 @@ func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Score
 		card := cards[model]
 		if model == "" {
 			continue
+		}
+		if role == &state.Challenger {
+			if limited, last := consecutiveRateLimits(runs, model); limited >= MaxConsecutiveRateLimits {
+				event("skipped", model, fmt.Sprintf("%d consecutive rate-limited calls; last: %s", limited, llm.ShortErrorCause(last)))
+				*role = ""
+				continue
+			}
 		}
 		failures, lastError := consecutiveFailures(runs, model)
 		if failures >= MaxConsecutiveFailures {
@@ -149,7 +159,7 @@ func consecutiveFailures(runs []store.AgentRun, model string) (int, string) {
 	count, last := 0, ""
 	for i := len(runs) - 1; i >= 0; i-- {
 		run := runs[i]
-		if run.Model != model || isProviderOutage(run.Error) {
+		if run.Model != model || llm.IsProviderOutage(run.Error) {
 			continue
 		}
 		if run.Error == "" {
@@ -163,7 +173,21 @@ func consecutiveFailures(runs []store.AgentRun, model string) (int, string) {
 	return count, last
 }
 
-// isProviderOutage keeps account and capacity failures out of model quality.
-func isProviderOutage(text string) bool {
-	return llm.IsAccountCreditError(text) || llm.IsRateLimitError(text)
+// consecutiveRateLimits ignores account credit errors, which stop every model alike.
+func consecutiveRateLimits(runs []store.AgentRun, model string) (int, string) {
+	count, last := 0, ""
+	for i := len(runs) - 1; i >= 0; i-- {
+		run := runs[i]
+		if run.Model != model || llm.IsAccountCreditError(run.Error) {
+			continue
+		}
+		if !llm.IsRateLimitError(run.Error) {
+			break
+		}
+		if count == 0 {
+			last = run.Error
+		}
+		count++
+	}
+	return count, last
 }

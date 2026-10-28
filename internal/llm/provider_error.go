@@ -93,3 +93,8 @@ func IsRateLimitError(text string) bool {
 		strings.Contains(lower, "rate-limited") ||
 		strings.Contains(lower, "rate limit")
 }
+
+// IsProviderOutage keeps account and capacity failures out of model quality.
+func IsProviderOutage(text string) bool {
+	return IsAccountCreditError(text) || IsRateLimitError(text)
+}
