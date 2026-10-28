@@ -18,7 +18,7 @@ func TestEvaluateRetiresConsecutiveFailuresBeforeMinimumSamples(t *testing.T) {
 		{Model: "bad", Error: "timeout"},
 		{Model: "good", Correct: true, NotesPass: true},
 		{Model: "bad", Error: "timeout"},
-		{Model: "bad", Error: "google/gemma-3-27b-it: Provider returned error; provider: DeepInfra; upstream: temporarily rate-limited upstream"},
+		{Model: "bad", Error: "expected tool_calls, got finish_reason stop"},
 	}
 	for _, role := range []string{"champion", "challenger"} {
 		t.Run(role, func(t *testing.T) {
@@ -49,7 +49,7 @@ func TestEvaluateRetiresConsecutiveFailuresBeforeMinimumSamples(t *testing.T) {
 					if got != want || len(events) != 1 || events[0].Kind != "retired" || events[0].Model != "bad" {
 						t.Fatalf("unreliable model kept: %+v %+v", got, events)
 					}
-					reason := "5 consecutive failed calls; last: provider DeepInfra rate-limited upstream"
+					reason := "5 consecutive failed calls; last: expected tool_calls, got finish_reason stop"
 					if tc.name == "six failures" {
 						reason = "6 consecutive failed calls; last: timeout"
 					}

@@ -29,11 +29,11 @@ type Score struct {
 }
 
 // scorecards retain eval's answered-call latency and count model failures in
-// accuracy and note quality. Account credit errors are excluded.
+// accuracy and note quality. Provider credit and rate-limit errors are excluded.
 func scorecards(runs []store.AgentRun) map[string]eval.Scorecard {
 	groups := map[string][]store.AgentRun{}
 	for _, run := range runs {
-		if llm.IsAccountCreditError(run.Error) {
+		if isProviderOutage(run.Error) {
 			continue
 		}
 		groups[run.Model] = append(groups[run.Model], run)
@@ -149,7 +149,7 @@ func consecutiveFailures(runs []store.AgentRun, model string) (int, string) {
 	count, last := 0, ""
 	for i := len(runs) - 1; i >= 0; i-- {
 		run := runs[i]
-		if run.Model != model || llm.IsAccountCreditError(run.Error) {
+		if run.Model != model || isProviderOutage(run.Error) {
 			continue
 		}
 		if run.Error == "" {
@@ -161,4 +161,9 @@ func consecutiveFailures(runs []store.AgentRun, model string) (int, string) {
 		count++
 	}
 	return count, last
+}
+
+// isProviderOutage keeps account and capacity failures out of model quality.
+func isProviderOutage(text string) bool {
+	return llm.IsAccountCreditError(text) || llm.IsRateLimitError(text)
 }
