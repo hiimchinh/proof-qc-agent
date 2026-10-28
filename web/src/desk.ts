@@ -11,12 +11,15 @@ let previous = "";
 function detail(key: string, title: string, ...children: Node[]): HTMLDetailsElement {
   return h("details", { "data-key": key }, h("summary", {}, title), ...children);
 }
+// A provider outage (rate limit, account credit) is not the model's failure and is not scored.
+const notScored = (run: AgentRun) => run.error !== "" && !run.scored;
 function runView(order: DeskOrder, run: AgentRun): Node {
   const outcome = run.error ? "Failed" : run.correct ? "Matches label" : "Misses label";
-  const title = run.error ? `${run.role} call failed: ${run.errorCause}` : `${run.role} · ${label(run.decision || "no decision")} · ${outcome}`;
+  const title = notScored(run) ? `${run.role} not scored: ${run.errorCause}` :
+    run.error ? `${run.role} call failed: ${run.errorCause}` : `${run.role} · ${label(run.decision || "no decision")} · ${outcome}`;
   return detail(`${order.id}-${run.role}`, title,
     h("p", { class: "hint" }, `${run.model} · ${usd(run.costUsd)} · ${elapsed(run.latencyMs)} · Notes ${run.notesPass ? "pass" : "fail"}${run.overriddenByRules ? " · Code overrode routing" : ""}`),
-    ...(run.error ? [h("p", { class: run.role === "challenger" ? "hint" : "error" }, run.error)] : []),
+    ...(run.error ? [h("p", { class: run.role === "challenger" || notScored(run) ? "hint" : "error" }, run.error)] : []),
     h("p", { class: "note" }, run.customerNote || "No customer note."),
     h("p", {}, `Designer: ${run.designerNote || "No designer changes."}`),
     h("ol", { class: "tool-trace" }, ...run.trace.map((s) => h("li", {},
@@ -26,7 +29,7 @@ function runView(order: DeskOrder, run: AgentRun): Node {
 }
 function orderView(o: DeskOrder): HTMLElement {
   const champion = o.runs.find((r) => r.role === "champion");
-  const state = champion ? (champion.error ? "Failed" : champion.correct ? "Match" : "Miss") : o.status;
+  const state = champion ? (notScored(champion) ? "Not scored" : champion.error ? "Failed" : champion.correct ? "Match" : "Miss") : o.status;
   return h("li", { class: "desk-order" },
     h("div", { class: "order-heading" }, h("h3", {}, `#${o.id} · ${o.customer}`),
       h("span", { class: `badge ${champion?.correct ? "match" : ""}` }, state)),
@@ -48,7 +51,21 @@ function scoreView(s: FleetScore): HTMLElement {
       ...metric("p50 latency", s.n ? elapsed(s.p50Ms) : "—")),
     h("p", { class: "hint" }, s.n < 30 ? `${30 - s.n} more orders before quality evaluation; 5 consecutive failed calls retire a model early.` : "Eligible for policy evaluation."));
 }
+function kpiViews(d: Desk): HTMLElement[] {
+  const champion = d.scoreboard.find((s) => s.model === d.champion);
+  const measured = champion && champion.n > 0;
+  const retired = d.scoreboard.filter((s) => s.role === "retired").length;
+  const kpi = (name: string, value: string, note: string) => h("div", { class: "kpi" }, h("dt", {}, name), h("dd", {}, value), h("p", { class: "hint" }, note));
+  const [vendor, model] = d.champion.includes("/") ? d.champion.split("/", 2) : ["", d.champion];
+  return [
+    kpi("Champion", model || "None", d.champion ? `${vendor ? `${vendor} · ` : ""}acts on every order` : "Orders wait for a model"),
+    kpi("Accuracy", measured ? pct(champion.accuracy) : "—", measured ? `over ${champion.n} orders` : "No scored orders yet"),
+    kpi("Cost per order", measured ? usd(champion.costPerOrder) : "—", measured ? `p50 ${elapsed(champion.p50Ms)}` : "No scored orders yet"),
+    kpi("Models measured", String(d.scoreboard.length), `${retired} retired by the policy`),
+  ];
+}
 function render(d: Desk): void {
+  byId("desk-kpis").replaceChildren(...kpiViews(d));
   const open = new Set(Array.from(document.querySelectorAll<HTMLDetailsElement>("#live-desk details[open]")).map((el) => el.dataset.key));
   const focused = document.activeElement?.closest<HTMLDetailsElement>("details")?.dataset.key;
   byId("desk-orders").replaceChildren(...(d.orders.length ? d.orders.map(orderView) : [

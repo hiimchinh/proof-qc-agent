@@ -31,7 +31,7 @@ type deskOrderView struct {
 }
 type agentRunView struct {
 	Role, Model, Decision, DesignerNote, CustomerNote, Error, ErrorCause string
-	Correct, NotesPass, OverriddenByRules                                bool
+	Correct, NotesPass, OverriddenByRules, Scored                        bool
 	CostUsd                                                              float64
 	LatencyMs                                                            int32
 	Trace                                                                []toolStepView
@@ -110,7 +110,7 @@ func deskOrder(o store.DeskOrder) deskOrderView {
 		WidthIn: o.Order.WidthIn, HeightIn: o.Order.HeightIn, Comment: o.Order.Comment, Expected: string(o.Expected), Status: o.Status, CreatedAt: o.CreatedAt.UTC().Format(time.RFC3339), Runs: []agentRunView{}}
 	for _, run := range o.Runs {
 		rv := agentRunView{Role: run.Role, Model: run.Model, Decision: string(run.Result.Decision), DesignerNote: run.Result.DesignerNote, CustomerNote: run.Result.CustomerNote,
-			Error: run.Error, ErrorCause: llm.ShortErrorCause(run.Error), Correct: run.Correct, NotesPass: run.NotesPass, OverriddenByRules: run.OverriddenByRules, CostUsd: run.CostUSD, LatencyMs: int32(run.Latency / time.Millisecond), Trace: []toolStepView{}}
+			Error: run.Error, ErrorCause: llm.ShortErrorCause(run.Error), Correct: run.Correct, NotesPass: run.NotesPass, Scored: !llm.IsProviderOutage(run.Error), OverriddenByRules: run.OverriddenByRules, CostUsd: run.CostUSD, LatencyMs: int32(run.Latency / time.Millisecond), Trace: []toolStepView{}}
 		var steps []agent.TraceStep
 		if json.Unmarshal(run.Trace, &steps) == nil {
 			for _, step := range steps {
