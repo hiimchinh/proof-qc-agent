@@ -43,8 +43,8 @@ func TestOrderStatusFollowsChampionDespiteShadowFailure(t *testing.T) {
 						failingModel = "anthropic/claude-haiku-5.5"
 					}
 					if req.Model == failingModel {
-						w.WriteHeader(http.StatusTooManyRequests)
-						_, _ = w.Write([]byte(`{"error":{"message":"Provider returned error","metadata":{"provider_name":"DeepInfra","raw":"temporarily rate-limited upstream"}},"usage":{"cost":0.001}}`))
+						w.WriteHeader(http.StatusBadGateway)
+						_, _ = w.Write([]byte(`{"error":{"message":"Provider returned error","metadata":{"provider_name":"DeepInfra","raw":"upstream model crashed"}},"usage":{"cost":0.001}}`))
 						return
 					}
 					tool, args := "measure_artwork", `{}`
@@ -106,7 +106,7 @@ func TestOrderStatusFollowsChampionDespiteShadowFailure(t *testing.T) {
 							if run.Error == "" || run.Correct || run.NotesPass {
 								t.Fatalf("failure lost: %+v", run)
 							}
-							if run.Role == "challenger" && !strings.Contains(run.Error, "rate-limited upstream") {
+							if run.Role == "challenger" && !strings.Contains(run.Error, "upstream model crashed") {
 								t.Fatal("upstream cause lost")
 							}
 						} else if run.Error != "" || run.Result.Decision != agent.AskCustomer || !run.Correct {
