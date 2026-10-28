@@ -84,3 +84,14 @@ func TestChampionSummaryPrecedesTheOrderFeed(t *testing.T) {
 		t.Fatal("policy details must explain when a rate-limited challenger is skipped")
 	}
 }
+
+func TestCustomerOutcomeLeadsTheDesk(t *testing.T) {
+	body := get(t, "/").Body.String()
+	outcome, model := strings.Index(body, `<dl id="desk-impact"`), strings.Index(body, `<dl id="desk-kpis"`)
+	if outcome < 0 || model < outcome {
+		t.Fatal("what customers got must come before the model numbers")
+	}
+	if !strings.Contains(body, "free revision round") {
+		t.Fatal("page must say what a caught issue saves the customer")
+	}
+}

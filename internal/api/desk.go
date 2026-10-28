@@ -10,6 +10,7 @@ import (
 
 	"github.com/hiimchinh/proof-qc-agent/internal/agent"
 	"github.com/hiimchinh/proof-qc-agent/internal/fleet"
+	"github.com/hiimchinh/proof-qc-agent/internal/impact"
 	"github.com/hiimchinh/proof-qc-agent/internal/llm"
 	"github.com/hiimchinh/proof-qc-agent/internal/store"
 )
@@ -22,6 +23,10 @@ type deskView struct {
 	Orders                  []deskOrderView
 	Scoreboard              []fleetScoreView
 	Events                  []fleetEventView
+	Impact                  customerImpactView
+}
+type customerImpactView struct {
+	Orders, StraightToProof, IssuesCaught, MissedIssues, Detours, HandedToDesigner int32
 }
 type deskOrderView struct {
 	ID                                                              graphql.ID
@@ -84,6 +89,8 @@ func (r *resolver) Desk(ctx context.Context, args struct{ Limit int32 }) (*deskV
 	for _, o := range orders {
 		out.Orders = append(out.Orders, deskOrder(o))
 	}
+	sum := impact.Summarize(runs, impact.Window)
+	out.Impact = customerImpactView{int32(sum.Orders), int32(sum.StraightToProof), int32(sum.IssuesCaught), int32(sum.MissedIssues), int32(sum.Detours), int32(sum.HandedToDesigner)}
 	for _, s := range fleet.Scoreboard(runs) {
 		role := "retired"
 		if s.Model == state.Champion {

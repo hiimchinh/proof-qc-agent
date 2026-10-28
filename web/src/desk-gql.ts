@@ -15,7 +15,10 @@ export interface FleetEvent { id: string; kind: string; model: string; reason: s
 export interface Desk {
   challengerQueue: string[];
   simulated: boolean; champion: string; challenger: string; spentToday: number; dailyCapUsd: number;
-  orders: DeskOrder[]; scoreboard: FleetScore[]; events: FleetEvent[];
+  orders: DeskOrder[]; scoreboard: FleetScore[]; events: FleetEvent[]; impact: CustomerImpact;
+}
+export interface CustomerImpact {
+  orders: number; straightToProof: number; issuesCaught: number; missedIssues: number; detours: number; handedToDesigner: number;
 }
 export const deskQuery = `{ desk {
   simulated champion challenger challengerQueue spentToday dailyCapUsd
@@ -24,4 +27,5 @@ export const deskQuery = `{ desk {
       trace { tool args result overridden } } }
   scoreboard { model role n accuracy notesPassRate costPerOrder p50Ms }
   events { id kind model reason numbers createdAt }
+  impact { orders straightToProof issuesCaught missedIssues detours handedToDesigner }
 } }`;
