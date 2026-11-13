@@ -24,8 +24,17 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - run: go vet ./...
       - run: go test -race ./...
+  # Apart from test so each job fits its time budget on a cold Go cache.
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: go vet ./...
       - name: large uploads preflight in under 2 s (timed without the race detector)
         run: go test -run TestLargeUploadMatchesTheSameArtAt600DPI ./internal/artwork
       - name: fixtures are reproducible
