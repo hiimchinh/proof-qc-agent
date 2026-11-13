@@ -58,6 +58,19 @@ func (s *Service) fillChallenger(ctx context.Context) error {
 }
 
 func (s *Service) saveFleet(ctx context.Context, next store.FleetState, events []store.FleetEvent) error {
+	if next.Champion == "" || next.Challenger == "" {
+		latest, err := s.cfg.Store.LatestFleetEvents(ctx)
+		if err != nil {
+			return err
+		}
+		runs, err := s.cfg.Store.Runs(ctx)
+		if err != nil {
+			return err
+		}
+		var reinstated []store.FleetEvent
+		next, reinstated = fleet.Reinstate(next, runs, latest)
+		events = append(events, reinstated...)
+	}
 	history, err := s.cfg.Store.FleetModels(ctx)
 	if err != nil {
 		return err

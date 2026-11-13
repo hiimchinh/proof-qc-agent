@@ -117,7 +117,7 @@ func Evaluate(state store.FleetState, runs []store.AgentRun, baseline eval.Score
 		}
 		failures, lastError := consecutiveFailures(runs, model)
 		if failures >= MaxConsecutiveFailures {
-			event("retired", model, fmt.Sprintf("%d consecutive failed calls; last: %s", failures, llm.ShortErrorCause(lastError)))
+			event("retired", model, fmt.Sprintf("%d%s; last: %s", failures, failureStreakReason, llm.ShortErrorCause(lastError)))
 			*role = ""
 			continue
 		}

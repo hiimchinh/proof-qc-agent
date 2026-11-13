@@ -92,3 +92,29 @@ func TestFleetQueuePersistsHistoryAcrossRestartAndRollsBackTogether(t *testing.T
 		t.Fatalf("c added %d times", added)
 	}
 }
+
+func TestLatestFleetEventsReturnsEachModelsNewestEvent(t *testing.T) {
+	ctx := context.Background()
+	st, err := store.Open(ctx, storetest.URL(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer st.Close()
+	if _, err := st.InitFleet(ctx, "a", "b"); err != nil {
+		t.Fatal(err)
+	}
+	if err := st.ApplyFleet(ctx, store.FleetState{Challenger: "b"}, []store.FleetEvent{{Kind: "retired", Model: "a", Reason: "5 consecutive failed calls"}}); err != nil {
+		t.Fatal(err)
+	}
+	got, err := st.LatestFleetEvents(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var kinds []string
+	for _, e := range got {
+		kinds = append(kinds, e.Model+":"+e.Kind)
+	}
+	if want := []string{"a:retired", "b:added"}; !reflect.DeepEqual(kinds, want) {
+		t.Fatalf("latest events %v, want %v", kinds, want)
+	}
+}

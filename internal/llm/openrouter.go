@@ -154,7 +154,12 @@ func (c *Client) Complete(ctx context.Context, req Request) (Response, error) {
 	if resp.StatusCode != http.StatusOK || cr.Error != nil {
 		msg := fmt.Sprintf("status %d", resp.StatusCode)
 		if cr.Error != nil {
+			// Keep the status: it classifies credit (402) and rate-limit (429)
+			// failures whatever wording the provider chose.
 			msg = cr.Error.detail(c.APIKey)
+			if status := cr.Error.status(resp.StatusCode); status != http.StatusOK {
+				msg += fmt.Sprintf("; status %d", status)
+			}
 		}
 		return out, fmt.Errorf("%s: %s", req.Model, msg)
 	}
