@@ -3,15 +3,28 @@ package llm
 import (
 	"encoding/json"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
 type providerError struct {
-	Message  string `json:"message"`
+	// Code is OpenRouter's HTTP-style error code; a number, or a string from some providers.
+	Code     json.RawMessage `json:"code"`
+	Message  string          `json:"message"`
 	Metadata struct {
 		Raw          json.RawMessage `json:"raw"`
 		ProviderName string          `json:"provider_name"`
 	} `json:"metadata"`
+}
+
+// status prefers the code OpenRouter puts in the body, which can differ from
+// the HTTP status (errors raised after streaming starts arrive with HTTP 200).
+func (e *providerError) status(httpStatus int) int {
+	code, err := strconv.Atoi(strings.Trim(string(e.Code), `"`))
+	if err != nil || code < 100 || code > 599 {
+		return httpStatus
+	}
+	return code
 }
 
 func (e *providerError) detail(apiKey string) string {
@@ -78,6 +91,7 @@ func IsAccountCreditError(text string) bool {
 	return accountCreditStatus.MatchString(text) ||
 		strings.Contains(lower, "exceed your available credits") ||
 		strings.Contains(lower, "insufficient credits") ||
+		strings.Contains(lower, "requires more credits") ||
 		strings.Contains(lower, "your credit balance is too low")
 }
 

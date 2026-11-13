@@ -64,11 +64,23 @@ func (s *Store) FleetEvents(ctx context.Context, limit int) ([]FleetEvent, error
 	if err != nil {
 		return nil, err
 	}
-	return pgx.CollectRows(rows, func(row pgx.CollectableRow) (FleetEvent, error) {
-		var e FleetEvent
-		err := row.Scan(&e.ID, &e.Kind, &e.Model, &e.Reason, &e.Numbers, &e.CreatedAt)
-		return e, err
-	})
+	return pgx.CollectRows(rows, scanEvent)
+}
+
+func scanEvent(row pgx.CollectableRow) (FleetEvent, error) {
+	var e FleetEvent
+	err := row.Scan(&e.ID, &e.Kind, &e.Model, &e.Reason, &e.Numbers, &e.CreatedAt)
+	return e, err
+}
+
+// LatestFleetEvents returns each model's newest event, ordered by model.
+func (s *Store) LatestFleetEvents(ctx context.Context) ([]FleetEvent, error) {
+	rows, err := s.pool.Query(ctx, `SELECT DISTINCT ON (model) id,kind,model,reason,numbers,created_at
+ FROM fleet_events ORDER BY model, created_at DESC, id DESC`)
+	if err != nil {
+		return nil, err
+	}
+	return pgx.CollectRows(rows, scanEvent)
 }
 
 // FleetModels returns all membership history, including active seats for older
