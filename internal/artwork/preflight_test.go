@@ -175,3 +175,37 @@ func TestEmptyArtwork(t *testing.T) {
 		t.Fatalf("flags = %v, want empty_artwork", r.Flags())
 	}
 }
+
+func TestPrintsSmallerWhenArtIsWiderThanTall(t *testing.T) {
+	// A 900x300 bar on a 900x900 canvas at 3x3 in is 3x1 in of art. A die cut follows
+	// the art, so the sticker fits the 3 in width and is 1 in tall: 3 of 9 sq in.
+	img := canvas(900, 900, clear)
+	fill(img, image.Rect(0, 300, 900, 600), red)
+	r := Preflight(img, dieCut(3))
+	if !r.Has(PrintsSmaller) {
+		t.Fatalf("flags = %v, want prints_smaller", r.Flags())
+	}
+	for _, f := range r.Findings {
+		if f.Flag == PrintsSmaller && f.Message != "art fills 3x1 in of the 3x3 in box (33% of the area)" {
+			t.Errorf("message = %q", f.Message)
+		}
+	}
+}
+
+func TestPrintsSmallerNeedsLessThanHalfTheBox(t *testing.T) {
+	// 900x600 bar: 3x2 in is 6 of 9 sq in, 67%.
+	img := canvas(900, 900, clear)
+	fill(img, image.Rect(0, 150, 900, 750), red)
+	if r := Preflight(img, dieCut(3)); r.Has(PrintsSmaller) {
+		t.Fatalf("flags = %v, want no prints_smaller at 67%%", r.Flags())
+	}
+}
+
+func TestPrintsSmallerIsForDieCutOnly(t *testing.T) {
+	img := canvas(900, 900, clear)
+	fill(img, image.Rect(0, 300, 900, 600), red)
+	o := Order{Product: Rectangle, WidthIn: 3, HeightIn: 3}
+	if r := Preflight(img, o); r.Has(PrintsSmaller) {
+		t.Fatalf("flags = %v, a rectangle keeps its box", r.Flags())
+	}
+}
