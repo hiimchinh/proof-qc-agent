@@ -39,7 +39,7 @@ func TestDeskQueryStartsEmptyAndKeepsExistingSchema(t *testing.T) {
 	if err := json.Unmarshal(resp.Data, &d); err != nil {
 		t.Fatal(err)
 	}
-	if !d.Desk.Simulated || d.Desk.SpentToday != 0 || d.Desk.DailyCapUsd != 3 || len(d.Samples) != 106 || d.Desk.Orders == nil || d.Desk.Scoreboard == nil || d.Desk.Events == nil {
+	if !d.Desk.Simulated || d.Desk.SpentToday != 0 || d.Desk.DailyCapUsd != 3 || len(d.Samples) != 123 || d.Desk.Orders == nil || d.Desk.Scoreboard == nil || d.Desk.Events == nil {
 		t.Fatalf("data = %s", resp.Data)
 	}
 }
