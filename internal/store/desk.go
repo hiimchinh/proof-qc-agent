@@ -23,6 +23,13 @@ func (s *Store) Enqueue(ctx context.Context, caseID string, order artwork.Order,
 	return scanOrder(s.pool.QueryRow(ctx, `INSERT INTO desk_orders(case_id,"order",expected) VALUES($1,$2,$3) RETURNING `+orderColumns, caseID, order, expected))
 }
 
+// QueuedOrders counts orders waiting for a model.
+func (s *Store) QueuedOrders(ctx context.Context) (int, error) {
+	var n int
+	err := s.pool.QueryRow(ctx, `SELECT count(*) FROM desk_orders WHERE status='queued'`).Scan(&n)
+	return n, err
+}
+
 func (s *Store) ClaimOrder(ctx context.Context) (*DeskOrder, error) {
 	o, err := scanOrder(s.pool.QueryRow(ctx, `UPDATE desk_orders SET status='working',updated_at=now() WHERE id=(
  SELECT id FROM desk_orders WHERE status='queued' ORDER BY created_at,id FOR UPDATE SKIP LOCKED LIMIT 1

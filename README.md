@@ -50,7 +50,7 @@ flowchart LR
   Runs --> Desk[GraphQL live desk]
 ```
 
-In the live demo, Cloud Scheduler calls the tick every 10 minutes. Ticks are serialized across instances with a Postgres advisory lock. Each tick processes at most two queued orders, each agent gets at most six calls, and calls never retry. The shared daily USD ledger includes both agents and manual reviews. A cap leaves unfinished orders queued; a subsequent tick resumes saved roles without calling them twice. A call already in flight can cross the cap; its cost still counts.
+In the live demo, Cloud Scheduler calls the tick every 10 minutes. Ticks are serialized across instances with a Postgres advisory lock. Each tick processes at most two queued orders and enqueues nothing while two already wait, so an outage leaves a short queue instead of a backlog; each agent gets at most six calls, and calls never retry. The shared daily USD ledger includes both agents and manual reviews. A cap leaves unfinished orders queued; a subsequent tick resumes saved roles without calling them twice. A call already in flight can cross the cap; its cost still counts.
 
 `CHAMPION_MODEL` defaults to `openai/gpt-6.1-terra`; `CHALLENGER_MODEL` defaults to `anthropic/claude-haiku-5.5`. They seed the fleet only on first boot; subsequent boots use its persisted state. An empty `TICK_TOKEN` disables the endpoint. Configure the scheduler to send the token in `X-Tick-Token`; never expose it to the browser. The page refreshes persisted results every 10 seconds and never starts paid work on a read.
 

@@ -67,3 +67,29 @@ func TestCappedTicksEnqueueWithoutCallingModels(t *testing.T) {
 		t.Fatalf("calls=%d orders=%+v", calls.Load(), orders)
 	}
 }
+
+// A desk that cannot process orders (budget spent, provider down) must not
+// build a backlog: once a tick's worth of orders waits, ticks stop enqueuing.
+func TestTicksStopEnqueuingWhileOrdersWait(t *testing.T) {
+	st := storetest.Open(t)
+	cases, art, err := proofqc.Cases()
+	if err != nil {
+		t.Fatal(err)
+	}
+	svc, err := New(Config{Store: st, LLM: &llm.Client{BaseURL: "http://127.0.0.1:1"}, Cases: cases, Artwork: art, DailyCapUSD: 0})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range 6 {
+		if _, err := svc.Tick(context.Background()); err != nil {
+			t.Fatal(err)
+		}
+	}
+	orders, err := st.RecentOrders(context.Background(), 10)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(orders) != 2 {
+		t.Fatalf("queued orders after 6 capped ticks = %d; want 2", len(orders))
+	}
+}

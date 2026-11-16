@@ -79,16 +79,9 @@ func (s *Service) Tick(ctx context.Context) (TickResult, error) {
 		if err := s.fillChallenger(ctx); err != nil {
 			return err
 		}
-		i, err := s.cfg.Store.NextCaseIndex(ctx, len(s.shuffled))
-		if err != nil {
+		if err := s.enqueue(ctx, &out); err != nil {
 			return err
 		}
-		c := s.shuffled[i]
-		order, err := s.cfg.Store.Enqueue(ctx, c.ID, c.Order, c.Want)
-		if err != nil {
-			return err
-		}
-		out.Enqueued = order.ID
 		for range ordersPerTick {
 			if err := s.budget(ctx, 0); err != nil {
 				if errors.Is(err, ErrCapped) {
@@ -126,6 +119,26 @@ func (s *Service) Tick(ctx context.Context) (TickResult, error) {
 	})
 	out.Busy = !locked
 	return out, err
+}
+
+// enqueue adds the next case unless a tick's worth of orders already waits, so a
+// desk that cannot process (budget spent, provider down) does not build a backlog.
+func (s *Service) enqueue(ctx context.Context, out *TickResult) error {
+	waiting, err := s.cfg.Store.QueuedOrders(ctx)
+	if err != nil || waiting >= ordersPerTick {
+		return err
+	}
+	i, err := s.cfg.Store.NextCaseIndex(ctx, len(s.shuffled))
+	if err != nil {
+		return err
+	}
+	c := s.shuffled[i]
+	order, err := s.cfg.Store.Enqueue(ctx, c.ID, c.Order, c.Want)
+	if err != nil {
+		return err
+	}
+	out.Enqueued = order.ID
+	return nil
 }
 
 func (s *Service) image(c eval.Case) (image.Image, error) {
