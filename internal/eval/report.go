@@ -31,6 +31,13 @@ func Markdown(baseline Scorecard, cards []Scorecard, p Policy) string {
 		row(s, v)
 	}
 
+	if _, ok := baseline.Tiers[TierReal]; ok {
+		b.WriteString("\nDecision accuracy by tier:\n\n| Reviewer | Synthetic | Real |\n|---|---:|---:|\n")
+		for _, s := range append([]Scorecard{baseline}, cards...) {
+			fmt.Fprintf(&b, "| `%s` | %s | %s |\n", s.Model, tierCell(s.Tiers[TierSynthetic]), tierCell(s.Tiers[TierReal]))
+		}
+	}
+
 	b.WriteString("\n<details><summary>Misses</summary>\n\n")
 	for _, s := range append([]Scorecard{baseline}, cards...) {
 		if len(s.Misses) == 0 {
@@ -48,4 +55,11 @@ func Markdown(baseline Scorecard, cards []Scorecard, p Policy) string {
 	}
 	b.WriteString("</details>\n")
 	return b.String()
+}
+
+func tierCell(t TierScore) string {
+	if t.Cases == 0 {
+		return "-"
+	}
+	return fmt.Sprintf("%d/%d (%.0f%%)", t.Correct, t.Cases, t.Accuracy()*100)
 }
