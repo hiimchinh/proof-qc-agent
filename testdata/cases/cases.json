@@ -1376,5 +1376,243 @@
     },
     "want": "ask_customer",
     "why": "comment: contradict"
+  },
+  {
+    "id": "real-wide-3x3-quiet",
+    "file": "real-wide-3x3-quiet.png",
+    "order": {
+      "customer": "Marta Kowalska",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": ""
+    },
+    "want": "ready_for_proof",
+    "why": "wide die-cut art prints smaller than the box; the designer states the printed size on the proof",
+    "source": "https://www.stickermule.com/reviews/1326369"
+  },
+  {
+    "id": "real-wide-3x3-expects-tall",
+    "file": "real-wide-3x3-expects-tall.png",
+    "order": {
+      "customer": "Tuan Pham",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "I ordered the 3x3 deal, so I expect each sticker to be 3 inches tall."
+    },
+    "want": "ask_customer",
+    "why": "3 in tall on 3:1 art needs about 9x3 in, a different size from the order",
+    "source": "https://www.stickermule.com/reviews/1326369"
+  },
+  {
+    "id": "real-wide-4x4-width-ok",
+    "file": "real-wide-4x4-width-ok.png",
+    "order": {
+      "customer": "Imani Okafor",
+      "product": "die_cut",
+      "width_in": 4,
+      "height_in": 4,
+      "comment": "Make it 4 inches wide, the height can be whatever fits."
+    },
+    "want": "ready_for_proof",
+    "why": "4 in wide fits the ordered 4x4 box",
+    "source": "https://www.stickermule.com/reviews/1323785"
+  },
+  {
+    "id": "real-wide-2x2-bigger",
+    "file": "real-wide-2x2-bigger.png",
+    "order": {
+      "customer": "Søren Madsen",
+      "product": "die_cut",
+      "width_in": 2,
+      "height_in": 2,
+      "comment": "My last stickers came out much smaller than I would have liked. Make these bigger."
+    },
+    "want": "ask_customer",
+    "why": "asks for a different size from the order",
+    "source": "https://www.stickermule.com/reviews/1359748"
+  },
+  {
+    "id": "real-all-colors-sent",
+    "file": "real-all-colors-sent.png",
+    "order": {
+      "customer": "Elena Petrova",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "I sent all the colors I want. Please make a set with each one."
+    },
+    "want": "ask_customer",
+    "why": "only one colour version is attached",
+    "source": "https://www.stickermule.com/reviews/1340278"
+  },
+  {
+    "id": "real-reorder",
+    "file": "real-reorder.png",
+    "order": {
+      "customer": "Ravi Menon",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Same as my previous order please, just a reorder."
+    },
+    "want": "ready_for_proof",
+    "why": "a reorder with the same art and size needs no customer input",
+    "source": "https://www.stickermule.com/reviews/1333433"
+  },
+  {
+    "id": "real-wrong-version",
+    "file": "real-wrong-version.png",
+    "order": {
+      "customer": "Clara Jensen",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "I may have uploaded the wrong version. Please use the newer one with the sharper lines."
+    },
+    "want": "ask_customer",
+    "why": "the newer version is not attached",
+    "source": "https://www.stickermule.com/reviews/1348982"
+  },
+  {
+    "id": "real-see-through",
+    "file": "real-see-through.png",
+    "order": {
+      "customer": "Yuki Tanaka",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "My order is supposed to be see-through. I did not want a white background."
+    },
+    "want": "ask_customer",
+    "why": "a clear material differs from the ordered vinyl",
+    "source": "https://www.stickermule.com/reviews/1331706"
+  },
+  {
+    "id": "real-white-bg-cut-around",
+    "file": "real-white-bg-cut-around.png",
+    "order": {
+      "customer": "Amara Diallo",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "The background should not be pure white. Cut around the design only."
+    },
+    "want": "ready_for_proof",
+    "why": "the designer removes the white box so the cut follows the art",
+    "source": "https://www.stickermule.com/reviews/1340006"
+  },
+  {
+    "id": "real-white-border-ok",
+    "file": "real-white-border-ok.png",
+    "order": {
+      "customer": "Henrik Larsen",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Remove the background but keep an even white border all around the design."
+    },
+    "want": "ready_for_proof",
+    "why": "an even white border is the standard die-cut outline, not a contradiction",
+    "source": "https://www.stickermule.com/reviews/1357893"
+  },
+  {
+    "id": "real-true-black",
+    "file": "real-true-black.png",
+    "order": {
+      "customer": "Camila Reyes",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "The black has to print as true black, not a very dark gray."
+    },
+    "want": "ready_for_proof",
+    "why": "a colour note for the designer; nothing needs the customer",
+    "source": "https://www.stickermule.com/reviews/1340176"
+  },
+  {
+    "id": "real-keep-pink",
+    "file": "real-keep-pink.png",
+    "order": {
+      "customer": "Noor Haddad",
+      "product": "rectangle",
+      "width_in": 3,
+      "height_in": 2,
+      "comment": "The background is pink, not grey. Please keep it pink."
+    },
+    "want": "ready_for_proof",
+    "why": "keeping the file's colours matches the order",
+    "source": "https://www.stickermule.com/reviews/1319251"
+  },
+  {
+    "id": "real-rgb-to-cmyk",
+    "file": "real-rgb-to-cmyk.png",
+    "order": {
+      "customer": "Pieter de Vries",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "I designed this in RGB. Please convert it to CMYK so the dark areas don't turn solid black."
+    },
+    "want": "ready_for_proof",
+    "why": "colour conversion is a designer task",
+    "source": "https://www.stickermule.com/reviews/1316835"
+  },
+  {
+    "id": "real-readable-words",
+    "file": "real-readable-words.png",
+    "order": {
+      "customer": "Lucía Fernández",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Make sure people can read the words. Last time I could barely read any of them."
+    },
+    "want": "ready_for_proof",
+    "why": "designer enlarges or thickens the tagline",
+    "source": "https://www.stickermule.com/reviews/1355874"
+  },
+  {
+    "id": "real-dark-but-same-colors",
+    "file": "real-dark-but-same-colors.png",
+    "order": {
+      "customer": "Gustav Berg",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Last batch came out too dark. Keep the colors exactly as in my file, but make them brighter."
+    },
+    "want": "ask_customer",
+    "why": "keep the exact colours and make them brighter contradict each other",
+    "source": "https://www.stickermule.com/reviews/1349807"
+  },
+  {
+    "id": "real-grainy-low-dpi",
+    "file": "real-grainy-low-dpi.png",
+    "order": {
+      "customer": "Ngọc Lan",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "Last time the lines came out grainy and fuzzy. Please keep them sharp."
+    },
+    "want": "recreate_artwork",
+    "why": "100 dpi; recreating the art gives the sharp lines",
+    "source": "https://www.stickermule.com/reviews/1353313"
+  },
+  {
+    "id": "real-vector-not-attached",
+    "file": "real-vector-not-attached.png",
+    "order": {
+      "customer": "Oluwaseun Ade",
+      "product": "die_cut",
+      "width_in": 3,
+      "height_in": 3,
+      "comment": "I provided a vector file, so it should be high resolution."
+    },
+    "want": "ask_customer",
+    "why": "the comment refers to a vector file that is not attached; that wins over recreate",
+    "source": "https://www.stickermule.com/reviews/1340254"
   }
 ]

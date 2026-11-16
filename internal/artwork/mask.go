@@ -18,6 +18,23 @@ func (m mask) count() int {
 	return n
 }
 
+// bounds is the width and height of the box around every set pixel; 0, 0 when none is set.
+func (m mask) bounds() (w, h int) {
+	minX, minY, maxX, maxY := m.w, m.h, -1, -1
+	for y := range m.h {
+		for x := range m.w {
+			if m.on[y*m.w+x] {
+				minX, maxX = min(minX, x), max(maxX, x)
+				minY, maxY = min(minY, y), max(maxY, y)
+			}
+		}
+	}
+	if maxX < 0 {
+		return 0, 0
+	}
+	return maxX - minX + 1, maxY - minY + 1
+}
+
 func (m mask) inMargin(margin int) int {
 	n := 0
 	for y := range m.h {

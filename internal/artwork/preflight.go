@@ -17,6 +17,7 @@ const (
 	ContentNearEdge    Flag = "content_near_edge" // inside the 1/16 in safe margin
 	ThinLines          Flag = "thin_lines"        // strokes under 1/32 in
 	WhiteOnTransparent Flag = "white_on_transparent"
+	PrintsSmaller      Flag = "prints_smaller" // die cut follows the art, so wide or tall art leaves the box mostly empty
 )
 
 const (
@@ -25,6 +26,9 @@ const (
 	safeMarginIn  = 1.0 / 16
 	minStrokeIn   = 1.0 / 32
 	colorTolerant = 24.0
+	// minBoxShare is the smallest share of the ordered box a die-cut sticker may
+	// fill before the customer is likely to find it smaller than expected.
+	minBoxShare = 0.5
 )
 
 // Finding is one flag with the measurement behind it.
@@ -94,6 +98,18 @@ func Preflight(img image.Image, o Order) Report {
 
 	if o.Product == DieCut && hasBG {
 		r.add(SolidBackground, "border is solid rgb(%d,%d,%d); a die cut would follow the rectangle", bg.r, bg.g, bg.b)
+	}
+
+	if o.Product == DieCut {
+		if bw, bh := mask.bounds(); bw > 0 && bh > 0 {
+			// The cut follows the art, so the sticker is the content box scaled to fit the ordered box.
+			scale := math.Min(o.WidthIn/float64(bw), o.HeightIn/float64(bh))
+			pw, ph := float64(bw)*scale, float64(bh)*scale
+			if share := pw * ph / (o.WidthIn * o.HeightIn); share < minBoxShare {
+				r.add(PrintsSmaller, "art fills %.3gx%.3g in of the %.4gx%.4g in box (%.0f%% of the area)",
+					pw, ph, o.WidthIn, o.HeightIn, share*100)
+			}
+		}
 	}
 
 	if o.Product == Rectangle {

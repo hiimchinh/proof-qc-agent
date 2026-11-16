@@ -31,6 +31,7 @@ const (
 	transparentBG background = iota
 	whiteBG
 	creamBG
+	pinkBG
 )
 
 type recipe struct {
@@ -46,10 +47,12 @@ type recipe struct {
 	hairline bool   // 1/64 in strokes
 	tinyText string // a tagline about 1/20 in tall
 	nearEdge bool   // a bar running into the safe margin
+	wide     bool   // a 3:1 bar with the word inside, on a square canvas
 	customer string
 	comment  string
 	want     agent.Decision
 	why      string
+	source   string // public review the case was adapted from
 }
 
 var (
@@ -58,6 +61,8 @@ var (
 	green  = color.NRGBA{42, 157, 143, 255}
 	orange = color.NRGBA{244, 140, 6, 255}
 	white  = color.NRGBA{255, 255, 255, 255}
+	pink   = color.NRGBA{244, 143, 177, 255}
+	black  = color.NRGBA{18, 18, 18, 255}
 )
 
 const (
@@ -144,13 +149,13 @@ func main() {
 	flag.Parse()
 	face := mustFace()
 	var cases []eval.Case
-	for _, r := range append(recipes, generated(80)...) {
+	for _, r := range append(append(recipes, generated(80)...), realRecipes...) {
 		file := r.id + ".png"
 		if err := writePNG(filepath.Join(*out, file), draw(r, face)); err != nil {
 			log.Fatal(err)
 		}
 		cases = append(cases, eval.Case{
-			ID: r.id, File: file, Want: r.want, Why: r.why,
+			ID: r.id, File: file, Want: r.want, Why: r.why, Source: r.source,
 			Order: artwork.Order{Customer: r.customer, Product: r.product, WidthIn: r.w, HeightIn: r.h, Comment: r.comment},
 		})
 	}
@@ -180,6 +185,8 @@ func draw(r recipe, f *opentype.Font) *image.NRGBA {
 		fillRect(img, img.Bounds(), white)
 	case creamBG:
 		fillRect(img, img.Bounds(), color.NRGBA{250, 240, 215, 255})
+	case pinkBG:
+		fillRect(img, img.Bounds(), pink)
 	}
 	if r.empty {
 		return img
@@ -190,6 +197,15 @@ func draw(r recipe, f *opentype.Font) *image.NRGBA {
 				img.Set(x, y, color.NRGBA{uint8(40 + 180*x/w), uint8(90 + 120*y/h), 160, 255})
 			}
 		}
+		return img
+	}
+
+	if r.wide {
+		// 90% of the width by 30% of it: a 3:1 box, so a die cut fits the width and
+		// fills a third of a square order.
+		bar := image.Rect(w/20, h*35/100, w*19/20, h*65/100)
+		fillRect(img, bar, r.fill)
+		text(img, f, r.word, float64(bar.Dy())*0.5, w/2, bar.Min.Y+bar.Dy()*2/3, white)
 		return img
 	}
 

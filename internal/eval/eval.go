@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/hiimchinh/proof-qc-agent/internal/agent"
@@ -22,7 +23,36 @@ type Case struct {
 	Order artwork.Order  `json:"order"`
 	Want  agent.Decision `json:"want"`
 	Why   string         `json:"why"`
+	// Source links the public review a real case was adapted from. Synthetic cases leave it empty.
+	Source string `json:"source,omitempty"`
 }
+
+// Tier names where a case came from, so accuracy on adapted real reviews is not
+// averaged away by the larger synthetic set.
+const (
+	TierReal      = "real"
+	TierSynthetic = "synthetic"
+)
+
+// realPrefix marks the case IDs adapted from public reviews.
+const realPrefix = "real-"
+
+// TierOf is the tier of a case ID.
+func TierOf(id string) string {
+	if strings.HasPrefix(id, realPrefix) {
+		return TierReal
+	}
+	return TierSynthetic
+}
+
+// TierScore counts one tier's cases and correct decisions.
+type TierScore struct {
+	Cases   int `json:"cases"`
+	Correct int `json:"correct"`
+}
+
+// Accuracy is correct decisions over the tier's cases.
+func (t TierScore) Accuracy() float64 { return ratio(t.Correct, t.Cases) }
 
 // LoadCases reads cases.json and resolves artwork paths next to it.
 func LoadCases(path string) ([]Case, error) {
@@ -100,6 +130,8 @@ type Scorecard struct {
 	LintClean int     `json:"lint_clean"`
 	CostUSD   float64 `json:"cost_usd"`
 	Misses    []Miss  `json:"misses"`
+	// Tiers splits Cases and Correct by TierOf.
+	Tiers     map[string]TierScore `json:"tiers,omitempty"`
 	latencies []time.Duration
 	runAcc    []float64
 }
@@ -117,6 +149,15 @@ func Merge(runs ...Scorecard) Scorecard {
 		m.LintClean += r.LintClean
 		m.CostUSD += r.CostUSD
 		m.Misses = append(m.Misses, r.Misses...)
+		for tier, t := range r.Tiers {
+			if m.Tiers == nil {
+				m.Tiers = map[string]TierScore{}
+			}
+			pooled := m.Tiers[tier]
+			pooled.Cases += t.Cases
+			pooled.Correct += t.Correct
+			m.Tiers[tier] = pooled
+		}
 		m.latencies = append(m.latencies, r.latencies...)
 		m.runAcc = append(m.runAcc, r.Accuracy())
 	}
@@ -136,8 +177,16 @@ func (s Scorecard) AccuracyRange() (lo, hi float64) {
 
 // Score builds a scorecard; a failed call counts as a wrong answer.
 func Score(model string, outs []Outcome) Scorecard {
-	s := Scorecard{Model: model, Cases: len(outs)}
+	s := Scorecard{Model: model, Cases: len(outs), Tiers: map[string]TierScore{}}
 	for _, o := range outs {
+		tier := TierOf(o.Case.ID)
+		t := s.Tiers[tier]
+		t.Cases++
+		right := !o.Skipped && o.Err == "" && o.Result.Decision == o.Case.Want
+		if right {
+			t.Correct++
+		}
+		s.Tiers[tier] = t
 		if o.Skipped {
 			s.Skipped++
 			continue

@@ -1,6 +1,7 @@
 package eval
 
 import (
+	"encoding/json"
 	"errors"
 	"os"
 	"strings"
@@ -133,5 +134,60 @@ func TestMergeRunsPoolsCountsAndKeepsTheRange(t *testing.T) {
 	}
 	if !strings.Contains(Markdown(r1, []Scorecard{m}, DefaultPolicy), "75% (50–100)") {
 		t.Fatalf("leaderboard does not show the run range:\n%s", Markdown(r1, []Scorecard{m}, DefaultPolicy))
+	}
+}
+
+func TestScoreSplitsAccuracyByTier(t *testing.T) {
+	o := func(id string, want, got agent.Decision) Outcome {
+		return Outcome{Case: Case{ID: id, Want: want}, Result: agent.Result{Decision: got}}
+	}
+	s := Score("m", []Outcome{
+		o("real-a", agent.AskCustomer, agent.AskCustomer),
+		o("real-b", agent.AskCustomer, agent.ReadyForProof),
+		o("gen-001-none", agent.ReadyForProof, agent.ReadyForProof),
+		o("clean-diecut", agent.ReadyForProof, agent.ReadyForProof),
+		o("gen-002-rush", agent.RecreateArtwork, agent.RecreateArtwork),
+	})
+	if got := s.Tiers[TierReal]; got.Cases != 2 || got.Correct != 1 {
+		t.Errorf("real tier = %+v, want 1 of 2", got)
+	}
+	if got := s.Tiers[TierSynthetic]; got.Cases != 3 || got.Correct != 3 {
+		t.Errorf("synthetic tier = %+v, want 3 of 3", got)
+	}
+	if s.Correct != 4 || s.Cases != 5 {
+		t.Errorf("total = %d of %d, want 4 of 5", s.Correct, s.Cases)
+	}
+}
+
+func TestMergePoolsTiers(t *testing.T) {
+	a := Scorecard{Tiers: map[string]TierScore{TierReal: {Cases: 2, Correct: 1}}}
+	b := Scorecard{Tiers: map[string]TierScore{TierReal: {Cases: 2, Correct: 2}, TierSynthetic: {Cases: 1, Correct: 1}}}
+	m := Merge(a, b)
+	if got := m.Tiers[TierReal]; got.Cases != 4 || got.Correct != 3 {
+		t.Errorf("real = %+v, want 3 of 4", got)
+	}
+	if got := m.Tiers[TierSynthetic]; got.Cases != 1 {
+		t.Errorf("synthetic = %+v", got)
+	}
+}
+
+func TestMarkdownShowsTierAccuracyWhenRealCasesRan(t *testing.T) {
+	s := Scorecard{Model: "m", Cases: 5, Correct: 4, Tiers: map[string]TierScore{
+		TierReal: {Cases: 2, Correct: 1}, TierSynthetic: {Cases: 3, Correct: 3}}}
+	md := Markdown(s, nil, DefaultPolicy)
+	for _, want := range []string{"Synthetic", "Real", "3/3 (100%)", "1/2 (50%)"} {
+		if !strings.Contains(md, want) {
+			t.Errorf("report lacks %q:\n%s", want, md)
+		}
+	}
+}
+
+func TestCaseSourceIsOmittedWhenEmpty(t *testing.T) {
+	raw, err := json.Marshal(Case{ID: "a"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(raw), "source") {
+		t.Fatalf("json = %s, old cases must keep their bytes", raw)
 	}
 }
